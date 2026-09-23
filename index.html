@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Onboarding and Enablement Hub</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+<link rel="alternate icon" href="assets/favicon.png" />
+<style>
+  @font-face{font-family:"Tiempos Text";src:url("fonts/tiempos-text-regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap;}
+  @font-face{font-family:"Tiempos Text";src:url("fonts/tiempos-text-regular-italic.woff2") format("woff2");font-weight:400;font-style:italic;font-display:swap;}
+  @font-face{font-family:"National 2";src:url("fonts/national-2-regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap;}
+  @font-face{font-family:"National 2";src:url("fonts/national-2-regular-italic.woff2") format("woff2");font-weight:400;font-style:italic;font-display:swap;}
+  @font-face{font-family:"National 2";src:url("fonts/national-2-bold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap;}
+  @font-face{font-family:"National 2";src:url("fonts/national-2-bold-italic.woff2") format("woff2");font-weight:700;font-style:italic;font-display:swap;}
+
+  :root{
+    --graphite:#1E1E1E; --white:#FFFFFF; --paper:#F7F4EF; --sand:#EEE7D7;
+    --ink:#544946; --orange:#FF551D; --blue:#2354FF; --ivory:#E1DFDB;
+    --serif:"Tiempos Text",Georgia,serif; --sans:"National 2",Arial,sans-serif;
+    /* Status tokens drawn from the brand palette only. */
+    --ok:#1E1E1E; --warn:#544946; --err:#FF551D;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{font-family:var(--sans); color:var(--graphite); background:var(--paper);
+    line-height:1.55; letter-spacing:-0.02em; -webkit-font-smoothing:antialiased;}
+  h1,h2,.serif{font-family:var(--serif); letter-spacing:-0.02em; font-weight:400;}
+  h3,h4,h5{font-family:var(--sans); font-weight:700; letter-spacing:-0.02em;}
+  a{color:var(--blue); text-decoration:none;} a:hover{text-decoration:underline;}
+  button{font-family:inherit; cursor:pointer;}
+  .wrap{max-width:1160px; margin:0 auto; padding:0 26px;}
+  .jwrap{max-width:1560px; margin:0 auto; padding:0 30px;}
+  .eyebrow{font-size:12.5px; color:var(--ink); margin:0 0 10px;}
+
+  .btn-primary{background:var(--blue); color:var(--white); border:none; border-radius:8px;
+    padding:12px 22px; font-size:14.5px; font-weight:700;}
+  .btn-primary:hover{filter:brightness(1.07);}
+  .btn-ghost{background:var(--white); color:var(--graphite); border:1px solid var(--ink);
+    border-radius:8px; padding:11px 18px; font-size:14px; font-weight:700;}
+  .btn-ghost:disabled{opacity:.4; cursor:not-allowed;}
+
+  /* Testing notice */
+  .testbar{background:var(--graphite); color:var(--white); text-align:center; font-size:12.5px; padding:8px 16px;}
+  .gate-test{background:var(--sand); border-left:3px solid var(--orange); border-radius:8px;
+    padding:12px 14px; font-size:13px; color:var(--graphite); margin:0 0 18px; line-height:1.5;}
+
+  /* Top bar */
+  .topbar{position:sticky; top:0; z-index:40; background:var(--white); border-bottom:1px solid var(--ivory);}
+  .topbar .inner{max-width:1560px; margin:0 auto; padding:14px 30px; display:flex; align-items:center; gap:16px;}
+  .brand{display:flex; align-items:center; gap:14px;}
+  .brand .mark{font-size:14px; font-weight:700; padding-right:14px; border-right:1px solid var(--ivory);}
+  .brand .prod .n{font-size:16px; font-weight:700; line-height:1.15;}
+  .brand .prod .s{font-size:12px; color:var(--ink);}
+  .topbar .spacer{flex:1;}
+  .role-chip{display:none; font-size:12.5px; color:var(--ink); background:var(--sand); border-radius:999px; padding:5px 12px;}
+  body[data-screen="journey"] .role-chip, body[data-screen="done"] .role-chip{display:inline-flex;}
+  .tlink{font-size:13.5px;}
+  .lrs-badge{display:none; align-items:center; gap:10px; font-size:12px; padding:5px 12px;
+    border:1px solid var(--ivory); border-radius:999px; background:var(--white);}
+  .lrs-badge .lrs-dot{width:9px; height:9px; border-radius:50%; background:var(--ivory); flex:none;}
+  .lrs-badge.live .lrs-dot{background:var(--ok);} .lrs-badge.sending .lrs-dot{background:var(--warn);}
+  .lrs-badge.error .lrs-dot{background:var(--err);}
+  .lrs-badge .lrs-status{font-weight:700;}
+  .lrs-badge .lrs-email{color:var(--ink); border-left:1px solid var(--ivory); padding-left:10px;
+    max-width:190px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .lrs-badge .lrs-count{color:var(--ink);}
+
+  /* Gate */
+  .gate-wrap{min-height:64vh; display:grid; place-items:center; padding:48px 0;}
+  .gate{max-width:480px; width:100%; background:var(--white); border:1px solid var(--ivory); border-radius:14px; padding:38px 34px;}
+  .gate h1{font-size:32px; margin:6px 0 0;}
+  .gate .rule{width:52px; height:3px; background:var(--orange); margin:14px 0 16px; border-radius:2px;}
+  .gate p{font-size:14.5px; color:var(--ink); margin:0 0 20px;}
+  .gate-form{display:flex; gap:10px; flex-wrap:wrap;}
+  .gate-form input{flex:1; min-width:220px; padding:12px 14px; border:1px solid var(--ink); border-radius:8px;
+    font-family:inherit; font-size:14.5px; background:var(--white); color:var(--graphite);}
+  .gate-err{color:var(--err); font-size:13px; margin:12px 0 0; display:none;} .gate-err.show{display:block;}
+  .gate-note{font-size:12px; color:var(--ink); margin:18px 0 0; line-height:1.5;}
+
+  /* Landing */
+  .landing{padding:36px 0 54px;}
+  .landing .hero{max-width:720px;}
+  .landing h1{font-size:40px; line-height:1.1; margin:8px 0 0;} .landing h1 em{font-style:italic;}
+  .landing .rule{width:60px; height:3px; background:var(--orange); margin:16px 0 18px; border-radius:2px;}
+  .landing .lede{font-size:17px; color:var(--ink); margin:0; max-width:60ch;}
+  .cards{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:30px 0 0;}
+  .card{background:var(--white); border:1px solid var(--ivory); border-radius:14px; padding:20px 22px;
+    display:flex; flex-direction:column; gap:9px; transition:box-shadow .15s, transform .15s;}
+  .card:hover{box-shadow:0 8px 26px rgba(30,30,30,.08); transform:translateY(-2px);}
+  .card h3{margin:0; font-size:18.5px;} .card .who{font-size:13.5px; color:var(--ink); margin:0; line-height:1.45;}
+  .card ul{margin:0; padding-left:17px; font-size:13.5px; color:var(--ink);} .card ul li{margin:3px 0; line-height:1.45;}
+  .card .go{margin-top:auto; align-self:flex-start;}
+
+  /* Journey: wide, center-dominant, side panels pushed out */
+  .journey{display:grid; grid-template-columns:220px minmax(0,1fr) 250px; gap:46px;
+    padding:34px 0 72px; align-items:start;}
+  .rail{background:var(--white); border:1px solid var(--ivory); border-radius:14px; padding:22px; position:sticky; top:82px;}
+  .rail .rtitle{font-size:15px; font-weight:700; margin:0 0 2px;} .rail .rmeta{font-size:12.5px; color:var(--ink); margin:0 0 14px;}
+  .bar{height:6px; background:var(--sand); border-radius:999px; overflow:hidden; margin-bottom:18px;}
+  .bar > span{display:block; height:100%; background:var(--orange); transition:width .25s;}
+  .steps{list-style:none; margin:0; padding:0;}
+  .steps li{display:flex; gap:12px; align-items:flex-start; padding:10px 8px; border-radius:8px; cursor:pointer;}
+  .steps li:hover,.steps li.active{background:var(--paper);}
+  .steps li .stxt{font-size:13.5px; line-height:1.35; color:var(--graphite);}
+
+  .stage{background:var(--white); border:1px solid var(--ivory); border-radius:14px; padding:38px 44px;}
+  .stage h2{font-size:30px; margin:8px 0 16px;}
+  .section-body{font-size:16px; color:var(--graphite); max-width:70ch;}
+  .section-body p{margin:0 0 14px; color:var(--ink);}
+  .section-body h4{font-size:19px; margin:26px 0 10px; color:var(--graphite);}
+  .section-body ul{margin:0 0 18px; padding-left:20px;}
+  .section-body li{margin:6px 0; color:var(--ink);}
+  .more-line{font-size:14.5px; color:var(--ink); margin:6px 0 16px;
+    padding:12px 16px; background:var(--paper); border:1px solid var(--ivory); border-radius:10px;}
+
+  /* Awaiting asset */
+  .pending{display:grid; grid-template-columns:auto 1fr; gap:7px 16px; align-items:baseline;
+    background:var(--paper); border:1px solid var(--ivory); border-left:3px solid var(--orange);
+    border-radius:10px; padding:15px 18px; margin:0 0 6px; font-size:13.5px;}
+  .pending .pl{color:var(--ink); font-weight:700; white-space:nowrap;}
+  .pending .pv{color:var(--graphite);}
+
+  /* Version stamp */
+  .vstamp{border-top:1px solid var(--ivory); background:var(--white);}
+  .vstamp .vinner{max-width:1560px; margin:0 auto; padding:18px 30px; font-size:12px; color:var(--ink);}
+
+  /* Embeds */
+  .embed{margin:0 0 8px; border:1px solid var(--ivory); border-radius:12px; overflow:hidden; background:var(--white);}
+  .embed.video .vwrap{padding:56.25% 0 0 0; position:relative;}
+  .embed.video iframe{position:absolute; top:0; left:0; width:100%; height:100%; border:0;}
+  .embed.pdf{background:var(--white);}
+  .pdfbar{display:flex; align-items:center; justify-content:center; gap:16px; padding:10px 12px;
+    border-bottom:1px solid var(--ivory); background:var(--paper);}
+  .pdfbar button{background:var(--white); border:1px solid var(--ink); color:var(--graphite);
+    border-radius:7px; padding:7px 14px; font-size:13px; font-weight:700;}
+  .pdfbar button:disabled{opacity:.4; cursor:not-allowed;}
+  .pdfcount{font-size:13px; color:var(--ink); min-width:110px; text-align:center;}
+  .pdfstage{display:flex; justify-content:center; padding:18px; background:var(--sand); min-height:300px;}
+  #pdfcanvas{max-width:100%; height:auto; box-shadow:0 3px 14px rgba(30,30,30,.12); background:var(--white);}
+  .pdferr{padding:40px; color:var(--ink); font-size:14px; text-align:center;}
+
+  .stage-foot{display:flex; align-items:center; gap:14px; margin-top:22px; flex-wrap:wrap;}
+
+  /* Finder */
+  .finder{border:1px solid var(--ivory); border-radius:14px; background:var(--white); overflow:hidden; position:sticky; top:82px;}
+  .finder-head{width:100%; display:flex; align-items:center; gap:14px; text-align:left; background:none; border:none; padding:16px 18px;}
+  .finder-head:hover{background:var(--paper);}
+  .fh-txt{display:flex; flex-direction:column; flex:1;}
+  .fh-title{font-size:14.5px; font-weight:700;} .fh-sub{font-size:12.5px; color:var(--ink); margin-top:2px;}
+  .finder .chev{font-size:13px; color:var(--ink);}
+  .finder-body{display:none; padding:2px 18px 18px; border-top:1px solid var(--ivory);} .finder.open .finder-body{display:block;}
+  .cgroup{padding:14px 0; border-bottom:1px solid var(--ivory);} .cgroup:last-child{border-bottom:none;}
+  .clabel{display:block; font-size:12px; color:var(--ink); margin-bottom:10px;}
+  .chips{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{font-size:13px; color:var(--graphite); background:var(--white); border:1px solid var(--ivory); border-radius:999px; padding:7px 14px;}
+  .chip:hover{border-color:var(--blue); color:var(--blue);}
+  .chip.active{border-color:var(--blue); color:var(--blue); box-shadow:inset 0 0 0 1px var(--blue);}
+
+  /* Completion */
+  .done-wrap{max-width:660px; margin:64px auto; text-align:center; background:var(--white); border:1px solid var(--ivory); border-radius:14px; padding:48px 44px;}
+  .done-wrap .check{width:60px; height:60px; border-radius:50%; background:var(--ink); color:var(--white); display:grid; place-items:center; margin:0 auto 20px; font-size:28px;}
+  .done-wrap h2{font-size:28px; margin:0 0 12px;} .done-wrap p{color:var(--ink); margin:0 auto 24px; max-width:48ch; font-size:15.5px;}
+  .next-cards{display:grid; grid-template-columns:1fr 1fr; gap:14px; text-align:left; margin:26px 0 30px;}
+  .next-cards .nc{border:1px solid var(--ivory); border-radius:10px; padding:16px 18px;}
+  .next-cards .nc .h{font-weight:700; font-size:14.5px; margin:0 0 4px;} .next-cards .nc .d{font-size:13px; color:var(--ink); margin:0;}
+  .switch{margin-top:16px; font-size:13px; background:none; border:none; color:var(--blue); padding:0;} .switch:hover{text-decoration:underline;}
+
+  @media (max-width:1024px){
+    .journey{grid-template-columns:1fr; gap:26px;}
+    .rail,.finder{position:static;}
+    .cards{grid-template-columns:1fr;}
+    .next-cards{grid-template-columns:1fr;}
+    .landing h1{font-size:30px;}
+    .stage{padding:28px 24px;}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;}}
+  :focus-visible{outline:2px solid var(--blue); outline-offset:2px;}
+
+  /* ---- Draft 0.2 ---- */
+  .brand img.mark{height:30px; width:auto; display:block; padding-right:14px; border-right:1px solid var(--ivory);}
+  .top-switch{font-size:13px; color:var(--blue); font-weight:700; text-decoration:none; margin-left:12px;}
+  body[data-screen="gate"] .top-switch, body[data-screen="landing"] .top-switch{display:none;}
+
+  .journey{gap:32px;}
+  .stage{padding:34px 30px;}
+  .pdfstage{padding:10px;}
+  .cards{grid-template-columns:repeat(auto-fit,minmax(272px,1fr));}
+
+  .doc-tools{display:flex; gap:10px; align-items:center; margin:4px 0 12px; flex-wrap:wrap;}
+  .doc-tools .dt{background:var(--white); border:1px solid var(--ink); color:var(--graphite);
+    border-radius:8px; padding:8px 15px; font-size:13px; font-weight:700; text-decoration:none; display:inline-block;}
+  .doc-tools .dt.primary{border-color:var(--blue); color:var(--blue);}
+
+  .journey.expanded{grid-template-columns:minmax(0,1fr);}
+  .journey.expanded .rail, .journey.expanded .finder{display:none;}
+
+  .lock-note{margin:16px 0 0; padding:14px 17px; background:var(--paper); border:1px solid var(--ivory);
+    border-left:3px solid var(--orange); border-radius:10px; font-size:13.5px; color:var(--ink);}
+  .btn-primary:disabled{opacity:.45; cursor:not-allowed;}
+
+  .resume{display:flex; gap:13px; align-items:center; flex-wrap:wrap; margin:0 0 22px; padding:15px 18px;
+    background:var(--sand); border:1px solid var(--ivory); border-radius:12px; font-size:14px; color:var(--graphite);}
+  .resume .rtxt{flex:1 1 260px;}
+  .resume .ra{background:var(--blue); color:var(--white); border:none; border-radius:7px; padding:8px 16px; font-size:13px; font-weight:700;}
+  .resume .rb{background:transparent; border:1px solid var(--ink); color:var(--graphite); border-radius:7px;
+    padding:8px 16px; font-size:13px; font-weight:700;}
+
+
+
+  .seealso{margin:22px 0 0; padding:18px 20px; background:var(--paper);
+    border:1px solid var(--ivory); border-radius:12px;}
+  .seealso .salabel{font-size:11.5px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--ink); margin:0 0 12px;}
+  .seealso ul{list-style:none; margin:0; padding:0;}
+  .seealso li{margin:0 0 13px;}
+  .seealso li:last-child{margin-bottom:0;}
+  .seealso a{color:var(--blue); font-weight:700; font-size:14.5px; text-decoration:none; display:inline-block;}
+  .seealso a:hover{text-decoration:underline;}
+  .seealso a:focus-visible{outline:2px solid var(--blue); outline-offset:2px; border-radius:3px;}
+  .seealso .ext{font-weight:400;}
+  .seealso .sad{display:block; font-size:13.5px; color:var(--ink); margin:3px 0 0; line-height:1.5;}
+
+  .gate-grid{display:grid; grid-template-columns:1fr 1fr; gap:34px; align-items:start;}
+  .gate-about{padding:8px 0 0;}
+  .gate-about h2{font-size:27px; margin:0 0 16px; max-width:20ch;}
+  .gate-about p{font-size:15px; color:var(--ink); margin:0 0 14px; max-width:52ch; line-height:1.6;}
+  .gate-about .wl{font-size:12px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase;
+    color:var(--ink); margin:22px 0 10px; font-family:var(--sans);}
+  .gate-about ul{margin:0; padding:0 0 0 20px; font-size:14.5px; color:var(--ink); line-height:1.7;}
+  @media (max-width:900px){ .gate-grid{grid-template-columns:1fr; gap:26px;} }
+
+  .callout{background:var(--sand); border-left:3px solid var(--orange); border-radius:8px;
+    padding:15px 17px; margin:16px 0 0; font-size:13.5px; color:var(--graphite); line-height:1.55;}
+  .callout .cl{display:block; font-weight:700; margin:0 0 5px;}
+
+  .resgrid{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:4px 0 22px;}
+  @media (max-width:900px){ .resgrid{grid-template-columns:1fr;} }
+  .rescard{background:var(--paper); border:1px solid var(--ivory); border-radius:12px; padding:20px 22px;}
+  .rescard h4{font-size:16px; margin:0 0 10px;}
+  .rescard p{font-size:14px; color:var(--ink); margin:0 0 12px; line-height:1.55;}
+  .rescard .rsub{font-size:13px;}
+  .rescard .dt{background:var(--white); border:1px solid var(--blue); color:var(--blue);
+    border-radius:8px; padding:9px 15px; font-size:13.5px; font-weight:700; text-decoration:none; display:inline-block;}
+
+  .reslist{background:var(--white); border:1px solid var(--ivory); border-radius:12px; padding:20px 22px;}
+  .reslist .rlabel{font-size:11.5px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--ink); margin:0 0 14px;}
+  .reslist ul{list-style:none; margin:0; padding:0;}
+  .reslist li{margin:0 0 15px;} .reslist li:last-child{margin-bottom:0;}
+  .reslist a{color:var(--blue); font-weight:700; font-size:14.5px; text-decoration:none;}
+  .reslist a:hover{text-decoration:underline;}
+  .reslist a:focus-visible{outline:2px solid var(--blue); outline-offset:2px; border-radius:3px;}
+  .reslist .sad{display:block; font-size:13.5px; color:var(--ink); margin:3px 0 0; line-height:1.5;}
+
+  .accgroup{margin:2px 0 0;}
+  .acc{border:1px solid var(--ivory); border-radius:10px; margin:0 0 10px; overflow:hidden;}
+  .acc-head{width:100%; display:flex; justify-content:space-between; align-items:center; gap:14px;
+    background:var(--paper); border:none; padding:14px 17px; font-family:var(--sans); font-weight:700;
+    font-size:14.5px; color:var(--graphite); text-align:left; cursor:pointer;}
+  .acc-head .chev{font-size:17px; font-weight:700; color:var(--orange); flex:0 0 auto;}
+  .acc-body{padding:4px 17px 16px; font-size:14px; color:var(--ink); line-height:1.55; background:var(--white);}
+  .acc-body p{margin:0;}
+  .rescard.wide{grid-column:1 / -1;}
+
+  .certrow{margin:16px 0 0;}
+
+  .gate-form.stack{flex-direction:column; align-items:stretch;}
+  .gate-form.stack input{width:100%;}
+  .gate-hint{font-size:13px; color:var(--ink); margin:16px 0 0; line-height:1.55;}
+  .field-hint{font-size:12.5px; color:var(--ink); margin:-2px 0 2px; line-height:1.5;}
+  .gate-warn{color:var(--graphite); background:var(--sand); border-left:3px solid var(--orange);
+    border-radius:8px; padding:12px 15px; font-size:13px; margin:12px 0 0; display:none;}
+  .gate-warn.show{display:block;}
+
+  /* ---- Draft 0.9 ---- */
+  .metarow{display:flex; align-items:center; justify-content:space-between; gap:14px;
+    flex-wrap:wrap; margin:0 0 16px;}
+  .tmeta{display:inline-flex; align-items:center; gap:7px; font-size:12.5px; color:var(--ink);
+    background:var(--paper); border:1px solid var(--ivory); border-radius:999px; padding:5px 13px;}
+  .tmeta .td{width:5px; height:5px; border-radius:50%; background:var(--orange); flex:none;}
+  .sharehub{background:var(--white); border:1px solid var(--ink); color:var(--graphite);
+    border-radius:8px; padding:7px 14px; font-size:13px; font-weight:700; white-space:nowrap;}
+  .sharehub.copied{border-color:var(--blue); color:var(--blue);}
+  body[data-screen="gate"] .sharehub{display:none;}
+  .doc-tools .dt.share{border-color:var(--ink);}
+  .doc-tools .dt.share.copied{border-color:var(--blue); color:var(--blue);}
+  .steps li .smin{display:block; font-size:12px; color:var(--ink); margin-top:2px;}
+
+  .why{margin:36px 0 0; padding:0;}
+  .why h2{font-size:34px; line-height:1.1; margin:0 0 12px;} .why h2 em{font-style:italic;}
+  .why .wlede{font-size:16px; color:var(--ink); margin:0 0 20px; max-width:64ch; line-height:1.6;}
+  .whygrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(258px,1fr)); gap:18px;}
+  .whycard{background:var(--white); border:1px solid var(--ivory); border-radius:12px; padding:22px 24px;}
+  .whycard h4{font-size:15.5px; margin:0 0 8px;}
+  .whycard p{font-size:14px; color:var(--ink); margin:0; line-height:1.55;}
+
+  .oblig{background:var(--sand); border-left:3px solid var(--orange); border-radius:8px;
+    padding:17px 19px; margin:0 0 22px; font-size:14.5px; color:var(--graphite); line-height:1.6;}
+  .oblig .ol{display:block; font-family:var(--sans); font-weight:700; margin:0 0 6px;}
+
+  /* ---- Nursing hub, draft 0.1 ---- */
+
+  /* Product break in the rail. A label, not a target. Ivory rule only, no orange,
+     because orange is reserved for the viewed marker inside this component. */
+  .steps li.secthead{display:block; cursor:default; padding:16px 8px 6px; border-radius:0;
+    border-top:1px solid var(--ivory); margin-top:8px;}
+  .steps li.secthead:first-child{border-top:none; margin-top:0; padding-top:2px;}
+  .steps li.secthead:hover{background:transparent;}
+  .steps li.secthead span{font-size:11px; font-weight:700; letter-spacing:0.05em;
+    text-transform:uppercase; color:var(--ink);}
+
+  /* The bridge into the AI block. Sand rather than orange: it is a signpost, not an alert. */
+  .bridge{background:var(--sand); border-radius:12px; padding:16px 20px; margin:0 0 22px;}
+  .bridge .bl{display:block; font-size:11.5px; font-weight:700; letter-spacing:0.04em;
+    text-transform:uppercase; color:var(--ink); margin:0 0 6px;}
+  .bridge p{margin:0; font-size:14.5px; line-height:1.55; color:var(--graphite);}
+
+  /* Transcript, collapsed by default. */
+  .tr{border:1px solid var(--ivory); border-radius:12px; margin:18px 0 0; overflow:hidden; background:var(--white);}
+  .tr-head{width:100%; display:flex; justify-content:space-between; align-items:center; gap:14px;
+    background:var(--paper); border:none; padding:14px 17px; font-family:var(--sans); font-weight:700;
+    font-size:14.5px; color:var(--graphite); text-align:left; cursor:pointer;}
+  .tr-head .chev{font-size:17px; font-weight:700; color:var(--orange); flex:0 0 auto;}
+  .tr-body{padding:17px 20px 20px; border-top:1px solid var(--ivory); max-height:420px; overflow-y:auto;}
+  .tr-body p{margin:0 0 13px; font-size:14.5px; line-height:1.62; color:var(--graphite);}
+  .tr-body p:last-child{margin-bottom:0;}
+
+  /* Downloads and outbound links on the administrator steps. */
+  .assetgrp{margin:22px 0 0; padding:18px 20px; background:var(--paper);
+    border:1px solid var(--ivory); border-radius:12px;}
+  .assetgrp .alabel{font-size:11.5px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--ink); margin:0 0 12px;}
+  .alist{list-style:none; margin:0; padding:0;}
+  .alist li{margin:0 0 14px;}
+  .alist li:last-child{margin-bottom:0;}
+  .alist a{font-size:15px; font-weight:700; color:var(--blue); text-decoration:none;}
+  .alist a:hover{text-decoration:underline;}
+  .alist a:focus-visible{outline:2px solid var(--blue); outline-offset:2px; border-radius:3px;}
+  .alist .sad{display:block; font-size:13.5px; line-height:1.5; color:var(--ink); margin:3px 0 0;}
+
+  /* Master the Moment. Three silent clips, side by side on the content sources step. */
+  .mtm{margin:0 0 26px;}
+  .mtm .mtmlab{font-size:11.5px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--ink); margin:0 0 12px;}
+  .mtmgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+  @media (max-width:860px){ .mtmgrid{grid-template-columns:1fr;} }
+  .mtmv .vwrap{position:relative; padding-top:56.25%; border:1px solid var(--ivory);
+    border-radius:10px; overflow:hidden; background:var(--white);}
+  .mtmv .vwrap iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
+  .mtmv .mtmt{margin:8px 0 0; font-size:13.5px; font-weight:700; color:var(--graphite);}
+  .mtmnote{margin:12px 0 0; font-size:13.5px; color:var(--ink);}
+
+  .exq{border:1px solid var(--ivory); border-radius:12px; margin:4px 0 20px; overflow:hidden; background:var(--white);}
+  .exq-head{width:100%; display:flex; justify-content:space-between; align-items:center; gap:14px;
+    background:var(--paper); border:none; padding:14px 17px; font-family:var(--sans); font-weight:700;
+    font-size:14.5px; color:var(--graphite); text-align:left; cursor:pointer;}
+  .exq-head .chev{font-size:17px; font-weight:700; color:var(--orange); flex:0 0 auto;}
+  .exq-body{padding:17px; border-top:1px solid var(--ivory);}
+  .exq-item{margin:0 0 17px; padding:0 0 17px; border-bottom:1px solid var(--ivory);}
+  .exq-item:last-of-type{margin-bottom:0; padding-bottom:0; border-bottom:none;}
+  .exq-lab{font-size:11.5px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--ink); margin:0 0 8px;}
+  .exq-case{font-size:13.5px; color:var(--ink); margin:0 0 9px; line-height:1.55;}
+  .exq-q{font-size:14.5px; color:var(--graphite); margin:0; line-height:1.6; padding:13px 16px;
+    background:var(--paper); border:1px solid var(--ivory); border-left:3px solid var(--orange); border-radius:8px;}
+  .exq-foot{font-size:13.5px; color:var(--ink); margin:17px 0 0; line-height:1.55;}
+
+  .srcnote{font-size:13.5px; color:var(--ink); margin:0 0 4px; line-height:1.55;}
+  .srclist{columns:2; column-gap:28px; margin:13px 0 0; padding:0; list-style:none;}
+  .srclist li{font-size:13.5px; color:var(--ink); margin:0 0 7px; break-inside:avoid; line-height:1.45;}
+  .srcmore{font-size:13px; color:var(--ink); margin:13px 0 0;}
+  @media (max-width:700px){ .srclist{columns:1;} }
+
+  /* ---- Draft 0.10 ---- */
+
+  /* Rail. Dots rather than numbers, because numbers read as a required sequence.
+     A viewed step fills its dot and shifts its background, which is quieter than a
+     completion tick and truer to what the record actually knows. */
+  .steps li .mk{flex:none; width:16px; height:16px; margin-top:4px; display:grid; place-items:center;}
+  .steps li .dotsvg circle.ring{fill:var(--white); stroke:var(--ivory); stroke-width:1.5;}
+  .steps li.active .dotsvg circle.ring{stroke:var(--orange); stroke-width:2;}
+  .steps li.done .dotsvg circle.ring{fill:var(--orange); stroke:var(--orange);}
+  .steps li.done{background:var(--paper);}
+  .steps li.done.active{background:var(--sand);}
+  .vchk{display:inline-flex; align-items:center; gap:5px;}
+  .vchk svg{flex:none;}
+
+  /* Wrap up in the rail: a terminal entry, set apart and unavailable until every
+     content step has been viewed. */
+  .steps li.term{margin-top:10px; padding-top:16px; border-top:1px solid var(--ivory);
+    border-radius:0 0 8px 8px;}
+  .steps li.term .stxt{font-weight:700;}
+  .steps li.term.islocked{opacity:.45; cursor:not-allowed;}
+  .steps li.term.islocked:hover{background:none;}
+  .steps li.term .dotsvg rect{fill:var(--white); stroke:var(--ivory); stroke-width:1.5;}
+  .steps li.term.ready .dotsvg rect{fill:var(--orange); stroke:var(--orange);}
+  .steps li.term.active .dotsvg rect{stroke:var(--orange); stroke-width:2;}
+
+  .railtip{margin:10px 0 0; padding:12px 14px; background:var(--paper);
+    border:1px solid var(--ivory); border-left:3px solid var(--orange); border-radius:9px;
+    font-size:12.5px; color:var(--graphite); line-height:1.5;
+    opacity:0; visibility:hidden; transform:translateY(-3px); height:0; padding-top:0; padding-bottom:0;
+    transition:opacity .14s, transform .14s, visibility .14s;}
+  .steps li.term.islocked:hover + .railtip,
+  .steps li.term.islocked:focus + .railtip,
+  .railtip.show{opacity:1; visibility:visible; transform:translateY(0); height:auto;
+    padding-top:12px; padding-bottom:12px;}
+  .railtip .rt{display:block; font-weight:700; margin:0 0 6px;}
+  .railtip ul{list-style:none; margin:0; padding:0;}
+  .railtip li{margin:0 0 3px; font-size:12.5px;}
+  .railtip .anyorder{margin:8px 0 0; color:var(--ink); font-size:12px;}
+
+  /* ---- wrap up stage ---- */
+  .wrapintro{font-size:16px; color:var(--ink); margin:0 0 6px; max-width:68ch; line-height:1.6;}
+  .asof{font-size:12.5px; color:var(--ink); margin:0 0 26px;}
+  .newsgrp{margin:0 0 28px;}
+  .newsgrp:last-of-type{margin-bottom:0;}
+  .newsgrp h4{font-size:12px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase;
+    color:var(--ink); margin:0 0 12px; padding-bottom:8px; border-bottom:1px solid var(--ivory);}
+  .newsitem{margin:0 0 16px;}
+  .newsitem:last-child{margin-bottom:0;}
+  .newsitem .nh{font-family:var(--sans); font-weight:700; font-size:15px; margin:0 0 4px; color:var(--graphite);}
+  .newsitem .nd{font-size:14.5px; color:var(--ink); margin:0; line-height:1.55; max-width:70ch;}
+
+  /* ---- gate, two blocks on the left ---- */
+  .gate-about h2.gh{font-size:40px; line-height:1.08; margin:0 0 16px; max-width:22ch;}
+  .gate-about .one{font-size:17px; color:var(--ink); margin:0; max-width:48ch; line-height:1.6;}
+  .gate-why{margin:34px 0 0;}
+  .gate-why h2{font-size:34px; line-height:1.1; margin:0 0 12px;}
+  .gate-why h2 em{font-style:italic;}
+  .gate-why p{font-size:15px; color:var(--ink); margin:0; max-width:50ch; line-height:1.6;}
+
+  /* ---- Brand layering device, landing screen ----
+     Portrait rectangles at 3 by 4, one image per rectangle, offset in
+     sequence, with a single Vital Orange rectangle for brand recognizability.
+     Static and decorative: no animation, and hidden from assistive technology,
+     since repetitive moving patterns can affect vestibular sensitivity. */
+  .ltop{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:52px; align-items:center;}
+  .lleft .cards{margin:34px 0 0;}
+  .layers{position:relative; width:370px; height:453px;}
+  .layers .lyr{position:absolute; width:250px; height:333px; border-radius:3px;
+    overflow:hidden; box-shadow:0 10px 30px rgba(30,30,30,0.13);}
+  .layers .lyr img{width:100%; height:100%; object-fit:cover; display:block;}
+  .layers .lyr .orng{display:block; width:100%; height:100%; background:var(--orange);}
+  .layers .lyr-0{left:120px; top:0;     z-index:1;}
+  .layers .lyr-1{left:96px;  top:24px;  z-index:2;}
+  .layers .lyr-2{left:72px;  top:48px;  z-index:3;}
+  .layers .lyr-3{left:48px;  top:72px;  z-index:4;}
+  .layers .lyr-4{left:24px;  top:96px;  z-index:5;}
+  .layers .lyr-5{left:0;     top:120px; z-index:6;}
+  @media (max-width:1023px){
+    .ltop{grid-template-columns:1fr; gap:0;}
+    .layers{display:none;}
+    .lleft .cards{margin-top:30px;}
+  }
+</style>
+</head>
+<body data-screen="gate">
+  <div class="testbar" id="testbar">Testing environment. Do not enter a real email address. Use a placeholder such as fakename@email.com.</div>
+  <header class="topbar">
+    <div class="inner">
+      <div class="brand">
+        <img class="mark" src="assets/elsevier-logo-graphite.svg" alt="Elsevier" />
+        <div class="prod"><div class="n">Onboarding and Enablement Hub</div><div class="s">Customer Hub</div></div>
+      </div>
+      <span class="role-chip" id="roleChip">·</span>
+      <a class="top-switch" href="#" data-action="restart">Switch path</a>
+      <span class="spacer"></span>
+      <button class="sharehub" data-action="share-hub">Share this hub</button>
+      <span id="lrs-badge" class="lrs-badge">
+        <span class="lrs-dot"></span><span class="lrs-status">LRS idle</span>
+        <span class="lrs-email"></span><span class="lrs-count">0 sent</span>
+      </span>
+      <a class="tlink" href="https://www.elsevier.support/clinicalkeyai" target="_blank" rel="noopener">Need help? Support Center</a>
+    </div>
+  </header>
+  <main id="app"></main>
+  <footer class="vstamp"><div class="vinner">Nursing hub · Draft 0.1 · 22 September 2026 · Internal review copy, not for customer distribution</div></footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* Single switch for everything that should not be seen outside testing.
+     Set to false for a customer-facing or executive demo build: it hides the
+     testing banner and the learning-record badge. Nothing else changes. */
+  var TESTING = false;
+
+  /* Transcripts, converted from the supplied WebVTT files. Requested independently by
+     Laura, Andrew and Matt Wilcox. The two Master the Moment videos are silent with
+     on-screen text and therefore need no transcript for parity. */
+  var TRANSCRIPT = {
+    cknWelcome: [
+    "When faced with complex questions on a patient's condition or the need for how-to answers from evidence-based literature, there's a solution nurses and allied health professionals can turn to and trust. Welcome to ClinicalKey for Nursing. This short video will demonstrate how nurses and allied health professionals can take advantage of the wealth of clinical knowledge and dynamic features available on ClinicalKey for Nursing to empower them in their role and aid their daily activities. In the minutes ahead, we will highlight ways to access the product's broad range of content, outline the steps to earn CE credits, and showcase best practices for creating and using a personal account.",
+    "Through ClinicalKey for Nursing, nurses and allied health professionals have a single location to find market-leading content across multiple specialties. The product includes over 60 top journals, 85 full textbooks, and hundreds of practice guidelines, patient education handouts, procedural videos, and more. These offerings cover more than 20 specialties, including critical care, emergency medicine, internal medicine, and pediatrics. Some examples include \"Clinical Companion to Medical Surgical Nursing,\" \"Saunders Nursing Drug Handbook,\" \"American Journal of Infection Control,\" \"Heart &amp; Lung,\" \"Journal of Pediatric Health Care,\" and \"Burn's Pediatric Primary Care.\" To locate content, users can turn to the browse and search functions.",
+    "By clicking a category under the browse menu, users are automatically directed to its full collection. On the homepage, the content type to browse is selected here. For example, books. The browse books page displays a list of available publications, which can be filtered by title or alphabetically.",
+    "Inside each book, a digital table of contents provides quick access to chapters. On all other pages of ClinicalKey for Nursing, the browse option is at the top of the screen here. From the browse drop-down menu, several additional content types can be chosen. For example, journals.",
+    "On the browse journals page, navigate to a journal title the same way as for books. Once a title has been chosen, the journal's homepage lists volumes and issues. Note the Search This Journal feature below the title. This enables users to parse content and discover information on a specific topic.",
+    "For point-of-care materials, return to the browse menu and select Clinical Overviews. These condition summaries offer bullet-pointed, peer-reviewed recommendations toward differential diagnoses, causes and risk factors, treatment options and drug therapies, and much more. Content can also be found on ClinicalKey for Nursing through a standard search. Notice that the filter to the left of the search bar can easily help save time by limiting results to a certain content type.",
+    "For some topics, a disease overview preview box will display on the right. Similar to clinical overviews, disease overviews provide clear recommendations on a patient's condition. They also include a section on nursing management, which offers more information on patient goals, intervention, and teaching. Continuing education credits can be obtained via ClinicalKey for Nursing when reviewing clinical updates.",
+    "To do so, nurses will need to perform the following steps. Visit a relevant clinical update. This can easily be done by, once again, using the browse menu and choosing the clinical updates category. After selecting a clinical update, click the Go to Test link on the right side to be redirected to Elsevier's learning management system.",
+    "Those who have not previously earned CE credits through ClinicalKey for Nursing should first select the self-registration link to create a user profile. Once logged in, the list of e-learning lessons appears under the Current Assignments menu. Find the clinical update of choice by scrolling the lesson list or performing a quick search, inputting the title and choosing the filter Contains. The lesson now appears with the option Take the Test.",
+    "Completing the set of multiple-choice questions allows nurses to earn a CE certificate. Creating a personal account opens up new user features on ClinicalKey for Nursing, including the ability to save content and export images. To set up a personal user profile, click Register in the upper right corner of the screen. Note that when completing the form, an organizational email address should be entered for the username.",
+    "Once registered, users can now take advantage of valuable saving and exporting features when reviewing content in ClinicalKey for Nursing. Personalization features can be accessed by clicking the drop-down under the user's name, which now appears in the upper right corner instead of Register. To demonstrate these features, we'll use an image in a journal article as an example. When encountering an image or figure of interest, users can click on the star to save it.",
+    "They also can select the screen icon to add it to a presentation, which can be exported to PowerPoint. Now that this image has been saved, it will appear in Saved Content. From here, users can add tags to organize their listings. They also can add multiple images to a presentation.",
+    "Another important benefit of registering is that it enables users to activate their remote capabilities so they can access ClinicalKey for Nursing anywhere, anytime. For details about setting up remote access or when faced with a product question or issue, look to Elsevier's Support Center for assistance. A link can be found at the bottom of any page. The Support Center is where nurses and allied health professionals will find FAQs for a variety of product questions and channels for contacting our customer service via phone, chat, and email.",
+    "The depth and breadth of ClinicalKey for Nursing doesn't end here. To experience all the value the product has to offer, visit www.clinicalkey.com/nursing today."
+  ],
+    aiIntro: [
+    "Nurses make important decisions in environments where priorities shift quickly, patient needs are complex, and time is always in short supply. In those moments, access to trusted information can make a meaningful difference. ClinicalKey for Nursing AI, now part of ClinicalKey for Nursing, was developed to help meet that need, giving nurses a faster, more intuitive way to get evidence-based answers and guidance for any question they may face. ClinicalKey for Nursing AI is a generative AI solution from Elsevier, built on trusted clinical sources, including top journals, reference texts, step-by-step procedural content, and point-of-care content.",
+    "It was designed with nursing use cases in mind to help users move more efficiently from question to answer while maintaining visibility into the evidence behind each response. Each experience will begin with a query in the search bar or by selecting a previously asked question from the left-hand side of the screen. The outcome is fast answers grounded in trusted nursing evidence with sources nurses can verify. Users can ask questions in natural language and still receive concise responses that help them quickly understand key considerations, get actionable information, and explore for deeper review when necessary.",
+    "Beyond efficiency and quality, ClinicalKey for Nursing AI also provides transparency. Responses include citations with direct accessible links out to the referenced content so users can see where information comes from, review supporting source material, and continue into the underlying content when more detail is needed. This helps support confidence in the answer while also making it easier to explore the evidence more fully. ClinicalKey for Nursing AI also includes a language translation toggle to support multilingual use.",
+    "When a user enters a question in a supported language, the response can be viewed in that language through the translation option, creating a smoother experience for users who prefer to engage with information in their local language. The follow-up questions allow nurses to clarify or further narrow the original query. Nurses can enter their own follow-up question or choose from suggested questions generated by ClinicalKey for Nursing AI. They can also save important responses, remove content that is no longer needed, search past questions, and use the share function to create a link to a query.",
+    "To learn more about ClinicalKey for Nursing AI and Elsevier's vision for the future of clinical decision support, visit elsevier.com. Thank you for taking the time to watch this video."
+  ]
+  };
+
+  /* =========================================================================
+     CONTENT LAYER, ClinicalKey for Nursing and ClinicalKey Nursing AI
+
+     Two paths, eleven content steps each, one shared wrap up. Each path runs
+     ClinicalKey for Nursing steps first, then a break, then ClinicalKey Nursing
+     AI steps. Structure per the path and step map of 22 September. Sequence
+     rather than fork, because the AI layer assumes the learner can already find
+     their way around the base platform, and because the AI administrator
+     inventory is too thin to stand as its own branch.
+
+     Every step below is backed by an asset that already exists. Nothing here is
+     newly written product copy.
+
+     The AI block is contiguous so an institution without the AI bundle can be
+     served a build with that block removed, which is the per instance approach
+     already agreed in place of entitlement checking.
+     ========================================================================= */
+
+  var P_CKN = "ClinicalKey for Nursing";
+  var P_AI  = "ClinicalKey Nursing AI";
+
+  /* Vimeo. Every video is unlisted, so the hash is required on the player URL.
+     texttrack can be appended here later for the language toggle. */
+  function vimeo(id, h){
+    return "https://player.vimeo.com/video/"+id+"?h="+h+"&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479";
+  }
+  var VID = {
+    cknWelcome:  vimeo("1229297245","f419dc046a"),  /* 6:33, narrated, transcript supplied */
+    aiIntro:     vimeo("1222128849","26a5ffa46c"),  /* 2:42, narrated, transcript supplied */
+    mtmBooks:    vimeo("1229294307","c0bfabd8a9"),  /* silent, on-screen text */
+    mtmSkills:   vimeo("1229294229","563b3a6efa"),
+    mtmJournals: vimeo("1229294104","aecc7248cc")
+  };
+
+  /* Documents committed under /docs. The inline viewer needs a direct asset URL,
+     and a Frontify share page is not one.
+     TO DO: replace the download links with media.ffycdn.net direct URLs once the
+     nursing assets are located in Frontify, which also reduces the copyright
+     surface of this repository. Until then download and inline read the same file. */
+  var DOC = {
+    cknGs:     "docs/ckn-get-started.pdf",
+    cknRemote: "docs/ckn-remote-access.pdf",
+    cknRegId:  "docs/ckn-registration-id.pdf",
+    cknAcct:   "docs/ckn-personal-account.pdf",
+    cknApp:    "docs/ckn-app-guide.pdf",
+    cknCe:     "docs/ckn-ce-credit.pdf",
+    cknCalc:   "docs/ckn-calculators.pdf",
+    aiGs:      "docs/ckn-ai-get-started.pdf",
+    aiFaq:     "docs/ckn-ai-faq.pdf",
+    aiPrompt:  "docs/ckn-ai-prompt-tips.pdf",
+    aiTips:    "docs/ckn-ai-tips-guide.pdf",
+    aiShare:   "docs/ckn-ai-conversation-sharing.pdf",
+    aiLink:    "docs/ckn-ai-link-resolver.pdf"
+  };
+  var DL = {
+    crosswalk: "docs/ckn-ebnm-crosswalk.xlsx",
+    mclAcute:  "docs/ckn-master-content-acute.xlsx",
+    mclPost:   "docs/ckn-master-content-post-acute.xls"
+  };
+  var SHARE = DOC;
+
+  /* Verified addresses. Anything not verified is marked pending rather than guessed. */
+  var SUPPORT_CKN = "https://www.elsevier.support/cknursing";
+  var SUPPORT_AI  = "https://www.elsevier.support/clinicalkeyai/contact";
+  var CALL_URL    = "https://elsevierresources.com/customer-support/";
+  var CKN_HOME    = "https://www.clinicalkey.com/nursing";
+  var RC_CKN      = "https://elsevierresources.com/clinicalkey-for-nursing/";
+  var RC_AI       = "https://elsevierresources.com/clinicalkey-nursing-ai/";
+
+  /* Not yet supplied. Rendered as a pending block rather than a broken link. */
+  var ADOPTION_KIT_URL = "";   /* Nursing AI adoption kit, deep link */
+  var ACADEMY_URL      = "";   /* Gen AI Academy for Nursing, enrolment */
+
+  /* Canonical customer-facing address of this experience. Per step share links are
+     composed from this constant, because script inside the iframe cannot read the
+     parent URL.
+     TO DO: set once the hosting decision is made. */
+  var SHARE_BASE = "https://elsevierresources.com/PENDING-NURSING-HUB-PATH/";
+
+  /* Professional obligation. Nurse path only. An administrator is deploying the
+     product rather than carrying a duty of care while using it, so the register
+     does not apply, per the pattern set on the ClinicalKey AI hub. */
+  var OBLIGATION = {
+    nurse: "You are accountable for the care you give, and the tool said so has never been a defence. Knowing what ClinicalKey for Nursing and Nursing AI can each do, and knowing where their guidance stops, is what lets you use them and still own the judgement. This path is the short version of that."
+  };
+
+  /* Example queries, quoted from the ClinicalKey for Nursing AI prompt tips guide
+     and tips guide. Approved copy, unlike the clinician set on the other hub.
+     Shown above the embedded guide on the step that teaches asking, per 26 August. */
+  var EXQ = {
+    nurse: {
+      label: "See example queries",
+      items: [
+        {lab:"Give details",
+         c:"Ask a clinical question with patient context, nursing role and care setting.",
+         q:"How should I monitor for pain in an older adult post-op hip fracture patient with significant confusion, hearing loss, and mild dementia at baseline?"},
+        {lab:"Ask for guidance, not decisions",
+         c:"Ask for nursing assessments, interventions, monitoring and escalation cues.",
+         q:"My 55-year-old patient with a-fib and CHF has sudden facial droop and unilateral weakness. What interventions should be done immediately?"},
+        {lab:"Ask as you would a colleague",
+         c:"Phrase it the way you would ask a senior nurse, preceptor, educator or clinical specialist.",
+         q:"I am caring for a patient with new confusion and possible sepsis and have orders for blood cultures. How do I determine the best sites to use to draw the cultures?"},
+        {lab:"Keep to a single topic",
+         c:"Limit the query to one topic, then follow up for depth rather than loading everything into one question.",
+         q:"What should I prepare to assess for a patient transferring from the ED with a new diagnosis of pulmonary embolism just started on heparin?"}
+      ],
+      foot: "ClinicalKey for Nursing AI also offers sample queries by category on the home page, and a Tips link above the question field."
+    }
+  };
+
+  /* Content sources, from the ClinicalKey for Nursing AI get started guide.
+     Editions are carried here because the source guide carries them, but the
+     master content lists on the administrator path remain authoritative. */
+  var SOURCE_CATS = [
+    {t:"Point of care content",
+     d:"Continuously maintained summaries written for use during a patient encounter. Most responses draw on these first.",
+     l:["Clinical Overviews","Drug Monographs","Drug Class Overviews"]},
+    {t:"Procedural guidance",
+     d:"Step by step procedural guidance across specialties, from Elsevier Clinical Skills.",
+     l:[]},
+    {t:"Reference books",
+     d:"Established clinical and nursing texts. A selection of the titles included:",
+     l:["AACN Procedure Manual for Progressive and Critical Care",
+        "Saunders Nursing Drug Handbook",
+        "Nursing Care Plans",
+        "Sheehy\u2019s Manual of Emergency Care",
+        "Goldman-Cecil Medicine"]},
+    {t:"Journals",
+     d:"Full text articles and copyright cleared abstracts from Elsevier and selected non-Elsevier publishers. A selection of the titles included:",
+     l:["Nursing Clinics of North America",
+        "Critical Care Nursing Clinics of North America",
+        "Infectious Disease Clinics",
+        "The Lancet Healthy Longevity"]},
+    {t:"Government publications and guidelines",
+     d:"Selected United States government publications, from the FDA and CDC, alongside guidelines from leading medical and professional organizations.",
+     l:[]}
+  ];
+
+  /* News and notes, served at the wrap up rather than up front so the path stays
+     about getting going. Every item is sourced from the two resource centres. */
+  var NEWS_ASOF = "Current as of September 2026";
+  var NEWS = [
+    {t:"ClinicalKey Nursing AI", i:[
+      {h:"Now part of ClinicalKey for Nursing",
+       d:"Nursing AI is delivered as part of the ClinicalKey for Nursing subscription rather than as a separate product, which is why both sit in one path here."},
+      {h:"Conversation Sharing",
+       d:"Users can share a secure, read-only link to a conversation. It is enabled by default, and an institution can opt out through the support centre. Recipients must sign in to see the full conversation."},
+      {h:"Gen AI Academy for Nursing",
+       d:"A free, self-paced course built for nurses, five modules and eighteen lessons, available from the ClinicalKey Nursing AI resource centre."}
+    ]},
+    {t:"ClinicalKey for Nursing", i:[
+      {h:"Evidence based nursing monographs retired",
+       d:"Monographs were removed at the end of May. Clinical Overviews are now the current, actively maintained source. A crosswalk mapping every retired monograph to its replacement is on the administrator path."},
+      {h:"KBART reports now available",
+       d:"Package level reports structured to the KBART specification, updated daily, alongside the existing durable URL reports which are updated monthly."}
+    ]}
+  ];
+
+  /* ---------- Body copy ---------- */
+
+  var bodyCknWelcome =
+    '<p>A tour of what ClinicalKey for Nursing holds, how to get to it, and how the search behaves. It sets the context for everything that follows, so the steps after this one land against a picture of the whole product rather than in isolation.</p>';
+
+  var bodyCknGs =
+    '<p>ClinicalKey for Nursing is a clinical search engine built around nursing questions. This step covers finding your way around the home page and getting a useful answer out of a search.</p>'+
+    '<h4>How to complete the key actions</h4><ul>'+
+    '<li>Search from the main bar, or browse the content cards below it when you would rather look by content type than by keyword.</li>'+
+    '<li>Use the auto-suggest. Start typing and it will offer recognised clinical terms, which usually beats guessing at phrasing.</li>'+
+    '<li>Read the Clinical Overview in the right hand panel. On most searches it answers the question before you open a single result.</li>'+
+    '<li>Filter by source type, specialty or date, and sort by relevance or date depending on what you need.</li>'+
+    '</ul>';
+
+  var bodyCknAccess =
+    '<p>Two separate things have to be true before you can use ClinicalKey for Nursing away from your institution: you need a personal account, and that account needs remote access switched on. This step covers both, plus registration IDs if your administrator has issued you one.</p>'+
+    '<h4>How to complete the key actions</h4><ul>'+
+    '<li>Register with your organizational email address. Personal addresses such as Gmail, Yahoo or Hotmail are not accepted, because the address is what ties you to your institution.</li>'+
+    '<li>Apply for remote access from the login page, then open the activation email and click the link within 60 minutes. After that the link expires and you start again.</li>'+
+    '<li>Remote access lapses after 30 days unless you sign in again on your institution\u2019s network or VPN. Signing in on site occasionally is what keeps it alive.</li>'+
+    '<li>If your site administrator gave you a registration ID and password, redeem it to associate your account with the institution. Adding an association does not remove any you already have.</li>'+
+    '</ul>';
+
+  var bodyCknApp =
+    '<p>The app puts ClinicalKey for Nursing on the device already in your pocket. Same content, same entitlements, built for use at the bedside rather than at a workstation.</p>'+
+    '<h4>How to complete the key actions</h4><ul>'+
+    '<li>Install from the App Store or Google Play, then choose ClinicalKey for Nursing and the edition your institution licenses.</li>'+
+    '<li>Authenticate either through your institution or over your institution\u2019s network. Network access expires after 30 days off site.</li>'+
+    '<li>Sign in with your personal account to unlock favourites, sharing and CE, which do not appear otherwise.</li>'+
+    '<li>Save an item with the heart icon and find it later under Settings, My Favorites.</li>'+
+    '</ul>';
+
+  var bodyCknCalc =
+    '<p>More than 600 calculators across 15 categories, from drug calculations to critical care scores. Worth knowing where they are before you need one in a hurry.</p>'+
+    '<h4>How to complete the key actions</h4><ul>'+
+    '<li>Reach them from the Calculators card on the home page, or search for one directly by name.</li>'+
+    '<li>Browse by category when you are not sure what the tool is called. Categories run from body metrics and cardiology through to unit conversion.</li>'+
+    '<li>Read what sits below the result. Interpretation, coding information and references are there, and the number on its own is rarely the whole answer.</li>'+
+    '</ul>';
+
+  var bodyCknCe =
+    '<p>Your ClinicalKey for Nursing subscription includes the Continuing Education programme. Contact hours are earned through Clinical Updates, and the test and certificate run on Elsevier Performance Manager rather than inside ClinicalKey itself.</p>'+
+    '<h4>How to complete the key actions</h4><ul>'+
+    '<li>Find a Clinical Update by searching, or browse the alphabetical list. Each one shows its contact hours and pharmacology credits before you start.</li>'+
+    '<li>Read the update, then select Go to test. This opens Elsevier Performance Manager in a new window, which needs its own registration the first time.</li>'+
+    '<li>Pass at 80 percent or higher to earn the certificate.</li>'+
+    '<li>Add your licensing and demographic details to finalise the award, and find past certificates under Transcript and Credits Earned.</li>'+
+    '</ul>';
+
+  var bodyAiIntro =
+    '<p>What the AI layer is, what it draws on, and how it differs from a general purpose AI tool. Two and a half minutes, and it sets up everything that follows.</p>';
+
+  var bodyAiGs =
+    '<p>ClinicalKey for Nursing AI answers a clinical question in natural language and cites every claim back to the source. This step orients you to the landing page and to reading a response properly.</p>'+
+    '<h4>How to complete the key actions</h4><ul>'+
+    '<li>Ask a question the way you would say it out loud. Medical abbreviations are understood, and conversational phrasing works better than keywords.</li>'+
+    '<li>Check the citations. Show Details on any cited source opens the exact excerpt the answer was built from, which is how you verify rather than trust.</li>'+
+    '<li>Use the suggested follow-up questions. They are often a better next question than the one you were about to type.</li>'+
+    '<li>Save, revisit or share recent questions, and use the privacy panel to see what is and is not retained.</li>'+
+    '<li>Do not enter protected health information, unless your organization has an active business associate agreement in place. Ask your administrator if you are not sure.</li>'+
+    '</ul>';
+
+  var bodyAiPrompt =
+    '<p>The difference between a vague answer and a useful one is almost always the question. These are the phrasing habits that work, taken from the prompt tips guide.</p>'+
+    '<h4>How to complete the key actions</h4><ul>'+
+    '<li>Give context. Patient situation, your role and the care setting, rather than a bare topic.</li>'+
+    '<li>Ask for guidance, not a decision. Assessments, interventions, monitoring and escalation cues are in scope; whether to call a rapid response is not.</li>'+
+    '<li>Skip persona prompts. Act as an expert ICU nurse adds nothing, because the tool is already built for clinical questions.</li>'+
+    '<li>Keep one topic per question and follow up for depth. Stacking variables makes it harder to return the right evidence for each one.</li>'+
+    '<li>Do not use it as a calculator, a scoring or staging tool, for dose conversions or to confirm IV compatibility. Use the ClinicalKey for Nursing calculators for those.</li>'+
+    '</ul>';
+
+  var bodyAiSources =
+    '<p>Responses are built from a curated, evidence-based library rather than the open web. Knowing roughly what is in that library tells you how far to trust an answer, and when to go and read the source instead.</p>';
+
+  var bodyAiFaq =
+    '<p>The questions nurses ask most often, grouped into data privacy and security, user interface, content, technology, and safety and fairness.</p>'+
+    '<h4>What this covers</h4><ul>'+
+    '<li>Privacy: what happens to a query, and when the restriction on entering protected health information does and does not apply.</li>'+
+    '<li>Grounding: responses are built through retrieval augmented generation from a curated library, which is what keeps them anchored to evidence rather than to model memory.</li>'+
+    '<li>Transparency: an AI generated interpretation of your query is shown back to you, and every response carries linked citations with real-time evidence tracking.</li>'+
+    '<li>Limits: no clinical calculations, no scoring or staging, no dose conversions, no IV compatibility, no medication cost or insurance coverage.</li>'+
+    '<li>Quality: a clinician-in-the-loop evaluation process reviews response quality on a recurring basis, using credentialed, currently or recently practising clinicians.</li>'+
+    '</ul>';
+
+  /* ---------- Administrator body copy ---------- */
+
+  var bodyImplOverview =
+    '<p>What you need to configure, in the order most institutions do it, plus the one content change that will generate questions from your nurses this year.</p>'+
+    '<h4>How to complete the key actions</h4><ul>'+
+    '<li>Work out which of the configuration steps on this path actually apply to you. Authentication and usage reporting apply to everyone; link resolvers, MARC records and KBART matter mainly where there is a library.</li>'+
+    '<li>Note the monograph change. Evidence based nursing monographs were removed from ClinicalKey for Nursing at the end of May, and Clinical Overviews are now the current source.</li>'+
+    '<li>Download the crosswalk below if your nurses had favourite monographs. It maps each retired title to the Clinical Update or Clinical Overview that replaces it.</li>'+
+    '<li>Check any internal links, guides or LibGuides that pointed at monographs, since those will now be dead.</li>'+
+    '</ul>';
+
+  var bodyAdminAccess =
+    '<p>Three things sit between your nurses and the content: how they authenticate, whether they can reach it off site, and whether your network lets the traffic through.</p>'+
+    '<h4>How to complete the key actions</h4><ul>'+
+    '<li>Understand the two routes your nurses will take, institutional email and registration ID, so you can answer when one of them fails.</li>'+
+    '<li>Issue registration IDs where nurses need to associate a personal account with the institution. They come to you for these.</li>'+
+    '<li>Safelist the Elsevier domains with your IT team. Without this, access to Clinical Pharmacology powered by ClinicalKey can fail and your usage analytics will undercount.</li>'+
+    '<li>Set expectations on the 30 day remote access window, because it is the single most common support call.</li>'+
+    '</ul>';
+
+  var bodyAdminUsage =
+    '<p>Elsevier Product Insights for Customers, E-PIC, is the self-serve portal for usage. This is where the numbers come from when someone asks whether the subscription is being used.</p>'+
+    '<h4>How to complete the key actions</h4><ul>'+
+    '<li>Get an E-PIC account. If you have never used it, email customer support and they will set you up. You need a registered personal account on ClinicalKey or ClinicalKey for Nursing first.</li>'+
+    '<li>Read the monthly data and build the views you will actually reuse, rather than rebuilding a report every quarter.</li>'+
+    '<li>Understand COUNTER if you report to a library. It is the standard your numbers will be compared against.</li>'+
+    '<li>Watch the interaction with safelisting. Blocked domains suppress usage, and suppressed usage looks like low adoption.</li>'+
+    '</ul>';
+
+  var bodyAdminLink =
+    '<p>If your institution runs a link resolver, ClinicalKey for Nursing can hand off to it from journal articles and article search results, so your nurses land on your holdings rather than a paywall.</p>'+
+    '<h4>How to complete the key actions</h4><ul>'+
+    '<li>Raise a request with technical support through the support centre. This is not self-serve.</li>'+
+    '<li>Have four things ready: the URL for the link, the text or URL for the graphic, the graphic in GIF format, and confirmation that it fits within 250 by 250 pixels for the article abstract page.</li>'+
+    '<li>Add ClinicalKey for Nursing journals to PubMed LinkOut while you are at it, through the LinkOut Submission Utility. It is tedious, one letter of the alphabet at a time, but it is a one-off.</li>'+
+    '</ul>';
+
+  var bodyAdminDiscovery =
+    '<p>Getting the content to surface in the places your nurses already look: the library catalogue, the knowledge base, your intranet, and a poster on a ward wall.</p>'+
+    '<h4>How to complete the key actions</h4><ul>'+
+    '<li>Load the MARC 21 records into your catalogue. They are free for every book and journal in your subscription, and they save entering titles by hand.</li>'+
+    '<li>Choose between the two report types deliberately. Durable URL reports list everything in an edition regardless of what you licensed, updated monthly. KBART reports cover only what is in your package, updated daily.</li>'+
+    '<li>Use durable URLs to deep link specific titles from your own pages, for example linking a nursing care planning text from a department page.</li>'+
+    '<li>Print and place the QR codes where the books and journals are actually needed.</li>'+
+    '</ul>';
+
+  var bodyAdminBranding =
+    '<p>Your institution\u2019s banner can sit on the ClinicalKey for Nursing home page and navigation area, which makes it read as a resource your organization provides rather than an outside website.</p>'+
+    '<h4>How to complete the key actions</h4><ul>'+
+    '<li>Produce two images: a home page banner at 830 by 120 pixels and a navigation banner at 238 by 46 pixels.</li>'+
+    '<li>Host them yourself on a publicly available domain. Elsevier cannot host the image and will need the URL.</li>'+
+    '<li>Decide where the banner should link, usually your intranet or library home page, and supply that link with the request.</li>'+
+    '<li>Raise the request through technical support at the support centre.</li>'+
+    '</ul>';
+
+  var bodyAdminContent =
+    '<p>What your subscription actually contains, at title level. This is what you need when a nurse asks whether a specific text is included, or when a librarian asks you to justify the spend.</p>'+
+    '<h4>How to complete the key actions</h4><ul>'+
+    '<li>Download the master content list that matches your package, Acute or Post-Acute. Each one breaks down into books, journals, Clinical Overviews, drug monographs, Clinical Updates, procedure videos, labs and scales.</li>'+
+    '<li>Use the Content Updates tab to see what has changed since the last release, rather than diffing the whole list.</li>'+
+    '<li>Note that procedure videos are included but are aimed primarily at physician and specialist reference, so set expectations accordingly with nursing staff.</li>'+
+    '<li>Keep the KBART report for the package-level view of what you are licensed for, which is the narrower and more current picture.</li>'+
+    '</ul>';
+
+  var bodyAdminTraining =
+    '<p>You do not have to deliver the training yourself. Elsevier runs sessions monthly, keeps a recorded webinar available, and will build a session for your institution on request.</p>';
+
+  var bodyAiAdminSharing =
+    '<p>Conversation Sharing lets a nurse send a secure, read-only link to a Nursing AI conversation to another medical professional. It is enabled at the institutional level by default, so the decision in front of you is whether to leave it on. This is a data handling decision, and your privacy or compliance colleagues will want to know it was made deliberately.</p>'+
+    '<h4>How to complete the key actions</h4><ul>'+
+    '<li>Verify the current state. Confirm that the Share option appears within conversations for eligible users. If it is there, the feature is live at your institution.</li>'+
+    '<li>Understand what a recipient sees. A preview of the shared question, then a modal requiring acceptance of the applicable terms and conditions before they can go further.</li>'+
+    '<li>Note the two recipient cases. Someone with an active license must sign in to see the full answer. Someone without access sees a limited preview and is guided into a registration workflow for a free trial or an institutional demo.</li>'+
+    '<li>Know the PHI position. Users are reminded not to share protected health information when generating a link. Where your organization has an active business associate agreement in place, the restriction on entering PHI may not apply, and your nurses will be told to ask you.</li>'+
+    '<li>To opt out, submit a ticket through the support centre. Support deactivates it for the institution and the Share option disappears for your users.</li>'+
+    '</ul>';
+
+  var bodyAiAdminLink =
+    '<p>If your institution subscribes to a link resolver, Nursing AI can put a resolver link on every cited article, alongside the PubMed and ClinicalKey for Nursing links, so your nurses land on the full text you already pay for rather than on a paywall. This is a separate request from the ClinicalKey for Nursing one.</p>'+
+    '<h4>How to complete the key actions</h4><ul>'+
+    '<li>Confirm you have a resolver service. Ex Libris, EBSCO, OCLC or equivalent.</li>'+
+    '<li>Get the base URL. It has to support the OpenURL standard, and your systems librarian, collection management librarian or e-resources librarian will usually have it to hand.</li>'+
+    '<li>Supply a logo as a publicly accessible image URL ending in .svg, .png or .jpg. File uploads are not supported, so it has to be hosted somewhere reachable.</li>'+
+    '<li>Use the best version you have, cropped tight with no surrounding white space. It renders at 24 pixels high, and a screenshot will look poor at that size.</li>'+
+    '<li>Skip the logo if you would rather. The button falls back to a default that carries your organization name instead.</li>'+
+    '<li>Submit through the support centre. Support confirms when it is configured, and you can then check that resolver links appear beside citations.</li>'+
+    '</ul>';
+
+  var bodyAiAdminFaq =
+    '<p>The questions your nurses will bring you, and the answers you want ready before they do. Worth reading even if you never touch the product yourself.</p>'+
+    '<h4>What this covers</h4><ul>'+
+    '<li>Privacy and PHI, including when the restriction on entering protected health information does and does not apply at your institution.</li>'+
+    '<li>Grounding: responses are built through retrieval augmented generation from a curated library rather than from model memory, which is the short answer when someone asks about hallucinations.</li>'+
+    '<li>Limits: no clinical calculations, no scoring or staging, no dose conversions, no IV compatibility, no medication cost or insurance coverage. Expect to repeat this one.</li>'+
+    '<li>Quality: a clinician-in-the-loop evaluation process reviews response quality on a recurring basis, using credentialed, currently or recently practising clinicians.</li>'+
+    '</ul>';
+
+  var bodyAiAdminAdoption =
+    '<p>Time-pressed nurses will not discover the AI layer on their own, particularly when it arrived inside a subscription they already had. The adoption kit exists to solve that.</p>';
+
+  /* ---------- Step definitions ---------- */
+
+  var wrapStep =
+    {title:"Wrap up", type:"wrapup", cat:"Keep going", concern:"What has changed recently?", mins:4};
+
+  /* Nurse path, ClinicalKey for Nursing */
+  var nurseCkn = [
+    {title:"Welcome to ClinicalKey for Nursing", type:"video", product:P_CKN,
+     cat:"Get oriented", concern:"What is ClinicalKey for Nursing?", mins:7,
+     embed:{kind:"vimeo", src:VID.cknWelcome}, transcript:"cknWelcome", body:bodyCknWelcome},
+    {title:"Get started", type:"doc", product:P_CKN,
+     cat:"Get oriented", concern:"How do I find an answer?", mins:5,
+     embed:{kind:"pdf", src:DOC.cknGs}, guide:SHARE.cknGs, body:bodyCknGs},
+    {title:"Access and your account", type:"doc", product:P_CKN,
+     cat:"Get set up", concern:"How do I get in from home?", mins:6,
+     embed:{kind:"pdf", src:DOC.cknRemote}, guide:SHARE.cknRemote, body:bodyCknAccess,
+     also:[{u:DOC.cknAcct, t:"Create a personal account", d:"The registration steps, in full."},
+           {u:DOC.cknRegId, t:"Redeem a registration ID", d:"If your administrator issued you one."}]},
+    {title:"On mobile", type:"doc", product:P_CKN,
+     cat:"Use it day to day", concern:"Can I use it at the bedside?", mins:5,
+     embed:{kind:"pdf", src:DOC.cknApp}, guide:SHARE.cknApp, body:bodyCknApp},
+    {title:"Clinical calculators", type:"doc", product:P_CKN,
+     cat:"Use it day to day", concern:"Where are the calculators?", mins:4,
+     embed:{kind:"pdf", src:DOC.cknCalc}, guide:SHARE.cknCalc, body:bodyCknCalc},
+    {title:"Earn CE credit", type:"doc", product:P_CKN,
+     cat:"Continuing education", concern:"How do I earn contact hours?", mins:5,
+     embed:{kind:"pdf", src:DOC.cknCe}, guide:SHARE.cknCe, body:bodyCknCe}
+  ];
+
+  /* Nurse path, ClinicalKey Nursing AI */
+  var nurseAi = [
+    {title:"Introducing ClinicalKey for Nursing AI", type:"video", product:P_AI, bridge:true,
+     cat:"Get oriented", concern:"What is the AI layer?", mins:3,
+     embed:{kind:"vimeo", src:VID.aiIntro}, transcript:"aiIntro", body:bodyAiIntro},
+    {title:"Get started with Nursing AI", type:"doc", product:P_AI,
+     cat:"Get oriented", concern:"How do I ask my first question?", mins:5,
+     embed:{kind:"pdf", src:DOC.aiGs}, guide:SHARE.aiGs, body:bodyAiGs},
+    {title:"Writing better questions", type:"doc", product:P_AI, exq:true,
+     cat:"Ask better questions", concern:"How do I phrase a query?", mins:6,
+     embed:{kind:"pdf", src:DOC.aiPrompt}, guide:SHARE.aiPrompt, body:bodyAiPrompt,
+     also:[{u:DOC.aiTips, t:"Tips guide", d:"The same habits on a single page, worth keeping."}]},
+    {title:"What Nursing AI draws on", type:"sources", product:P_AI,
+     cat:"Know the product", concern:"Where do the answers come from?", mins:4,
+     body:bodyAiSources},
+    {title:"Questions and limits", type:"doc", product:P_AI,
+     cat:"Know the product", concern:"What will it not do?", mins:5,
+     embed:{kind:"pdf", src:DOC.aiFaq}, guide:SHARE.aiFaq, body:bodyAiFaq}
+  ];
+
+  /* Administrator path, ClinicalKey for Nursing */
+  var adminCkn = [
+    {title:"Implementation overview and what has changed", type:"assets", product:P_CKN,
+     cat:"Get oriented", concern:"What do I need to set up?", mins:4,
+     body:bodyImplOverview,
+     dl:[{u:DL.crosswalk, t:"Evidence based nursing monograph crosswalk", d:"87 retired monographs mapped to the Clinical Update or Clinical Overview that replaces each one."}],
+     lk:[{u:RC_CKN, t:"Implementation resources", d:"The full set on the resource centre, including anything added since this path was built."}]},
+    {title:"Access and authentication", type:"doc", product:P_CKN,
+     cat:"Deploy and configure", concern:"How do my nurses get in?", mins:6,
+     embed:{kind:"pdf", src:DOC.cknRegId}, guide:SHARE.cknRegId, body:bodyAdminAccess,
+     also:[{u:DOC.cknRemote, t:"Remote access, the nurse view", d:"What your nurses are following when they call you."},
+           {u:RC_CKN, t:"Safelisting domains instructions", d:"On the implementation resources page of the resource centre."}]},
+    {title:"Usage reporting through E-PIC", type:"assets", product:P_CKN,
+     cat:"Prove value", concern:"How is the subscription being used?", mins:5,
+     body:bodyAdminUsage,
+     lk:[{u:RC_CKN, t:"E-PIC portal and instructional guide", d:"Linked from the implementation resources page, along with the COUNTER reference."},
+         {u:"mailto:customercare@elsevier.com", t:"customercare@elsevier.com", d:"Email customer support to have an E-PIC account set up if you have never used it."},
+         {u:SUPPORT_CKN, t:"ClinicalKey for Nursing Support Center", d:"For access problems and account questions."}]},
+    {title:"Link resolver and Open URL linking", type:"assets", product:P_CKN,
+     cat:"Deploy and configure", concern:"Connect our library holdings", mins:3,
+     body:bodyAdminLink,
+     lk:[{u:SUPPORT_CKN, t:"Raise the request with technical support", d:"Open URL linking is configured by Elsevier, not self-serve."},
+         {u:RC_CKN, t:"Public access interface instructions", d:"Downloadable from the implementation resources page."}]},
+    {title:"Discovery and library systems", type:"assets", product:P_CKN,
+     cat:"Deploy and configure", concern:"Surface it where people already look", mins:8,
+     body:bodyAdminDiscovery,
+     lk:[{u:RC_CKN, t:"Durable URL reports, MARC records and QR codes", d:"Fourteen downloads on the implementation resources page, split between the global and Australia editions."},
+         {u:RC_CKN, t:"KBART reports", d:"Package level, updated daily. Refer to your subscription agreement if you are unsure which apply."},
+         {u:"https://www.niso.org/standards-committees/kbart", t:"NISO KBART", d:"The recommended practice itself. Phase III, RP-9-2026, was published in August 2026."}]},
+    {title:"Institutional branding", type:"assets", product:P_CKN,
+     cat:"Deploy and configure", concern:"Make it look like ours", mins:2,
+     body:bodyAdminBranding,
+     lk:[{u:SUPPORT_CKN, t:"Raise the branding request", d:"Send the two image URLs, the dimensions and any link destination."}]},
+    {title:"Content and the master content lists", type:"assets", product:P_CKN,
+     cat:"Know the product", concern:"What is actually included?", mins:4,
+     body:bodyAdminContent,
+     dl:[{u:DL.mclAcute, t:"Master content list, Acute Care", d:"Ten tabs: content updates, books, journals, clinical overviews, drug monographs, clinical updates, procedure videos, labs and scales."},
+         {u:DL.mclPost, t:"Master content list, Post-Acute Care", d:"The equivalent list for the post-acute package."}]},
+    {title:"Training and support", type:"assets", product:P_CKN,
+     cat:"Keep going", concern:"Who trains my nurses?", mins:3,
+     body:bodyAdminTraining,
+     lk:[{u:RC_CKN, t:"Recorded webinar and training calendar", d:"ClinicalKey for Nursing: A Nursing Tool, plus the monthly live sessions. Search the calendar for ClinicalKey for Nursing."},
+         {u:CALL_URL, t:"Request a training session", d:"Institutional or individual. Select Training in the subject field."},
+         {u:SUPPORT_CKN, t:"ClinicalKey for Nursing Support Center", d:"Where your nurses should go before they come to you."}]}
+  ];
+
+  /* Administrator path, ClinicalKey Nursing AI */
+  var adminAi = [
+    {title:"Introducing ClinicalKey for Nursing AI", type:"video", product:P_AI, bridge:true,
+     cat:"Get oriented", concern:"What is the AI layer?", mins:3,
+     embed:{kind:"vimeo", src:VID.aiIntro}, transcript:"aiIntro", body:bodyAiIntro},
+    {title:"Conversation Sharing", type:"doc", product:P_AI,
+     cat:"Deploy and configure", concern:"Should sharing stay switched on?", mins:4,
+     embed:{kind:"pdf", src:DOC.aiShare}, guide:SHARE.aiShare, body:bodyAiAdminSharing,
+     also:[{u:SUPPORT_AI, t:"Submit an opt out", d:"Nursing AI support routes to the ClinicalKey AI support centre."}]},
+    {title:"Link resolver setup", type:"doc", product:P_AI,
+     cat:"Deploy and configure", concern:"Connect our holdings to the AI layer", mins:4,
+     embed:{kind:"pdf", src:DOC.aiLink}, guide:SHARE.aiLink, body:bodyAiAdminLink,
+     also:[{u:SUPPORT_AI, t:"Raise the link resolver request", d:"Send the OpenURL base URL and, if you have one, the logo URL."}]},
+    {title:"What your nurses will ask", type:"doc", product:P_AI,
+     cat:"Know the product", concern:"What will they come to me with?", mins:5,
+     embed:{kind:"pdf", src:DOC.aiFaq}, guide:SHARE.aiFaq, body:bodyAiAdminFaq,
+     also:[{u:RC_AI, t:"Nursing AI resources", d:"Includes the A-Z database list description, if your library maintains one."}]},
+    {title:"Driving adoption", type:"assets", product:P_AI,
+     cat:"Keep going", concern:"How do I get people using it?", mins:4,
+     body:bodyAiAdminAdoption,
+     pend:ADOPTION_KIT_URL ? null : {t:"Nursing AI adoption kit deep link", o:"John Grooms"},
+     lk:(ADOPTION_KIT_URL ? [{u:ADOPTION_KIT_URL, t:"Nursing AI adoption kit", d:"Banner ads in three sizes, the launch flyer, and email cadences with pre-written templates."}] : [])
+        .concat([{u:RC_AI, t:"ClinicalKey Nursing AI resource centre", d:"The adoption kit lives here, alongside the Gen AI Academy for Nursing."}])}
+  ];
+
+  var journeys = {
+    nurse: {label:"Nurse path",          steps: nurseCkn.concat(nurseAi, [wrapStep])},
+    admin: {label:"Administrator path",  steps: adminCkn.concat(adminAi, [wrapStep])}
+  };
+
+  /* The wrap up is a rail entry but not a step to be viewed. Progress, the lock, and
+     the counter all run on the content steps alone. */
+  function contentSteps(steps){ return steps.filter(function(x){ return x.type!=="wrapup"; }); }
+  function viewedCount(steps){
+    return contentSteps(steps).filter(function(x){ return state.done[key(x)]; }).length;
+  }
+  function allViewed(steps){ return viewedCount(steps)===contentSteps(steps).length; }
+  function unviewed(steps){
+    var out=[]; steps.forEach(function(x,i){ if(x.type!=="wrapup" && !state.done[key(x)]) out.push({i:i,t:x.title}); });
+    return out;
+  }
+
+  var state = { screen:"gate", role:null, idx:0, done:{}, indexOpen:false, uid:null, org:null,
+                sent:0, lrsStatus:"idle", expanded:false,
+                resumeOffer:null, pdfPageWanted:null, orgWarned:null, accOpen:{},
+                exqOpen:false, trOpen:false, deep:null };
+  var app = document.getElementById("app");
+  var roleChip = document.getElementById("roleChip");
+
+  /* ---- xAPI ---- */
+  /* =====================================================================
+     LRS CREDENTIALS
+
+     Fill these in from the dedicated hub Activity Provider in SCORM Cloud.
+     Paste plain text; the Basic header is assembled on the next line, so do
+     not base64 anything yourself.
+
+       Permission level   Read/Write
+       Allowed endpoints  the hub app only, never "all"
+
+     This file is served to every browser, so whatever sits here is readable
+     by anyone using the hub. The Activity Provider scoping limits the damage,
+     not secrecy. Treat any credential placed here as public.
+     ===================================================================== */
+  var LRS = {
+    endpoint: "PASTE_ENDPOINT_HERE",
+    key:      "PASTE_KEY_HERE",
+    secret:   "PASTE_SECRET_HERE"
+  };
+  var AUTH = "Basic " + btoa(LRS.key + ":" + LRS.secret);
+  var ACT_BASE = "https://mcguireaels.github.io/CSOn-Demand-CKN-and-CKNAI/";
+  var VERBS = {
+    initialized:{id:"http://adlnet.gov/expapi/verbs/initialized",display:{"en-US":"initialized"}},
+    selected:{id:"http://id.tincanapi.com/verb/selected",display:{"en-US":"selected"}},
+    experienced:{id:"http://adlnet.gov/expapi/verbs/experienced",display:{"en-US":"experienced"}},
+    completed:{id:"http://adlnet.gov/expapi/verbs/completed",display:{"en-US":"completed"}},
+    downloaded:{id:"http://id.tincanapi.com/verb/downloaded",display:{"en-US":"downloaded"}},
+    shared:{id:"http://activitystrea.ms/schema/1.0/share",display:{"en-US":"shared"}},
+    answered:{id:"http://adlnet.gov/expapi/verbs/answered",display:{"en-US":"answered"}},
+    passed:{id:"http://adlnet.gov/expapi/verbs/passed",display:{"en-US":"passed"}},
+    failed:{id:"http://adlnet.gov/expapi/verbs/failed",display:{"en-US":"failed"}}
+  };
+  /* =====================================================================
+     LEARNER IDENTITY
+
+     The address a learner types never leaves the browser. It is run through
+     SHA-256 here and only the hash is sent, as the name of an xAPI account
+     object rather than an mbox.
+
+     Hashing is one way and deterministic, so the same address always gives
+     the same hash. A returning learner still finds their progress and the
+     LRS holds no address. Given a candidate address you can hash it and
+     match a record, which covers deletion and access requests. You cannot
+     work back from stored hashes to a list of people.
+
+     This is pseudonymisation, not anonymisation. Email addresses are low
+     entropy, so a hash still singles out an individual and remains personal
+     data under GDPR. The salt below sits in client-side code and is public.
+     It stops a hash from this hub matching the same address hashed
+     elsewhere. It is not a secret.
+
+     ID_HOMEPAGE forms part of the identifier. Changing it orphans every
+     existing progress record, so do not change it once real data exists.
+     ===================================================================== */
+  var ID_SALT = "cs-ondemand:ckai:v1:";
+  var ID_HOMEPAGE = "https://elsevierresources.com/clinicalkey-ai-pilot/cs-ondemand/";
+
+  function hashId(email){
+    var norm = String(email||"").trim().toLowerCase();
+    var c = window.crypto;
+    if(!c || !c.subtle || !c.subtle.digest || !window.TextEncoder){
+      /* Fail closed. Never fall back to sending the address in the clear. */
+      return Promise.reject(new Error("subtle-crypto-unavailable"));
+    }
+    return c.subtle.digest("SHA-256", new TextEncoder().encode(ID_SALT + norm))
+      .then(function(buf){
+        return Array.prototype.map.call(new Uint8Array(buf), function(b){
+          return ("00" + b.toString(16)).slice(-2);
+        }).join("");
+      });
+  }
+
+  function actor(){
+    return { objectType:"Agent",
+             account:{ homePage: ID_HOMEPAGE, name: state.uid || "anonymous" } };
+  }
+  function activity(p,n){ return { objectType:"Activity", id:ACT_BASE+p, definition:{name:{"en-US":n}} }; }
+  function slug(x){ return String(x).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,""); }
+  function key(st){ return slug(st.title); }
+  var badgeEl = document.getElementById("lrs-badge");
+  function setLrs(s){ state.lrsStatus=s; updateBadge(); }
+  function updateBadge(){
+    if(!badgeEl) return;
+    if(state.uid) badgeEl.style.display="inline-flex";
+    badgeEl.className="lrs-badge"+(state.lrsStatus!=="idle"?" "+state.lrsStatus:"");
+    badgeEl.querySelector(".lrs-status").textContent = state.lrsStatus==="live"?"LRS live":state.lrsStatus==="sending"?"Sending":state.lrsStatus==="error"?"LRS error":"LRS idle";
+    badgeEl.querySelector(".lrs-email").textContent = state.uid ? state.uid.slice(0,10) : "";
+    badgeEl.querySelector(".lrs-count").textContent = state.sent+" sent";
+  }
+  function xapi(v,o,result){
+    var stmt={actor:actor(),verb:v,object:o};
+    if(state.org) stmt.context={extensions:{"http://id.tincanapi.com/extension/organization":state.org}};
+    if(result) stmt.result=result;
+    setLrs("sending");
+    sendStatement(stmt).then(function(ok){ if(ok){state.sent++;setLrs("live");}else setLrs("error"); }).catch(function(){ setLrs("error"); });
+  }
+
+  /* ---- xAPI State API: progress lives in the LRS, not the browser ---- */
+  function stateUrl(role){
+    return LRS.endpoint+"activities/state?activityId="+encodeURIComponent(ACT_BASE+"path/"+role)+
+      "&agent="+encodeURIComponent(JSON.stringify(actor()))+"&stateId=progress";
+  }
+  function saveProgress(){
+    if(!state.role || !state.uid) return;
+    var payload={done:state.done, idx:state.idx,
+                 org:state.org, updated:new Date().toISOString()};
+    fetch(stateUrl(state.role),{method:"PUT",headers:{"Authorization":AUTH,"Content-Type":"application/json",
+      "X-Experience-API-Version":"1.0.3"},body:JSON.stringify(payload)}).catch(function(){});
+  }
+  function loadProgress(role,cb){
+    fetch(stateUrl(role),{method:"GET",headers:{"Authorization":AUTH,"X-Experience-API-Version":"1.0.3"}})
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){ cb(d); })
+      .catch(function(){ cb(null); });
+  }
+  function sendStatement(stmt){
+    return fetch(LRS.endpoint+"statements",{method:"POST",headers:{"Authorization":AUTH,"Content-Type":"application/json","X-Experience-API-Version":"1.0.3"},body:JSON.stringify(stmt)})
+      .then(function(r){return r.ok;}).catch(function(){
+        var p=new URLSearchParams(); p.set("method","POST"); p.set("Authorization",AUTH); p.set("X-Experience-API-Version","1.0.3"); p.set("Content-Type","application/json"); p.set("content",JSON.stringify(stmt));
+        return fetch(LRS.endpoint+"statements",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:p.toString()}).then(function(r2){return r2.ok;}).catch(function(){return false;});
+      });
+  }
+
+  /* ---- PDF.js paginated viewer ---- */
+  var pdfLib=null, pdfDoc=null, pdfPage=1, pdfTotal=0, pdfReqUrl=null, pdfTask=null;
+  var SS=3, MAXW=3000;
+  function ensurePdfLib(){
+    if(pdfLib) return Promise.resolve(pdfLib);
+    return new Promise(function(res,rej){
+      var s=document.createElement("script");
+      s.src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+      s.onload=function(){ pdfLib=window.pdfjsLib; pdfLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"; res(pdfLib); };
+      s.onerror=rej; document.head.appendChild(s);
+    });
+  }
+  function setupPdf(url){
+    pdfReqUrl=url; pdfDoc=null; pdfPage=1; pdfTotal=0;
+    var cnt=document.getElementById("pdfcount"); if(cnt) cnt.textContent="Loading";
+    ensurePdfLib().then(function(lib){ return lib.getDocument(url).promise; }).then(function(doc){
+      if(pdfReqUrl!==url) return;
+      pdfDoc=doc; pdfTotal=doc.numPages;
+      pdfPage=(state.pdfPageWanted && state.pdfPageWanted<=pdfTotal) ? state.pdfPageWanted : 1;
+      state.pdfPageWanted=null; renderPdfPage();
+    }).catch(function(){
+      var stage=document.getElementById("pdfstage");
+      if(stage) stage.innerHTML='<div class="pdferr">This document could not be displayed inline here. <a href="'+url+'" target="_blank" rel="noopener">Open it in a new tab</a>.</div>';
+      var cnt=document.getElementById("pdfcount"); if(cnt) cnt.textContent="";
+    });
+  }
+  function renderPdfPage(){
+    if(!pdfDoc) return;
+    var canvas=document.getElementById("pdfcanvas"), stage=document.getElementById("pdfstage"), cnt=document.getElementById("pdfcount");
+    if(!canvas||!stage) return;
+    if(pdfTask){ try{ pdfTask.cancel(); }catch(e){} pdfTask=null; }
+    pdfDoc.getPage(pdfPage).then(function(page){
+      var avail=stage.clientWidth-20; if(avail<280) avail=280;
+      var base=page.getViewport({scale:1});
+      var cssScale=avail/base.width;
+      var rs=cssScale*SS;
+      if(base.width*rs>MAXW) rs=MAXW/base.width;
+      var vp=page.getViewport({scale:rs});
+      var ctx=canvas.getContext("2d");
+      canvas.width=Math.floor(vp.width); canvas.height=Math.floor(vp.height);
+      canvas.style.width=Math.floor(base.width*cssScale)+"px";
+      canvas.style.height=Math.floor(base.height*cssScale)+"px";
+      ctx.setTransform(1,0,0,1,0,0);
+      pdfTask=page.render({canvasContext:ctx, viewport:vp});
+      pdfTask.promise.then(function(){ pdfTask=null; }).catch(function(){});
+      if(cnt) cnt.textContent="Page "+pdfPage+" of "+pdfTotal;
+      var pv=document.getElementById("pdfprev"), nx=document.getElementById("pdfnext");
+      if(pv) pv.disabled=(pdfPage<=1); if(nx) nx.disabled=(pdfPage>=pdfTotal);
+    });
+  }
+
+  /* ---- Screens ---- */
+  function gateAside(){
+    return '<aside class="gate-about">'+
+      '<h2 class="gh">The Customer Success On-Demand Hub</h2>'+
+      '<p class="one">A guided way to get up and running, with the right materials for your role gathered in one place.</p>'+
+      '<p class="wl">What to expect</p><ul>'+
+      '<li>On-demand resources, there whenever you need them</li>'+
+      '<li>Guided learning, sequenced for your role</li>'+
+      '<li>Supported information, with a route to a person if you need one</li>'+
+      '</ul>'+
+      '<section class="gate-why"><h2><em>Why</em> ClinicalKey for Nursing</h2>'+
+      '<p>A clinical search engine built around nursing questions, with fast answers at the bedside and deep access to the evidence behind them. ClinicalKey for Nursing AI is now part of it, adding conversational search over the same curated library, with citations you can open and check.</p>'+
+      '</section></aside>';
+  }
+
+  function gate(){
+    return '<div class="wrap gate-wrap"><div class="gate-grid">'+gateAside()+'<div class="gate">'+
+      '<h1>Welcome</h1><div class="rule"></div>'+
+      '<p>Enter your email and organization to begin.</p>'+
+      '<div class="gate-form stack">'+
+      '<input id="gate-email" type="email" placeholder="Email address" aria-label="Email address" />'+
+      '<input id="gate-org" type="text" placeholder="Organization, written in full" aria-label="Organization, written in full" aria-describedby="org-hint" />'+
+      '<p class="field-hint" id="org-hint">Please write your organization out in full, with no abbreviations. University Medical School rather than UMS.</p>'+
+      '<button class="btn-primary" data-action="submit-email">Begin</button></div>'+
+      '<p id="gate-err" class="gate-err">Please enter a valid email address and your organization.</p>'+
+      '<p id="gate-cryptoerr" class="gate-err">This browser cannot secure your address, so nothing has been sent. Please use a current version of Chrome, Edge, Firefox or Safari.</p>'+
+      '<p id="gate-orgwarn" class="gate-warn">That looks like an abbreviation. Please write your organization out in full so we can tell institutions apart. If it really is the full name, select Begin again.</p>'+
+      '<div class="callout"><span class="cl">Please note</span>Your progress is saved against the email address you enter. Use the same address when you return and you can pick up where you left off. Where you have an institutional address, please use it. Your address is converted into a one-way code inside your browser before anything is sent, so the address itself is never stored.</div>'+
+    '</div></div></div>';
+  }
+  /* Back to front. Layer 3 is the one permitted orange rectangle.
+     Remove a line to drop a layer; the offsets are driven by index. */
+  var LAYERS = [
+    {src:"assets/layer-6-spectrum.jpg"},
+    {src:"assets/layer-5-progress.jpg"},
+    {src:"assets/layer-4-geometry.jpg"},
+    {orange:true},
+    {src:"assets/layer-2-anatomy.jpg"},
+    {src:"assets/layer-1-human.jpg"}
+  ];
+  function layerStack(){
+    return '<div class="layers" aria-hidden="true">'+
+      LAYERS.map(function(l,i){
+        return '<div class="lyr lyr-'+i+'">'+
+          (l.orange ? '<span class="orng"></span>'
+                    : '<img src="'+l.src+'" alt="" loading="lazy" '+
+                      'onerror="this.parentNode.style.display=\'none\'" />')+
+        '</div>';
+      }).join("")+'</div>';
+  }
+
+  function landing(){
+    return '<div class="wrap landing"><div class="ltop"><div class="lleft"><div class="hero">'+
+      '<p class="eyebrow">Customer Success · Your Digital Experience</p>'+
+      '<h1>Where do I <em>start</em></h1><div class="rule"></div>'+
+      '<p class="lede">Pick the path that fits your role, or the role you are training for. Each path covers ClinicalKey for Nursing first, then the AI layer that sits on top of it.</p></div>'+
+      '<div class="cards">'+
+        card("admin","I am an administrator","Setting up and supporting ClinicalKey for Nursing at my institution.",["Configure access, integration and discovery","Track usage and prove value","Roll out the AI layer"])+
+        card("nurse","I am a nurse","Using ClinicalKey for Nursing at the point of care.",["Find trusted answers fast","Earn CE contact hours","Ask better questions of Nursing AI"])+
+      '</div></div>'+layerStack()+'</div></div>';
+  }
+  function card(role,title,who,b){
+    return '<div class="card"><h3>'+title+'</h3><p class="who">'+who+'</p><ul>'+b.map(function(x){return "<li>"+x+"</li>";}).join("")+'</ul>'+
+      '<button class="btn-primary go" data-action="choose-role" data-role="'+role+'">Start this path</button></div>';
+  }
+  function journey(){
+    var j=journeys[state.role], steps=j.steps, total=steps.length, s=steps[state.idx];
+
+    var dc=steps.filter(function(x){return state.done[key(x)];}).length, pct=Math.round((dc/total)*100);
+    var cSteps=contentSteps(steps), cTotal=cSteps.length, vc=viewedCount(steps);
+    var rail='<aside class="rail"><p class="rtitle">'+j.label+'</p><p class="rmeta">'+vc+' of '+cTotal+' viewed \u00b7 about '+pathMins(cSteps)+' minutes in total</p>'+
+      '<div class="bar"><span style="width:'+Math.round(vc/cTotal*100)+'%"></span></div><ul class="steps">'+
+      steps.map(function(x,i){ var cls=(i===state.idx?"active ":"")+(state.done[key(x)]?"done":"");
+        /* A product break in the rail. Not a step, not counted, not navigable. It exists
+           so the learner always knows which product the step in front of them belongs to. */
+        var head = (x.product && (i===0 || steps[i-1].product!==x.product))
+          ? '<li class="secthead" aria-hidden="true"><span>'+x.product+'</span></li>' : "";
+        if(x.type==="wrapup"){
+          var ready=allViewed(steps);
+          var left=unviewed(steps), shown=left.slice(0,4), hidden=left.length-shown.length;
+          return head+'<li class="term '+(ready?"ready ":"islocked ")+cls+'" '+
+            (ready?'data-action="goto-step" data-idx="'+i+'"':'data-action="wrap-locked"')+
+            ' tabindex="0" role="button"'+(ready?'':' aria-disabled="true"')+'>'+
+            '<span class="mk">'+SQUARE+'</span><span class="stxt">'+x.title+
+            '<span class="smin">'+(ready?"Ready":"Not open yet")+'</span></span></li>'+
+            (ready?'':'<div class="railtip" id="railtip"><span class="rt">'+
+              (left.length===1?"One step left to view":left.length+" steps left to view")+'</span><ul>'+
+              shown.map(function(u){ return '<li>'+u.t+'</li>'; }).join("")+'</ul>'+
+              (hidden>0?'<p class="anyorder">and '+hidden+' more</p>':'')+
+              '<p class="anyorder">Any order is fine. Nothing here is graded.</p></div>');
+        }
+        return head+'<li class="'+cls+'" data-action="goto-step" data-idx="'+i+'" tabindex="0" role="button">'+
+          '<span class="mk">'+RING+'</span><span class="stxt">'+x.title+
+          (state.done[key(x)]
+            ? '<span class="smin"><span class="vchk">'+CHK+'Viewed</span></span>'
+            : (x.mins?'<span class="smin">'+timeLabel(x, true)+'</span>':''))+
+          '</span></li>'; }).join("")+
+      '</ul><button class="switch" data-action="restart">Switch path</button></aside>';
+
+    var isFirst=state.idx===0, isWrap=(s.type==="wrapup");
+    var lastContent=(state.idx===cTotal-1);
+
+    var tools = (s.embed && s.embed.kind==="pdf") ?
+      '<div class="doc-tools">'+
+      '<button class="dt primary" data-action="toggle-expand">'+(state.expanded?"Exit full size":"View full size")+'</button>'+
+      (s.guide?'<a class="dt" data-action="open-guide" data-guide="'+s.guide+'" href="'+s.guide+'" target="_blank" rel="noopener">Download this guide</a>':'')+
+      (s.guide?'<button class="dt share" data-action="share-guide" data-guide="'+s.guide+'">Share this guide with a colleague</button>':'')+
+      '</div>' : '';
+
+    /* Advance wording follows what the record can actually attest to. Viewing is
+       observable; understanding is not. */
+    var footBtn = "";
+    if(!isWrap){
+      var nextIsWrap = lastContent;
+      var verb = state.done[key(s)] ? "" : "Viewed, ";
+      var dest = nextIsWrap ? "wrap up" : "next step";
+      var lbl = verb ? verb+dest : dest.charAt(0).toUpperCase()+dest.slice(1);
+      footBtn = '<button class="btn-primary" data-action="next">'+lbl+'</button>';
+    }
+
+    var eyebrow = isWrap
+      ? '<p class="eyebrow">End of the '+j.label.toLowerCase()+'</p>'
+      : '<p class="eyebrow">Step '+(state.idx+1)+' of '+cTotal+'</p>';
+
+    var stage='<section class="stage">'+resumeBanner()+bridgeBlock(s)+eyebrow+'<h2>'+s.title+'</h2>'+
+      (isWrap ? wrapUpScreen(j) :
+        metaRow(s)+ obligBlock()+
+        '<div class="section-body">'+(s.body||"")+'</div>'+ exqBlock(s) + tools +
+        (s.type==="sources"?contentSourcesBody():s.type==="assets"?"":media(s))+
+        transcriptBlock(s)+ assetBlock(s)+ seeAlso(s))+
+      '<div class="stage-foot"><button class="btn-ghost" data-action="prev"'+(isFirst?" disabled":"")+'>Previous</button>'+
+      footBtn+
+      (isWrap?'<button class="btn-ghost" data-action="restart">Back to start</button>':'')+
+      '</div></section>';
+
+    return '<div class="jwrap"><div class="journey'+(state.expanded?" expanded":"")+'">'+rail+stage+finder(steps)+'</div></div>';
+  }
+
+  function wrapUpScreen(j){
+    return '<p class="wrapintro">That is the '+j.label.toLowerCase()+
+      ' covered. Nothing here was graded, and every step stays open if you want to go back to one. '+
+      'Before you go, here is what has changed recently.</p>'+
+      '<p class="asof">'+NEWS_ASOF+'</p>'+
+      NEWS.map(function(g){
+        return '<section class="newsgrp"><h4>'+g.t+'</h4>'+
+          g.i.map(function(n){
+            return '<div class="newsitem"><p class="nh">'+n.h+'</p><p class="nd">'+n.d+'</p></div>';
+          }).join("")+'</section>';
+      }).join("");
+  }
+
+  /* Content sources. The three Master the Moment clips lead, because a nurse
+     recognises a content type faster from ten seconds of screen than from a list. */
+  function contentSourcesBody(){
+    var accord = SOURCE_CATS.map(function(c,i){
+      var inner = '<p class="srcnote">'+c.d+'</p>';
+      if(c.l && c.l.length){
+        inner += '<ul class="srclist">'+c.l.map(function(x){return '<li>'+x+'</li>';}).join("")+'</ul>'+
+                 '<p class="srcmore">A selection only. The master content lists below carry every title.</p>';
+      }
+      return '<div class="acc"><button class="acc-head" data-action="toggle-acc" data-idx="'+i+'" '+
+        'aria-expanded="'+(state.accOpen[i]?"true":"false")+'"><span>'+c.t+'</span>'+
+        '<span class="chev">'+(state.accOpen[i]?"\u2212":"+")+'</span></button>'+
+        (state.accOpen[i]?'<div class="acc-body">'+inner+'</div>':'')+'</div>';
+    }).join("");
+
+    var mtm = '<div class="mtm"><p class="mtmlab">Master the moment</p><div class="mtmgrid">'+
+      [{s:VID.mtmBooks,t:"Books"},{s:VID.mtmSkills,t:"Clinical Skills"},{s:VID.mtmJournals,t:"Journals"}].map(function(v){
+        return '<div class="mtmv"><div class="vwrap"><iframe src="'+v.s+'" title="Master the Moment, '+v.t+'" frameborder="0" '+
+          'allow="fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>'+
+          '<p class="mtmt">'+v.t+'</p></div>';
+      }).join("")+'</div><p class="mtmnote">Three short clips with no sound. Every word is on screen, so they work at a nursing station.</p></div>';
+
+    return mtm+
+      '<p>ClinicalKey for Nursing AI draws on a curated, evidence-based library rather than the open web. Content is updated as new evidence is published and existing material is revised. Here is what it is made of.</p>'+
+      '<div class="accgroup">'+accord+'</div>'+
+      '<div class="seealso" style="margin-top:20px"><p class="salabel">For a full title level list</p><ul>'+
+      '<li><a href="'+DL.mclAcute+'" data-action="open-resource" data-res="'+DL.mclAcute+'" data-restitle="Master content list, Acute" target="_blank" rel="noopener">Master content list, Acute Care</a>'+
+      '<span class="sad">Every title in the acute package, broken out by content type.</span></li>'+
+      '<li><a href="'+DL.mclPost+'" data-action="open-resource" data-res="'+DL.mclPost+'" data-restitle="Master content list, Post-Acute" target="_blank" rel="noopener">Master content list, Post-Acute Care</a>'+
+      '<span class="sad">The same list for the post-acute package.</span></li>'+
+      '</ul></div>';
+  }
+
+  /* The product break, shown once on the first step of the AI block. The learner has
+     not chosen a second product; the path has moved on to the layer that sits on top
+     of the first one, and the wording should say so plainly. */
+  function bridgeBlock(st){
+    if(!st.bridge) return "";
+    return '<div class="bridge"><span class="bl">'+P_CKN+' \u2192 '+P_AI+'</span>'+
+      '<p>ClinicalKey for Nursing AI is now part of ClinicalKey for Nursing. The steps from here cover the AI layer that sits on top of what you have just been through.</p></div>';
+  }
+
+  /* Transcripts. Collapsed by default so they do not push the video off the screen,
+     but present on the page rather than behind a download. */
+  function transcriptBlock(st){
+    if(!st.transcript) return "";
+    var t = TRANSCRIPT[st.transcript];
+    if(!t) return "";
+    var body = state.trOpen
+      ? '<div class="tr-body">'+t.map(function(x){ return '<p>'+x+'</p>'; }).join("")+'</div>'
+      : "";
+    return '<div class="tr"><button class="tr-head" data-action="toggle-tr" aria-expanded="'+(state.trOpen?"true":"false")+'">'+
+      '<span>Read the transcript</span><span class="chev">'+(state.trOpen?"\u2212":"+")+'</span></button>'+body+'</div>';
+  }
+
+  /* Downloads and outbound links carried on a step. Used by the administrator steps
+     whose source material is a resource centre page rather than a single guide. */
+  function assetBlock(st){
+    var out = "";
+    if(st.dl && st.dl.length){
+      out += '<div class="assetgrp"><p class="alabel">Download</p><ul class="alist">'+
+        st.dl.map(function(r){
+          return '<li><a href="'+r.u+'" data-action="open-resource" data-res="'+r.u+'" data-restitle="'+r.t+'" target="_blank" rel="noopener">'+r.t+'</a>'+
+            '<span class="sad">'+r.d+'</span></li>';
+        }).join("")+'</ul></div>';
+    }
+    if(st.lk && st.lk.length){
+      out += '<div class="assetgrp"><p class="alabel">Where this lives</p><ul class="alist">'+
+        st.lk.map(function(r){
+          var ext = r.u.indexOf("http")===0;
+          return '<li><a href="'+r.u+'" data-action="open-resource" data-res="'+r.u+'" data-restitle="'+r.t+'" target="_blank" rel="noopener">'+r.t+
+            (ext?' <span class="ext" aria-label="opens an external site">\u2197</span>':'')+'</a>'+
+            '<span class="sad">'+r.d+'</span></li>';
+        }).join("")+'</ul></div>';
+    }
+    if(st.pend){
+      out += '<div class="pending"><span class="pl">Awaiting</span><span class="pv">'+st.pend.t+'</span>'+
+             '<span class="pl">Sourcing</span><span class="pv">'+st.pend.o+'</span></div>';
+    }
+    return out;
+  }
+
+  function seeAlso(st){
+    if(!st.also || !st.also.length) return "";
+    return '<aside class="seealso"><p class="salabel">See also</p><ul>'+
+      st.also.map(function(r){
+        var ext = r.u.indexOf("http")===0;
+        return '<li><a href="'+r.u+'" data-action="open-resource" data-res="'+r.u+'" data-restitle="'+r.t+'" target="_blank" rel="noopener">'+r.t+
+          (ext?' <span class="ext" aria-label="opens an external site">\u2197</span>':'')+'</a>'+
+          '<span class="sad">'+r.d+'</span></li>';
+      }).join("")+'</ul></aside>';
+  }
+
+  function resumeBanner(){
+    if(!state.resumeOffer) return "";
+    var n=Object.keys(state.resumeOffer.done||{}).length;
+    return '<div class="resume"><span class="rtxt">You have saved progress on this path, with '+n+' step'+(n===1?"":"s")+' marked done. Pick up where you left off?</span>'+
+      '<button class="ra" data-action="resume-yes">Resume</button>'+
+      '<button class="rb" data-action="resume-no">Start over</button></div>';
+  }
+
+
+  function media(s){
+    if(s.embed && s.embed.kind==="vimeo"){
+      return '<div class="embed video"><div class="vwrap"><iframe src="'+s.embed.src+'" title="'+s.title+'" frameborder="0" '+
+        'allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen '+
+        'referrerpolicy="strict-origin-when-cross-origin"></iframe></div></div>';
+    }
+    if(s.embed && s.embed.kind==="pdf"){
+      return '<div class="embed pdf"><div class="pdfbar">'+
+        '<button id="pdfprev" data-action="pdf-prev">Previous</button>'+
+        '<span class="pdfcount" id="pdfcount">Loading</span>'+
+        '<button id="pdfnext" data-action="pdf-next">Next</button></div>'+
+        '<div class="pdfstage" id="pdfstage"><canvas id="pdfcanvas"></canvas></div></div>';
+    }
+    return '<div class="embed" style="border-style:dashed;background:var(--sand)"><div style="padding:40px 34px;min-height:180px;display:flex;flex-direction:column;gap:8px;justify-content:center">'+
+      '<span style="font-size:12.5px;color:var(--ink)">Embedded resource</span>'+
+      '<span class="serif" style="font-size:22px">'+s.title+'</span>'+
+      '<span style="font-size:13.5px;color:var(--ink)">Live asset renders here once its link is added.</span></div></div>';
+  }
+  function finder(steps){
+    var order=["Get oriented","Get set up","Use it day to day","Continuing education","Deploy and configure","Prove value","Know the product","Ask better questions","Keep going"], groups={};
+    steps.forEach(function(s,i){ (groups[s.cat]=groups[s.cat]||[]).push({s:s,i:i}); });
+    var body=order.filter(function(c){return groups[c];}).map(function(c){
+      var chips=groups[c].map(function(o){ return '<button class="chip'+(o.i===state.idx?" active":"")+'" data-action="goto-step" data-idx="'+o.i+'">'+o.s.concern+'</button>'; }).join("");
+      return '<div class="cgroup"><span class="clabel">'+c+'</span><div class="chips">'+chips+'</div></div>';
+    }).join("");
+    return '<div class="finder'+(state.indexOpen?" open":"")+'"><button class="finder-head" data-action="toggle-index" aria-expanded="'+(state.indexOpen?"true":"false")+'">'+
+      '<span class="fh-txt"><span class="fh-title">Looking for something specific?</span><span class="fh-sub">Jump straight to a topic and land on the right step</span></span>'+
+      '<span class="chev">'+(state.indexOpen?"\u25be":"\u25b8")+'</span></button><div class="finder-body">'+body+'</div></div>';
+  }
+  function done(){
+    var j=journeys[state.role];
+    return '<div class="wrap"><div class="done-wrap"><div class="check">\u2713</div>'+
+      '<h2>You have completed the '+j.label.toLowerCase()+'</h2>'+
+      '<p>That is the core of getting going with ClinicalKey for Nursing and the AI layer on top of it. Here is where to go from here.</p>'+
+      '<div class="next-cards"><div class="nc"><p class="h">Keep exploring</p><p class="d">Revisit any step from the path whenever you need a refresher.</p></div>'+
+      '<div class="nc"><p class="h">Hit a snag?</p><p class="d">The Support Center handles account, access, and troubleshooting questions.</p></div></div>'+
+      '<button class="switch" data-action="restart">Back to start</button></div></div>';
+  }
+
+  /* ---- Draft 0.9 helpers ---- */
+
+  var RING = '<svg class="dotsvg" width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">'+
+             '<circle class="ring" cx="8" cy="8" r="6"/></svg>';
+  var SQUARE = '<svg class="dotsvg" width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">'+
+             '<rect x="2.5" y="2.5" width="11" height="11" rx="2.5"/></svg>';
+  var CHK = '<svg width="11" height="11" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">'+
+            '<path d="M1.5 6.5 L4.5 9.5 L10.5 2.5" fill="none" stroke="#544946" stroke-width="2" '+
+            'stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  /* Why ClinicalKey AI. Sits below the path cards, because the action on the landing
+     page is choosing a path; the value case supports that choice rather than blocking it. */
+
+  /* Professional obligation. Step one of the clinical paths only. */
+  function obligBlock(){
+    if(state.idx!==0) return "";
+    var o = OBLIGATION[state.role];
+    if(!o) return "";
+    return '<div class="oblig"><span class="ol">Why this matters</span>'+o+'</div>';
+  }
+
+  /* Example queries. Shown above the embedded guide on the steps that teach asking. */
+  function exqBlock(st){
+    if(!st.exq) return "";
+    var e = EXQ[state.role];
+    if(!e) return "";
+    var body = "";
+    if(state.exqOpen){
+      body = '<div class="exq-body">'+e.items.map(function(it){
+        return '<div class="exq-item"><p class="exq-lab">'+it.lab+'</p>'+
+          '<p class="exq-case">'+it.c+'</p><p class="exq-q">'+it.q+'</p></div>';
+      }).join("")+
+      '<p class="exq-foot">'+e.foot+' '+
+      '<a href="'+CKN_HOME+'" data-action="open-resource" data-res="'+CKN_HOME+'" '+
+      'data-restitle="ClinicalKey for Nursing home" target="_blank" rel="noopener">Open ClinicalKey for Nursing \u2197</a></p></div>';
+    }
+    return '<div class="exq"><button class="exq-head" data-action="toggle-exq" '+
+      'aria-expanded="'+(state.exqOpen?"true":"false")+'"><span>'+e.label+'</span>'+
+      '<span class="chev">'+(state.exqOpen?"\u2212":"+")+'</span></button>'+body+'</div>';
+  }
+
+  /* Time estimate covers the walkthrough on this page plus the guide it embeds. */
+  function pathMins(steps){
+    return steps.reduce(function(a,x){ return a + (x.mins||0); }, 0);
+  }
+  /* A video is watched, a guide is read. The estimate should say which. */
+  function timeLabel(st, brief){
+    if(!st.mins) return "";
+    if(st.type==="video") return st.mins+" min to watch";
+    return brief ? "about "+st.mins+" min"
+                 : "About "+st.mins+" minutes, including the guide";
+  }
+  function metaRow(st){
+    if(!st.mins) return "";
+    return '<div class="metarow"><span class="tmeta"><span class="td"></span>'+
+      timeLabel(st, false)+'</span></div>';
+  }
+
+  /* Share links are composed from SHARE_BASE, since script inside the iframe cannot read
+     the parent URL. Inbound routing reads the fragment on this document, which works when
+     the hub is opened directly. For it to work through the WordPress embed the parent page
+     has to forward its fragment to the iframe src. Karen Cima-Thornhill owns that change. */
+  function copyText(t){
+    try{ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t); return true; } }catch(e){}
+    try{
+      var ta=document.createElement("textarea"); ta.value=t; ta.setAttribute("readonly","");
+      ta.style.position="absolute"; ta.style.left="-9999px";
+      document.body.appendChild(ta); ta.select(); document.execCommand("copy");
+      document.body.removeChild(ta); return true;
+    }catch(e2){ return false; }
+  }
+  function readDeep(){
+    var h=(window.location.hash||"").replace(/^#/,"");
+    if(!h || h.indexOf("/")<0) return null;
+    var p=h.split("/"), r=p[0], sl=p[1];
+    if(!journeys[r]) return null;
+    var found=-1;
+    journeys[r].steps.forEach(function(x,i){ if(key(x)===sl) found=i; });
+    return found<0 ? null : {role:r, idx:found};
+  }
+
+  /* Everything that used to run inline at the gate, reached once the address
+     has been converted. */
+  function afterGate(){
+    xapi(VERBS.initialized, activity("hub","Onboarding and Enablement Hub"));
+    if(state.deep && journeys[state.deep.role]){
+      var dr=state.deep.role, di=state.deep.idx; state.deep=null;
+      state.role=dr; state.idx=di; state.screen="journey";
+      xapi(VERBS.selected, activity("path/"+dr, journeys[dr].label));
+      var ds2=journeys[dr].steps[di];
+      xapi(VERBS.experienced, activity("path/"+dr+"/step/"+key(ds2), ds2.title));
+      render();
+      /* Merge saved progress but hold the requested step, since a shared link
+         is a request for one page rather than an offer to resume. */
+      loadProgress(dr, function(d){
+        if(!d || state.role!==dr || state.screen!=="journey") return;
+        state.done=d.done||{};
+        render();
+      });
+      return;
+    }
+    state.screen="landing"; render();
+  }
+
+  function render(){
+    document.body.setAttribute("data-screen", state.screen);
+    if(state.role) roleChip.textContent = journeys[state.role].label;
+    if(state.screen==="gate") app.innerHTML=gate();
+    else if(state.screen==="landing") app.innerHTML=landing();
+    else if(state.screen==="journey") app.innerHTML=journey();
+    else app.innerHTML=done();
+    updateBadge();
+    if(state.screen==="journey"){
+      var cs=journeys[state.role].steps[state.idx];
+      if(cs.embed && cs.embed.kind==="pdf") setupPdf(cs.embed.src);
+    }
+    window.scrollTo({top:0,behavior:"auto"});
+  }
+
+  function handle(action, el){
+    if(action==="submit-email"){
+      var i=document.getElementById("gate-email"), v=i?i.value.trim():"", at=v.indexOf("@"), dot=v.lastIndexOf(".");
+      var o=document.getElementById("gate-org"), ov=o?o.value.trim():"";
+      var errEl=document.getElementById("gate-err"), warnEl=document.getElementById("gate-orgwarn");
+      if(!(at>0 && dot>at+1 && dot<v.length-1) || ov.length<2){ if(errEl) errEl.classList.add("show"); return; }
+      if(errEl) errEl.classList.remove("show");
+      var looksAbbrev = ov.length<=6 && ov.indexOf(" ")===-1 && ov===ov.toUpperCase() && /[A-Z]/.test(ov);
+      if(looksAbbrev && state.orgWarned!==ov){ state.orgWarned=ov; if(warnEl) warnEl.classList.add("show"); return; }
+      var cryptoEl=document.getElementById("gate-cryptoerr");
+      if(cryptoEl) cryptoEl.classList.remove("show");
+      state.org=ov;
+      /* Convert the address before anything is sent. If the browser cannot do
+         it, stop rather than fall back to sending it in the clear. */
+      hashId(v).then(function(uid){ state.uid=uid; v=null; afterGate(); })
+               .catch(function(){ if(cryptoEl) cryptoEl.classList.add("show"); });
+      return;
+    }
+    if(action==="choose-role"){
+      state.role=el.getAttribute("data-role"); state.idx=0; state.done={};
+      state.expanded=false; state.resumeOffer=null; state.screen="journey";
+      xapi(VERBS.selected, activity("path/"+state.role, journeys[state.role].label));
+      render();
+      var want=state.role;
+      loadProgress(want, function(d){
+        if(!d || state.role!==want || state.screen!=="journey") return;
+        if(d.done && Object.keys(d.done).length){ state.resumeOffer=d; render(); }
+      });
+      return;
+    }
+    if(action==="resume-yes"){
+      var rd=state.resumeOffer||{}, rsteps=journeys[state.role].steps;
+      state.done=rd.done||{};
+      var want=Math.min(typeof rd.idx==="number"?rd.idx:0, rsteps.length-1);
+      /* Never resume onto a wrap up that is not open yet. */
+      if(rsteps[want] && rsteps[want].type==="wrapup" && !allViewed(rsteps)){
+        want=(unviewed(rsteps)[0]||{i:0}).i;
+      }
+      state.idx=want;
+      state.resumeOffer=null; render(); return;
+    }
+    if(action==="resume-no"){ state.resumeOffer=null; saveProgress(); render(); return; }
+    if(action==="goto-step"){ state.idx=parseInt(el.getAttribute("data-idx"),10); state.expanded=false; state.trOpen=false; state.exqOpen=false;
+      var gs=journeys[state.role].steps[state.idx]; xapi(VERBS.experienced, activity("path/"+state.role+"/step/"+key(gs), gs.title)); render(); return; }
+    if(action==="toggle-expand"){ state.expanded=!state.expanded; state.pdfPageWanted=pdfPage; render(); return; }
+    if(action==="toggle-acc"){ var ai=parseInt(el.getAttribute("data-idx"),10); state.accOpen[ai]=!state.accOpen[ai]; render(); return; }
+    if(action==="toggle-tr"){ state.trOpen=!state.trOpen; render(); return; }
+    if(action==="next"){
+      var steps=journeys[state.role].steps, d=steps[state.idx];
+      if(!state.done[key(d)]){
+        state.done[key(d)]=true;
+        xapi(VERBS.completed, activity("path/"+state.role+"/step/"+key(d), d.title));
+      }
+      var cT=contentSteps(steps).length;
+      if(state.idx < cT-1){ state.idx++; }
+      else if(allViewed(steps)){
+        /* Wrap up is the last entry in the array. */
+        state.idx = steps.length-1;
+        xapi(VERBS.completed, activity("path/"+state.role, journeys[state.role].label));
+      } else {
+        /* Steps were taken out of order, so send them to the first one still unseen
+           rather than to a wrap up that is not open. */
+        state.idx = unviewed(steps)[0].i;
+      }
+      state.expanded=false; saveProgress(); render(); return;
+    }
+    if(action==="wrap-locked"){
+      var rt=document.getElementById("railtip");
+      if(rt) rt.classList.toggle("show");
+      return;
+    }
+    if(action==="prev"){ if(state.idx>0){ state.idx--; state.expanded=false; render(); } return; }
+    if(action==="restart"){ state.screen="landing"; state.role=null; state.idx=0; state.done={};
+      state.expanded=false; state.resumeOffer=null; render(); return; }
+    if(action==="toggle-index"){ state.indexOpen=!state.indexOpen; render(); return; }
+    if(action==="pdf-prev"){ if(pdfDoc && pdfPage>1){ pdfPage--; renderPdfPage(); } return; }
+    if(action==="pdf-next"){ if(pdfDoc && pdfPage<pdfTotal){ pdfPage++; renderPdfPage(); } return; }
+    if(action==="open-resource"){
+      var ru=el.getAttribute("data-res"), rt=el.getAttribute("data-restitle")||"";
+      xapi(VERBS.experienced, activity("resource/"+slug(rt), "See also: "+rt));
+      window.open(ru,"_blank","noopener"); return;
+    }
+    if(action==="open-guide"){
+      var url=el.getAttribute("data-guide"), ds=journeys[state.role]?journeys[state.role].steps[state.idx]:null;
+      xapi(VERBS.downloaded, activity("guide/"+(ds?slug(ds.title):"item"), "Guide: "+(ds?ds.title:"")));
+      window.open(url,"_blank","noopener"); return;
+    }
+  }
+
+  if(!TESTING){
+    var tb=document.getElementById("testbar"); if(tb) tb.style.display="none";
+    var lb=document.getElementById("lrs-badge"); if(lb) lb.style.display="none";
+    document.body.setAttribute("data-testing","off");
+  }
+
+  document.addEventListener("click", function(e){ var el=e.target.closest("[data-action]"); if(!el) return;
+    if(!(el.tagName==="INPUT" && el.type==="radio")) e.preventDefault();
+    handle(el.getAttribute("data-action"), el); });
+  document.addEventListener("keydown", function(e){ if((e.key==="Enter"||e.key===" ") && e.target.matches('.steps li[data-action]')){ e.preventDefault(); handle("goto-step", e.target); } });
+  var rz; window.addEventListener("resize", function(){ clearTimeout(rz); rz=setTimeout(function(){ if(pdfDoc && state.screen==="journey"){ var cs=journeys[state.role].steps[state.idx]; if(cs.embed&&cs.embed.kind==="pdf") renderPdfPage(); } },150); });
+
+  state.deep = readDeep();
+  render();
+})();
+</script>
+</body>
+</html>
