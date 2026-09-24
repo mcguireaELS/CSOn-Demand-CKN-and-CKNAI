@@ -111,9 +111,11 @@ appended at the same place for the language toggle.
 
 ## Before this goes anywhere
 
-- **`assets/` is empty.** Copy the folder across from the ClinicalKey AI repo: the
-  Elsevier logo, the favicons, and the five landing layer images. Missing layers hide
-  themselves rather than showing a broken image, so the landing screen degrades
+- **`assets/` is nearly empty.** It holds `layer-1-nurses.jpg`, the front layer of
+  the landing device, cropped to the 3:4 card ratio from the nursing photograph
+  supplied on 22 September. Still to copy across from the ClinicalKey AI repo: the
+  Elsevier logo, the favicons, and the four remaining landing layers. Missing layers
+  hide themselves rather than showing a broken image, so the landing screen degrades
   quietly, but it will not look right until they are there.
 - **`SHARE_BASE`** reads `PENDING-NURSING-HUB-PATH`. Per step share links are
   composed from it, because script inside the iframe cannot read the parent URL. It
@@ -163,6 +165,35 @@ assertion, failing loudly on zero or multiple matches. JavaScript is extracted a
 checked with `node --check`, CSS is checked for brace balance, and the path logic is
 exercised through a DOM stub simulation in Node before anything is staged.
 
-Current validation: JavaScript parses, 324 CSS braces balanced, 47 simulation checks
-pass across both paths, every referenced local asset present, no em dashes or en
-dashes.
+Current validation: JavaScript parses, 376 CSS braces balanced, 47 simulation checks
+across both paths pass plus a second harness of 40+ checks proving every clickable
+emits an xAPI statement, every referenced local asset present (26 in docs/), no em
+dashes or en dashes.
+
+## Draft 0.3 additions, 24 September
+
+- **E-PIC usage guide, embedded.** Laura's guide is now the inline PDF on the usage
+  reporting step rather than a link out, per John's instruction that anything
+  Elsevier has produced should live in the hub.
+- **Quick reference card** added to the first administrator step alongside the kept
+  video. Dated 2022; the CE accreditation numbers and phone hours should be treated
+  as a starting point to verify rather than as current.
+- **Content sources URL resolved**, pulled from the Nursing AI FAQ.
+- **FAQ content rewritten** on both the nurse and administrator paths to reflect the
+  actual FAQ: the US-only HIPAA and BAA distinction, IP authentication not being
+  supported for the AI layer, the non-English language toggle, and the specialty
+  scope limitation below.
+
+**Flag carried into this draft, not resolved:** the Nursing AI FAQ states the
+content library is currently curated primarily for emergency, medical-surgical and
+critical care questions. Twenty-two specialty prompt guides exist, covering far more
+than those three settings. A caution now sits directly above the specialty guide
+grid saying so, but the guides themselves have not been narrowed or reordered.
+Worth raising on the call: whether every specialty guide should ship now, or whether
+the ones outside the three curated settings should wait.
+
+**Second flag:** the Get Started and Tips Guide documents list Goldman-Cecil
+Medicine, 27th edition, as a reference text ClinicalKey Nursing AI draws on. It does
+not appear in the 65-title book list John supplied as the content sources page
+content. Not reconciled here; the two documents disagree and one of them needs
+correcting upstream.

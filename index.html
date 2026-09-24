@@ -95,7 +95,12 @@
   /* Journey: wide, center-dominant, side panels pushed out */
   .journey{display:grid; grid-template-columns:220px minmax(0,1fr) 250px; gap:46px;
     padding:34px 0 72px; align-items:start;}
-  .rail{background:var(--white); border:1px solid var(--ivory); border-radius:14px; padding:22px; position:sticky; top:82px;}
+  /* The rail scrolls inside itself rather than making the page scroll. With thirteen
+     steps and two product sections the old behaviour sent the whole page to the top
+     every time a step near the bottom was selected, which lost your place. */
+  .rail{background:var(--white); border:1px solid var(--ivory); border-radius:14px; padding:22px; position:sticky; top:82px;
+    max-height:calc(100vh - 104px); overflow-y:auto; overscroll-behavior:contain;}
+  .rail::-webkit-scrollbar{width:8px;} .rail::-webkit-scrollbar-thumb{background:var(--ivory); border-radius:4px;}
   .rail .rtitle{font-size:15px; font-weight:700; margin:0 0 2px;} .rail .rmeta{font-size:12.5px; color:var(--ink); margin:0 0 14px;}
   .bar{height:6px; background:var(--sand); border-radius:999px; overflow:hidden; margin-bottom:18px;}
   .bar > span{display:block; height:100%; background:var(--orange); transition:width .25s;}
@@ -299,6 +304,78 @@
     padding:17px 19px; margin:0 0 22px; font-size:14.5px; color:var(--graphite); line-height:1.6;}
   .oblig .ol{display:block; font-family:var(--sans); font-weight:700; margin:0 0 6px;}
 
+  /* ---- Nursing hub, draft 0.2, 24 September ---- */
+
+  /* Collapsible product break in the rail. Orange appears as a 3px marker, never as
+     text: Laura flagged orange body text as hard on the eyes and we agreed to keep it
+     to an accent. */
+  .steps li.secthead{display:block; cursor:default; padding:0; border-radius:0;
+    border-top:1px solid var(--ivory); margin:14px 0 6px;}
+  .steps li.secthead:first-child{border-top:none; margin-top:0;}
+  .steps li.secthead:hover{background:transparent;}
+  .sectbtn{display:flex; align-items:center; gap:9px; width:100%; background:transparent;
+    border:none; padding:13px 8px 9px; cursor:pointer; text-align:left; font-family:var(--sans);}
+  .sectbtn:hover{background:var(--paper); border-radius:8px;}
+  .sectbtn:focus-visible{outline:2px solid var(--blue); outline-offset:-2px; border-radius:8px;}
+  .secmark{flex:0 0 auto; width:3px; height:15px; background:var(--orange); border-radius:2px;}
+  .sectxt{flex:1 1 auto; font-size:13.5px; font-weight:700; letter-spacing:-0.01em; color:var(--graphite);}
+  .sectn{flex:0 0 auto; font-size:11.5px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums;}
+  .sectchev{flex:0 0 auto; font-size:15px; line-height:1; color:var(--ink); width:12px; text-align:center;}
+
+  /* One action row, above the fold. */
+  .doc-tools{display:flex; flex-wrap:wrap; align-items:center; gap:9px; margin:0 0 22px;
+    padding:0 0 18px; border-bottom:1px solid var(--ivory);}
+  .doc-tools .dtspacer{flex:1 1 auto; min-width:0;}
+  .doc-tools .dt{font-size:13px; padding:9px 15px;}
+  .doc-tools .dt.nav{background:transparent; border:1px solid var(--ivory); color:var(--ink);}
+  .doc-tools .dt.nav:hover:not(:disabled){border-color:var(--ink); color:var(--graphite);}
+  .doc-tools .dt.nav:disabled{opacity:0.4; cursor:default;}
+  .doc-tools .dt.advance{background:var(--blue); border:1px solid var(--blue); color:var(--white); font-weight:700;}
+  .doc-tools .dt.advance:hover{filter:brightness(1.08);}
+  .doc-tools .dt.advance.isdone{background:transparent; color:var(--blue);}
+  .doc-tools .dt:focus-visible{outline:2px solid var(--blue); outline-offset:2px;}
+  @media (max-width:720px){ .doc-tools .dtspacer{display:none;} }
+
+  /* Page turning inside a document, distinct from moving between steps. */
+  .pdfbar .pdfnav{min-width:38px; font-size:19px; line-height:1; padding:5px 12px;}
+
+  /* News and updates. Two columns of cards. */
+  .newsgrid{display:grid; grid-template-columns:1fr 1fr; gap:22px; margin:22px 0 6px;}
+  @media (max-width:860px){ .newsgrid{grid-template-columns:1fr;} }
+  .newscol{min-width:0;}
+  .newshead{display:flex; align-items:center; gap:9px; margin:0 0 13px;
+    font-family:var(--sans); font-size:16px; font-weight:700; letter-spacing:-0.02em; color:var(--graphite);}
+  .nhmark{flex:0 0 auto; width:3px; height:17px; background:var(--orange); border-radius:2px;}
+  .newscard{background:var(--sand); border-radius:12px; padding:15px 17px; margin:0 0 11px;}
+  .newscard:last-child{margin-bottom:0;}
+  .newscard .nh{margin:0 0 5px; font-size:14px; font-weight:700; color:var(--graphite); line-height:1.35;}
+  .newscard .nd{margin:0; font-size:13.5px; line-height:1.55; color:var(--ink);}
+
+  /* Launch the product. The point of the last screen is to send them into it. */
+  .launch{margin:24px 0 0; padding:20px 22px; background:var(--paper);
+    border:1px solid var(--ivory); border-radius:12px;}
+  .launch .launchlab{margin:0 0 4px; font-size:11.5px; font-weight:700; letter-spacing:0.04em;
+    text-transform:uppercase; color:var(--ink);}
+  .launch .launchd{margin:0 0 14px; font-size:14.5px; line-height:1.55; color:var(--graphite);}
+  .launchbtn{display:inline-block; background:var(--blue); color:var(--white); text-decoration:none;
+    font-family:var(--sans); font-size:14.5px; font-weight:700; padding:12px 22px; border-radius:22px;}
+  .launchbtn:hover{filter:brightness(1.08);}
+  .launchbtn:focus-visible{outline:2px solid var(--blue); outline-offset:3px;}
+
+  /* Prompt guides by specialty, 22 outbound links in a grid. */
+  .specgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:9px;}
+  @media (max-width:860px){ .specgrid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .specgrid{grid-template-columns:1fr;} }
+  .spec{display:block; padding:11px 13px; background:var(--white); border:1px solid var(--ivory);
+    border-radius:9px; font-size:13.5px; font-weight:700; color:var(--blue); text-decoration:none; line-height:1.35;}
+  .spec:hover{border-color:var(--blue);}
+  .spec:focus-visible{outline:2px solid var(--blue); outline-offset:2px;}
+  .exq-head .cnt{display:inline-block; margin-left:7px; padding:1px 8px; background:var(--sand);
+    border-radius:10px; font-size:12px; font-variant-numeric:tabular-nums; color:var(--ink);}
+
+  /* Long source lists scroll inside the accordion rather than pushing the page down. */
+  .srclist.long{max-height:280px; overflow-y:auto; padding-right:8px;}
+
   /* ---- Nursing hub, draft 0.1 ---- */
 
   /* Product break in the rail. A label, not a target. Ivory rule only, no orange,
@@ -365,6 +442,10 @@
   .exq-q{font-size:14.5px; color:var(--graphite); margin:0; line-height:1.6; padding:13px 16px;
     background:var(--paper); border:1px solid var(--ivory); border-left:3px solid var(--orange); border-radius:8px;}
   .exq-foot{font-size:13.5px; color:var(--ink); margin:17px 0 0; line-height:1.55;}
+  /* A scope caveat, not an error, so it reads as informative rather than alarmed.
+     Orange left border only, no red or destructive color. */
+  .exq-caution{font-size:13.5px; color:var(--graphite); line-height:1.55; margin:0 0 16px;
+    padding:12px 15px; background:var(--paper); border-left:3px solid var(--orange); border-radius:0 8px 8px 0;}
 
   .srcnote{font-size:13.5px; color:var(--ink); margin:0 0 4px; line-height:1.55;}
   .srclist{columns:2; column-gap:28px; margin:13px 0 0; padding:0; list-style:none;}
@@ -476,7 +557,7 @@
     </div>
   </header>
   <main id="app"></main>
-  <footer class="vstamp"><div class="vinner">Nursing hub · Draft 0.1 · 22 September 2026 · Internal review copy, not for customer distribution</div></footer>
+  <footer class="vstamp"><div class="vinner">Nursing hub · Draft 0.3 · 24 September 2026 · Internal review copy, not for customer distribution</div></footer>
 
 <script>
 (function(){
@@ -490,7 +571,44 @@
   /* Transcripts, converted from the supplied WebVTT files. Requested independently by
      Laura, Andrew and Matt Wilcox. The two Master the Moment videos are silent with
      on-screen text and therefore need no transcript for parity. */
+  var WEBINAR_TR = [
+    "Hi. Good afternoon. My name is James Joiner. I am an engagement analyst with Elsevier, and today we'll be going over the ClinicalKey for Nursing platform and some of the redesigned features of the site. Right now, I am on the site, and I am not currently logged in.",
+    "If you do not have a login, what you want to do first is register for an account here. So you'll click on register, put in your first name, last name, your email address provided by your institution, and just reading over the additional user agreement information, and then click on register. You will then receive follow-up information with further steps. After you have created your login, then you're ready to log in. So you'll click on the login option, username and password, and log in.",
+    "I also want to bring to your attention remote access. If you're needing to use the site outside of your organization, then you want to make sure that you apply for remote access here. So you'll click the apply now for further on that. So I'm going to go ahead and log in, and this will bring me to my landing page for ClinicalKey for Nursing. And as you can see, you have some icons in the top right-hand corner here.",
+    "So you have your name. If you click on that or hover over that, you have settings, your CE credits, saved content, if you create presentations, remote access, and also the ability to log out. The next icon is going to be your assistant option. So if you need to call us, email us, or just ask for additional assistance or help, then you can click here. And then you have your master menu, which is going to combine both of the first two menus that we just reviewed.",
+    "So as you can notice, you have your settings, CE, saved content, presentations, remote access, logout, your help and feedback options, and then you have your About ClinicalKey. The landing page has your global search bar. So whenever you're searching for either, as you see here, your treatments, drugs, conditions, you would use the global search bar here. You also have your search history and also saved searches. You have a dropdown here that allows you to filter what type of information you're wanting to look through.",
+    "So if you want to just look at books for that condition or treatment, you can pull up books. If you just want to look at journals related to those drugs that you're looking through, you can click on journals, drug monographs, so on and so forth. You also have the ability to browse through clinical content. And as you can see here, you have these new cards, which is going to make it easier to find and reference the content using this resource. So you have your clinical overviews, clinical skills, drug monographs, and those leads, evidence-based nursing monographs, patient education, guidelines, calculators, labs.",
+    "If you want to see additional clinical content types, you can go and expand that, and it's going to bring up additional cards for you to thumb through. Below that, you can also filter through the specialties within these additional resources here. So you have books, journals, procedure videos, and also multimedia information. Also on the landing page, you have your news and updates. So if there are any content updates, any updates related to the platform, you can view that here.",
+    "You have your content updates, and you also have your other updates. Below that, you have your How to Use ClinicalKey, which is a great resource. I do encourage watching this video. Your training calendar for signing up for training, training topics, COVID-19 and influenza, and also your nurse educator topics. And at the very bottom you have, in the footer here, you have your terms and conditions, resource center, another method of contacting us, your privacy policy, your registered user agreement, and your help option.",
+    "Okay. Go ahead and review searching in the global search bar here. And we'll just search for a condition. Use asthma, and search. And as you can see, it starts with your full text only, and it's bringing up your chapter excerpts.",
+    "You'll notice you have these icons here. So if you need to save this, you can save. If you need to email this to another team member, you can. I do want to call out that if you're emailing this information, you want to make sure that your colleague is logged in, or they will receive very limited information. It's not going to be the entire chapter excerpt if they are not a logged-in user.",
+    "And you also have the ability to print as well. And over to the far right here, you have your full topic information, which is going to have your description and your disease overview. To the left, these are your filtering options. So let's say you only want to look at your clinical trials as it relates to asthma. You can click on clinical trials, and it's only going to pull up clinical trials for you.",
+    "You only want to look up journal articles. You can click on journal articles. It's only going to pull up those articles for you. All right. And again, you can filter through.",
+    "So you have your books, images, patient education, clinical overviews, drug monographs, so on and so forth. I also want to call out the new feature with the ClinicalKey for Nursing is that you can toggle between the views. So you have your new view. If you want to go back to the classic view, then you can go back to the classic view here. All right.",
+    "So again, you have your full text article, and as you can see, I did filter for journal articles. You can save this article if you would like. You can download the PDF for it, email, or print. You have the full text article name, where it's from, and authors. So let's click on the journal article, and you will see the different volumes.",
+    "Expand that. You can. Let's click on a specific issue here. If you want to subscribe to a journal, then you can click on the subscribe option here, and you'll receive email alerts with that. If you need to just unsubscribe it, you would simply click on unsubscribe.",
+    "I also want to point out that you can filter by specialty as well. So if you want to filter through specialties, you can filter by specialty. Our update will be these pills here, color-coded. So you have your summary, diagnosis, workup, and treatment. So let's click on the summary Just going to bring up that information for you.",
+    "Go back to the results. You have your diagnosis information, workup, and your treatment information. I also want to point out your patient education. So let's go to patient education and search. Again, you have your icons here, so if you want to save this, you can save it.",
+    "You can apply it to a tag that you've already created, or if you want to create a new tag, then you can create a new tag so that you will have a place to save your content under, a name to save your content under. Email, again, if you need to email to a colleague, you can put the colleague's information here, and email this and send. And you also have the print icon. Let's click on the patient education. As you can see with the patient education, you have the ability to print, and you can print and, depending on your demographic, you can change the language that you're wanting to print in.",
+    "And you can just go through the patient education here. It shows the signs and symptoms, how's it diagnosed, how's it treated. Let's print. I want to point out when printing the patient education, you are able to add contact information and also special instructions for the patient. So if you need to type any special instructions, you can type that in and also add some contact information as well.",
+    "You can also search through drug monographs, so let's pull up a drug monograph. You click on drugs, and you can take out asthma. We'll just do confirm search. All right. And it's going to bring up that drug monograph information for you.",
+    "If you click into the drug monograph, you're able to filter through these contents to the left. You can look at the indication and dosage, how to administer the drug, monitoring parameters, adverse reactions, references, and classifications. If you find yourself on a page with a lot of information, you can always just click on top of page instead of having to scroll through, and it will take you to the top of the page. If you need to expand the page, what you can do is click here on this icon and open the reading mode. If you want to get out of the reading mode, then you can just collapse it or close it.",
+    "Also in this dropdown, you have your clinical skills if you're subscribed. Nursing skills, guidelines, procedure videos, and your calculators as well. So if you click on guidelines, you also have the filtering options here. So you're able to filter by ages of patients. You have your authoring organizations and also your specialties.",
+    "So let's click on cardiovascular. I also want to point out, anytime you're wanting to get back to the landing page, you can always just click on this logo here, the Clinical Key for Nursing, and it's going to bring you back here to your landing page. You have your clinical skill. Again, this will only be applicable if you are subscribed. So you have your different skills.",
+    "You see your CE credits are also associated with the different skills as well. Let's do the six-minute walk test. You have your images and demos. You have different quick sheets. Supplies.",
+    "You can see your filtering options here as well. Extended text, overview. Again, this will take you out to the Elsevier clinical skill site. Also, let's go to clinical. Let's review clinical overviews.",
+    "You can browse different overviews here. You have your calculators, your clinical calculators that you can run. Let's review procedure videos. This will actually show you how to successfully do a procedure. The ankle block is a regional block designed for the leg.",
+    "You have your introduction, your pre-procedure information, equipment listed to properly perform that procedure. Okay, I want to point out your icons. If you want to save this, email, or print, you have the ability to do so. So those are some of your personalized features. You're able to save your searches.",
+    "You have your search history here. So your search history is going to list everything that you've searched for. Saved searches. Anything that you save will be listed here. This is one of the benefits of being a logged-in user.",
+    "If you wanted to create a presentation, you can come over here to presentations. Create a new presentation. You can add images from saved content, so if you've saved any images, you can add those images to that presentation. And once you're done with that presentation, you can just export it, and it will export into a PowerPoint for you. And everything is going to have the copyrights.",
+    "So you don't have to worry about any of that, just export it. Not sure what happened with that. But once you export it, it will bring up a PowerPoint for you. So going back, if you want to save, if you're searching for an image here, you can filter by specialties. You can save these images into your presentation.",
+    "You also have your CE credits. So let's do amputation. You have your contact hours here. If you click on that, you have your how to earn credits. It's going to give you those steps on how to earn that, and it's going to also give you the ability to go to the test.",
+    "Okay. You want to make sure that you register, and then you'll log in, and it's going to take you to the test for your CEs. Again, you have your contact hours information listed here as well. I also want to mention your resource center, resources available to you. So if you go down to the resource center, it's going to take you to the Clinical Key for Nursing resource.",
+    "You have your overview, features, different promotional resources. So if you want to download the Lunchfire, have different email templates you can use, need assistance implementing. You have that information, durable URLs, institutional branding, and also PubMed link-outs. Have our master content list. You have different recordings.",
+    "I do suggest watching the recordings. They're really good ways to have on-demand resources for the content. And then last, not least, if you need to contact us, you have the ability to contact us. I want to thank you for your time today. Have a great day."
+  ];
   var TRANSCRIPT = {
+    webinar: WEBINAR_TR,
     cknWelcome: [
     "When faced with complex questions on a patient's condition or the need for how-to answers from evidence-based literature, there's a solution nurses and allied health professionals can turn to and trust. Welcome to ClinicalKey for Nursing. This short video will demonstrate how nurses and allied health professionals can take advantage of the wealth of clinical knowledge and dynamic features available on ClinicalKey for Nursing to empower them in their role and aid their daily activities. In the minutes ahead, we will highlight ways to access the product's broad range of content, outline the steps to earn CE credits, and showcase best practices for creating and using a personal account.",
     "Through ClinicalKey for Nursing, nurses and allied health professionals have a single location to find market-leading content across multiple specialties. The product includes over 60 top journals, 85 full textbooks, and hundreds of practice guidelines, patient education handouts, procedural videos, and more. These offerings cover more than 20 specialties, including critical care, emergency medicine, internal medicine, and pediatrics. Some examples include \"Clinical Companion to Medical Surgical Nursing,\" \"Saunders Nursing Drug Handbook,\" \"American Journal of Infection Control,\" \"Heart &amp; Lung,\" \"Journal of Pediatric Health Care,\" and \"Burn's Pediatric Primary Care.\" To locate content, users can turn to the browse and search functions.",
@@ -547,7 +665,8 @@
     aiIntro:     vimeo("1222128849","26a5ffa46c"),  /* 2:42, narrated, transcript supplied */
     mtmBooks:    vimeo("1229294307","c0bfabd8a9"),  /* silent, on-screen text */
     mtmSkills:   vimeo("1229294229","563b3a6efa"),
-    mtmJournals: vimeo("1229294104","aecc7248cc")
+    mtmJournals: vimeo("1229294104","aecc7248cc"),
+    webinar:     vimeo("1229896321","59f4e451fa")   /* 23:48, recorded webinar, transcript supplied */
   };
 
   /* Documents committed under /docs. The inline viewer needs a direct asset URL,
@@ -568,7 +687,21 @@
     aiPrompt:  "docs/ckn-ai-prompt-tips.pdf",
     aiTips:    "docs/ckn-ai-tips-guide.pdf",
     aiShare:   "docs/ckn-ai-conversation-sharing.pdf",
-    aiLink:    "docs/ckn-ai-link-resolver.pdf"
+    aiLink:    "docs/ckn-ai-link-resolver.pdf",
+    qrc:       "docs/ckn-qrc.pdf",
+    epicGuide: "docs/ckn-epic-usage-guide.pdf"
+  };
+  var EPIC_URL = "https://e-pic.elsevier.com/";
+  /* Adoption kit, ClinicalKey for Nursing. Supplied 24 September. */
+  var KIT = {
+    emailWelcome:  "docs/kit/ckn-email-welcome.docx",
+    emailAnnounce: "docs/kit/ckn-email-announce.docx",
+    emailRemind:   "docs/kit/ckn-email-remind.docx",
+    bannerTall:    "docs/kit/ckn-banner-160x600.webp",
+    bannerWide:    "docs/kit/ckn-banner-728x90.webp",
+    webButton:     "docs/kit/ckn-web-button-125x125.webp",
+    logos:         "docs/kit/ckn-logos.zip",
+    labels:        "docs/kit/ckn-product-labels.zip"
   };
   var DL = {
     crosswalk: "docs/ckn-ebnm-crosswalk.xlsx",
@@ -588,6 +721,7 @@
   /* Not yet supplied. Rendered as a pending block rather than a broken link. */
   var ADOPTION_KIT_URL = "";   /* Nursing AI adoption kit, deep link */
   var ACADEMY_URL      = "";   /* Gen AI Academy for Nursing, enrolment */
+  var SOURCES_URL      = "https://elsevierresources.com/clinicalkey-ai/clinicalkey-for-nursing-ai-content-sources/";
 
   /* Canonical customer-facing address of this experience. Per step share links are
      composed from this constant, because script inside the iframe cannot read the
@@ -626,51 +760,164 @@
     }
   };
 
-  /* Content sources, from the ClinicalKey for Nursing AI get started guide.
-     Editions are carried here because the source guide carries them, but the
-     master content lists on the administrator path remain authoritative. */
+  /* Content sources, complete. Supplied by John Grooms on 23 September in response to
+     the note that the earlier version was only a sampling. */
   var SOURCE_CATS = [
     {t:"Point of care content",
      d:"Continuously maintained summaries written for use during a patient encounter. Most responses draw on these first.",
-     l:["Clinical Overviews","Drug Monographs","Drug Class Overviews"]},
-    {t:"Procedural guidance",
+     l:[
+      "Elsevier Clinical Overviews",
+      "Elsevier Gold Standard Drug Monographs",
+      "Elsevier Gold Standard Drug Class Overviews"
+    ]},
+    {t:"Clinical Skills extended text",
      d:"Step by step procedural guidance across specialties, from Elsevier Clinical Skills.",
      l:[]},
+    {t:"Full text journals",
+     d:"Every journal title in the library.",
+     l:[
+      "Asia-Pacific Journal of Oncology Nursing",
+      "Cardiology Clinics",
+      "Clinics in Geriatric Medicine",
+      "Clinics in Integrated Care",
+      "Clinics in Perioperative Nursing Care",
+      "Critical Care Nursing Clinics of America",
+      "Emergency Medicine Clinics of North America",
+      "Health Care Transitions",
+      "Infectious Disease Clinics",
+      "International Journal of Africa Nursing Sciences",
+      "International Journal of Nursing Sciences",
+      "International Journal of Nursing Studies Advances",
+      "International Journal of Pediatrics and Adolescent Medicine",
+      "Journal of Global Antimicrobial Resistance",
+      "Journal of Intensive Medicine",
+      "Journal of Physiotherapy",
+      "Measurement and Evaluations in Cancer Care",
+      "Nursing Clinics of North America",
+      "Psychiatric Clinics",
+      "The Lancet Healthy Longevity"
+    ]},
     {t:"Reference books",
-     d:"Established clinical and nursing texts. A selection of the titles included:",
-     l:["AACN Procedure Manual for Progressive and Critical Care",
-        "Saunders Nursing Drug Handbook",
-        "Nursing Care Plans",
-        "Sheehy\u2019s Manual of Emergency Care",
-        "Goldman-Cecil Medicine"]},
-    {t:"Journals",
-     d:"Full text articles and copyright cleared abstracts from Elsevier and selected non-Elsevier publishers. A selection of the titles included:",
-     l:["Nursing Clinics of North America",
-        "Critical Care Nursing Clinics of North America",
-        "Infectious Disease Clinics",
-        "The Lancet Healthy Longevity"]},
-    {t:"Government publications and guidelines",
-     d:"Selected United States government publications, from the FDA and CDC, alongside guidelines from leading medical and professional organizations.",
-     l:[]}
+     d:"Every book title in the library.",
+     l:[
+      "A Clinician’s Survival Guide to Acute Medical Emergencies, 4th Edition",
+      "A Medication Guide to Internal Medicine Tests and Procedures, 1st Edition",
+      "AACN Procedure Manual for Progressive and Critical Care, 8th Edition",
+      "ASPMN: Core Curriculum for Pain Management Nursing, 4th Edition",
+      "Ackley & Ladwig’s Nursing Problems & Care Planning Handbook: An Evidence-Based Approach, 14th Edition",
+      "Acute and Chronic Wounds, 6th Edition",
+      "Alfaro’s Clinical Judgment in Nursing: A How-To Practice Approach, 8th Edition",
+      "Applied Pathophysiology for Occupational Therapy: A Guide for Clinical Decision Making, 1st Edition",
+      "Assessment and Multimodal Management of Pain, 1st Edition",
+      "Bioethics, 8th Edition",
+      "Blood Gases and Critical Care Testing, 3rd Edition",
+      "Bradley and Daroff’s Neurology in Clinical Practice, 8th Edition",
+      "COVID-19: A Critical Care Textbook, 1st Edition",
+      "Carvers’ Medical Imaging, 3rd Edition",
+      "Clinical Companion for Fundamentals of Nursing, 4th Edition",
+      "Clinical Companion for Medical-Surgical Nursing, 11th Edition",
+      "Clinical Companion to Lewis’s Medical-Surgical Nursing, 12th Edition",
+      "Critical Care Nursing, 10th Edition",
+      "Elsevier’s 2026 Intravenous Medications, 42nd Edition",
+      "Essentials of Nursing Communication, 1st Edition",
+      "Ethics & Issues In Contemporary Nursing, 2nd Edition",
+      "Evidence-Based Practice of Palliative Medicine, 2nd Edition",
+      "Foundations and Adult Health Nursing, 10th Edition",
+      "Fundamental Concepts and Skills for Nursing, 7th Edition",
+      "Gerontologic Nursing, 7th Edition",
+      "Habif’s Clinical Dermatology, 7th Edition",
+      "Health Assessment for Nursing Practice, 8th Edition",
+      "Huszar’s ECG and 12-Lead Interpretation, 6th Edition",
+      "Lewis’s Medical-Surgical Nursing, 12th Edition",
+      "Mandell, Douglas, and Bennett’s Principles and Practice of Infectious Diseases, 10th Edition",
+      "Manual of Critical Care Nursing, 8th Edition",
+      "Medical-Surgical Nursing, 6th Edition",
+      "Mental Health A Pocket Guide, 4th Edition",
+      "Minor Emergencies, 4th Edition",
+      "Minor Injuries, 4th Edition",
+      "Mosby’s 2027 Nursing Drug Reference, 40th Edition",
+      "Mosby’s® Diagnostic and Laboratory Test Reference, 17th Edition",
+      "Netter’s Atlas of Anatomy for Speech, Swallowing, and Hearing, 4th Edition",
+      "Neurologic Interventions for Physical Therapy, 5th Edition",
+      "Nursing Care Plans, 11th Edition",
+      "Nursing Interventions Classification (NIC), 8th Edition",
+      "Nursing Management of the Neurosurgical Patient: An Interprofessional Approach, 1st Edition",
+      "Nursing Outcomes Classification (NOC), 7th Edition",
+      "Nursing the Surgical Patient, 4th Edition",
+      "Parkinson’s Disease: A Multidisciplinary Guide to Management, 1st Edition",
+      "Pathophysiology, 8th Edition",
+      "Patient Transport: Medical Critical Care, 1st Edition",
+      "Patient Transport: Principles and Practice, 6th Edition",
+      "Payne’s Handbook of Relaxation Techniques, 5th Edition",
+      "PeriAnesthesia Nursing Core Curriculum, 5th Edition",
+      "Pharmacology, 12th Edition",
+      "Potter: Clinical Companion for Fundamentals of Nursing, 12th Edition",
+      "Professional Nursing: Concepts & Challenges, 11th Edition",
+      "Psychiatric Drugs Explained, 7th Edition",
+      "Redfern’s Nursing Older People, 5th Edition",
+      "Review of Dialysis Care for Nurses and Dialysis Personnel, 11th Edition",
+      "Saunders Nursing Drug Handbook 2026, 1st Edition",
+      "Sheehy’s Manual of Emergency Care, 8th Edition",
+      "Sole’s Introduction to Critical Care Nursing, 9th Edition",
+      "Supervision, Learning and Assessment in Clinical Practice, 4th Edition",
+      "Swearingen’s All-in-One Nursing Care Planning Resource, 6th Edition",
+      "Transcultural Nursing, 9th Edition",
+      "Understanding Pathophysiology, 8th Edition",
+      "Wilkins’ Clinical Assessment in Respiratory Care, 9th Edition",
+      "Working With Serious Mental Illness, 3rd Edition"
+    ]}
   ];
 
-  /* News and notes, served at the wrap up rather than up front so the path stays
-     about getting going. Every item is sourced from the two resource centres. */
+  /* Prompt guides by specialty, 22 of them, built by Jesse and hosted on Frontify.
+     These are share pages rather than direct asset URLs, so they open out rather
+     than rendering inline. Added on John's request: the prompt examples are the
+     thing reviewers ask for first. */
+  var SPECIALTY_GUIDES = [
+    {t:"Cardiac", u:"https://brand.elsevier.com/share/hzVSvys3EKE7oCgptEx9"},
+    {t:"Critical Care", u:"https://brand.elsevier.com/share/GLY8w33zLT4SqDw1VfGo"},
+    {t:"Emergency Department", u:"https://brand.elsevier.com/share/SUKNY62pmKYVD2r4BnrL"},
+    {t:"Geriatrics and Long Term Care", u:"https://brand.elsevier.com/share/vktJ9kNekHshvBQHMG5w"},
+    {t:"Home Health and Community Health", u:"https://brand.elsevier.com/share/ZY7SgyP8dvGf2qu2qsrU"},
+    {t:"Infection Prevention", u:"https://brand.elsevier.com/share/TMibqwTuW1MPrvHCG4Ag"},
+    {t:"Medical Surgical", u:"https://brand.elsevier.com/share/KoEYsmGawKiQB6yPWgzv"},
+    {t:"NICU", u:"https://brand.elsevier.com/share/EA99ycr6PMLhtojo68ds"},
+    {t:"Nephrology", u:"https://brand.elsevier.com/share/UsXFcCJGWo3zHRK2nsnz"},
+    {t:"Neurology Stroke", u:"https://brand.elsevier.com/share/kurYr46esaJrpztUXFgL"},
+    {t:"Nurse Practitioner", u:"https://brand.elsevier.com/share/8pYD6r3iyqevJUx4bkMo"},
+    {t:"Nursing Professional Development", u:"https://brand.elsevier.com/share/GecmBhUdtedXWprQT86N"},
+    {t:"OB Labor Delivery", u:"https://brand.elsevier.com/share/NUnRTtvG6QQjr7P3AGqe"},
+    {t:"Oncology", u:"https://brand.elsevier.com/share/Pn7NpkdQxiYqFeWQ9aV1"},
+    {t:"Orthopedics", u:"https://brand.elsevier.com/share/cmFFFLTHgW6yHBSpSKqG"},
+    {t:"Palliative Hospice", u:"https://brand.elsevier.com/share/j6V7UVJFjMNmRLMNmMz2"},
+    {t:"Pediatrics", u:"https://brand.elsevier.com/share/9zjSzfYr6vcrcnXDzWHV"},
+    {t:"Perioperative", u:"https://brand.elsevier.com/share/BxTJmJMFBMGYv5wqQndg"},
+    {t:"Psychiatric Mental Health", u:"https://brand.elsevier.com/share/REFTs7PERL8f89pm8PJ2"},
+    {t:"Pulmonary Respiratory", u:"https://brand.elsevier.com/share/5f8Hw2D4Q7ARSUPJCDFW"},
+    {t:"Regulatory", u:"https://brand.elsevier.com/share/uELUdVNyVxACpRyYzcsc"},
+    {t:"Wound Care", u:"https://brand.elsevier.com/share/61NWVu3uRs4r4UmiWPgw"}
+  ];
+
+  /* News and updates. Renamed from Wrap up on 23 September: wrap up read as a
+     completion marker, and the point of this screen is to send the learner into the
+     product. Pared to three items a section per Laura and John, laid out in two
+     columns as cards rather than as a list. */
   var NEWS_ASOF = "Current as of September 2026";
   var NEWS = [
     {t:"ClinicalKey Nursing AI", i:[
       {h:"Now part of ClinicalKey for Nursing",
-       d:"Nursing AI is delivered as part of the ClinicalKey for Nursing subscription rather than as a separate product, which is why both sit in one path here."},
+       d:"Nursing AI is delivered inside the ClinicalKey for Nursing subscription rather than sold separately."},
       {h:"Conversation Sharing",
-       d:"Users can share a secure, read-only link to a conversation. It is enabled by default, and an institution can opt out through the support centre. Recipients must sign in to see the full conversation."},
-      {h:"Gen AI Academy for Nursing",
-       d:"A free, self-paced course built for nurses, five modules and eighteen lessons, available from the ClinicalKey Nursing AI resource centre."}
+       d:"Send a secure, read-only link to a conversation. On by default; your administrator can opt the institution out."},
+      {h:"Prompt guides by specialty",
+       d:"Twenty-two specialty guides, from critical care to wound care, on the writing better questions step."}
     ]},
     {t:"ClinicalKey for Nursing", i:[
       {h:"Evidence based nursing monographs retired",
-       d:"Monographs were removed at the end of May. Clinical Overviews are now the current, actively maintained source. A crosswalk mapping every retired monograph to its replacement is on the administrator path."},
+       d:"Removed at the end of May. Clinical Overviews are now the current, actively maintained source."},
       {h:"KBART reports now available",
-       d:"Package level reports structured to the KBART specification, updated daily, alongside the existing durable URL reports which are updated monthly."}
+       d:"Package level, updated daily, alongside the durable URL reports which update monthly."},
+      {h:"Gen AI Academy for Nursing",
+       d:"A free, self-paced course built for nurses. Five modules, eighteen lessons."}
     ]}
   ];
 
@@ -732,8 +979,10 @@
     '<li>Ask a question the way you would say it out loud. Medical abbreviations are understood, and conversational phrasing works better than keywords.</li>'+
     '<li>Check the citations. Show Details on any cited source opens the exact excerpt the answer was built from, which is how you verify rather than trust.</li>'+
     '<li>Use the suggested follow-up questions. They are often a better next question than the one you were about to type.</li>'+
+    '<li>If your question was in French, German, Spanish, Italian or Portuguese, use the language toggle to read the answer back in that language. The underlying content is US English, and only the main response, additional information and follow-up questions are validated in translation.</li>'+
+    '<li>Rate a response with thumbs up or down. It feeds the review process the FAQ describes below.</li>'+
     '<li>Save, revisit or share recent questions, and use the privacy panel to see what is and is not retained.</li>'+
-    '<li>Do not enter protected health information, unless your organization has an active business associate agreement in place. Ask your administrator if you are not sure.</li>'+
+    '<li>Do not enter protected health information unless your organization has an active business associate agreement in place, and even then only where non-US privacy rules do not apply. Ask your administrator if you are not sure.</li>'+
     '</ul>';
 
   var bodyAiPrompt =
@@ -744,48 +993,51 @@
     '<li>Skip persona prompts. Act as an expert ICU nurse adds nothing, because the tool is already built for clinical questions.</li>'+
     '<li>Keep one topic per question and follow up for depth. Stacking variables makes it harder to return the right evidence for each one.</li>'+
     '<li>Do not use it as a calculator, a scoring or staging tool, for dose conversions or to confirm IV compatibility. Use the ClinicalKey for Nursing calculators for those.</li>'+
-    '</ul>';
+    '</ul>'+
+    '<p>Twenty-two specialty guides sit below, each with prompts written for that setting. Open the one that matches your practice.</p>';
 
   var bodyAiSources =
     '<p>Responses are built from a curated, evidence-based library rather than the open web. Knowing roughly what is in that library tells you how far to trust an answer, and when to go and read the source instead.</p>';
 
   var bodyAiFaq =
-    '<p>The questions nurses ask most often, grouped into data privacy and security, user interface, content, technology, and safety and fairness.</p>'+
-    '<h4>What this covers</h4><ul>'+
-    '<li>Privacy: what happens to a query, and when the restriction on entering protected health information does and does not apply.</li>'+
-    '<li>Grounding: responses are built through retrieval augmented generation from a curated library, which is what keeps them anchored to evidence rather than to model memory.</li>'+
-    '<li>Transparency: an AI generated interpretation of your query is shown back to you, and every response carries linked citations with real-time evidence tracking.</li>'+
-    '<li>Limits: no clinical calculations, no scoring or staging, no dose conversions, no IV compatibility, no medication cost or insurance coverage.</li>'+
-    '<li>Quality: a clinician-in-the-loop evaluation process reviews response quality on a recurring basis, using credentialed, currently or recently practising clinicians.</li>'+
+    '<p>The full FAQ, grouped into data privacy and security, user interface, content, technology, and safety and fairness.</p>'+
+    '<h4>A few worth knowing before you start</h4><ul>'+
+    '<li><strong>PHI.</strong> Do not enter protected health information. US customers with an active business associate agreement may have that restriction lifted; ask your administrator. Outside the US, PHI is never permitted in the query field.</li>'+
+    '<li><strong>Content scope.</strong> The library is currently curated primarily for emergency, medical-surgical and critical care questions. Other specialties are covered, but treat answers outside those three settings with a bit more scrutiny and lean harder on the citations.</li>'+
+    '<li><strong>What it will not do.</strong> No clinical calculations, no scoring or staging, no dose conversions, no IV compatibility, no medication cost or insurance coverage.</li>'+
+    '<li><strong>How it stays grounded.</strong> Retrieval augmented generation pulls from the curated library first, then a citation validation step checks every claim in the draft answer against those sources before it reaches you.</li>'+
+    '<li><strong>Quality.</strong> Most answers carry 6 to 10 linked citations. A clinician-in-the-loop process, using credentialed and currently or recently practising clinicians, reviews responses on a recurring basis, with extra ad hoc review around major releases.</li>'+
     '</ul>';
 
   /* ---------- Administrator body copy ---------- */
 
-  var bodyImplOverview =
-    '<p>What you need to configure, in the order most institutions do it, plus the one content change that will generate questions from your nurses this year.</p>'+
-    '<h4>How to complete the key actions</h4><ul>'+
-    '<li>Work out which of the configuration steps on this path actually apply to you. Authentication and usage reporting apply to everyone; link resolvers, MARC records and KBART matter mainly where there is a library.</li>'+
-    '<li>Note the monograph change. Evidence based nursing monographs were removed from ClinicalKey for Nursing at the end of May, and Clinical Overviews are now the current source.</li>'+
-    '<li>Download the crosswalk below if your nurses had favourite monographs. It maps each retired title to the Clinical Update or Clinical Overview that replaces it.</li>'+
-    '<li>Check any internal links, guides or LibGuides that pointed at monographs, since those will now be dead.</li>'+
-    '</ul>';
-
-  var bodyAdminAccess =
-    '<p>Three things sit between your nurses and the content: how they authenticate, whether they can reach it off site, and whether your network lets the traffic through.</p>'+
-    '<h4>How to complete the key actions</h4><ul>'+
-    '<li>Understand the two routes your nurses will take, institutional email and registration ID, so you can answer when one of them fails.</li>'+
-    '<li>Issue registration IDs where nurses need to associate a personal account with the institution. They come to you for these.</li>'+
-    '<li>Safelist the Elsevier domains with your IT team. Without this, access to Clinical Pharmacology powered by ClinicalKey can fail and your usage analytics will undercount.</li>'+
-    '<li>Set expectations on the 30 day remote access window, because it is the single most common support call.</li>'+
-    '</ul>';
+  var bodyAdminIntro =
+    '<p>If you are new to ClinicalKey for Nursing, start here. Everything after this step assumes you know roughly what the product holds and how a nurse moves through it.</p>'+
+    '<h4>ClinicalKey for Nursing at a glance</h4><ul>'+
+    '<li><strong>What it is.</strong> A clinical search engine for nursing questions. A nurse types a question, and the answer comes back as a concise summary with the full evidence one click behind it.</li>'+
+    '<li><strong>What is in it.</strong> Clinical Overviews and drug monographs for the bedside, Clinical Skills for procedures, care plan guides, patient education, more than 600 calculators, and the full book and journal library.</li>'+
+    '<li><strong>How nurses get in.</strong> Most usage is on site, where the institution\u2019s IP address authenticates automatically and nothing is typed. Personal accounts add saving, sharing, CE and off site access.</li>'+
+    '<li><strong>Continuing education.</strong> Contact hours through Clinical Updates, tested and certified on Elsevier Performance Manager.</li>'+
+    '<li><strong>The AI layer.</strong> ClinicalKey for Nursing AI now sits on top of the same library, adding conversational search with citations. It is covered in the second half of this path.</li>'+
+    '</ul>'+
+    '<p class="asof">The video below is the full six minute tour if you want it. The summary above is the short version.</p>';
 
   var bodyAdminUsage =
-    '<p>Elsevier Product Insights for Customers, E-PIC, is the self-serve portal for usage. This is where the numbers come from when someone asks whether the subscription is being used.</p>'+
+    '<p>Elsevier Product Insights for Customers, E-PIC, is the self-serve portal for usage. This is where the numbers come from when someone asks whether the subscription is being used, and the guide below is Laura\u2019s, embedded in full.</p>'+
+    '<h4>What is in the guide</h4><ul>'+
+    '<li><strong>Executive Summary</strong> gives a high level read of the most recent month: sessions, content usage, specialties touched, and the share of usage from registered versus anonymous users.</li>'+
+    '<li><strong>Account Summary</strong> breaks that down month by month, filterable by content usage, sessions, or specialties, and by user type.</li>'+
+    '<li><strong>Content Usage</strong> splits activity between Deep Knowledge, meaning books, journals, MEDLINE and multimedia, and Point of Care, meaning Clinical Overviews, drug monographs, calculators and guidelines. For ClinicalKey for Nursing specifically this also includes Nursing Content Sets and CPM Guidelines.</li>'+
+    '<li><strong>Top titles</strong> reports name the specific journal articles, journals, books, clinical overviews and drug monographs your institution used most.</li>'+
+    '<li><strong>Specialties and Active Registered Users</strong> compare your account against global usage and show how much of your activity comes from people who have created a personal account.</li>'+
+    '<li>If your institution is a consortium, usage rolls up across every child account by default, or you can view two or more together, or drill into one.</li>'+
+    '</ul>'+
     '<h4>How to complete the key actions</h4><ul>'+
-    '<li>Get an E-PIC account. If you have never used it, email customer support and they will set you up. You need a registered personal account on ClinicalKey or ClinicalKey for Nursing first.</li>'+
-    '<li>Read the monthly data and build the views you will actually reuse, rather than rebuilding a report every quarter.</li>'+
-    '<li>Understand COUNTER if you report to a library. It is the standard your numbers will be compared against.</li>'+
-    '<li>Watch the interaction with safelisting. Blocked domains suppress usage, and suppressed usage looks like low adoption.</li>'+
+    '<li>Get an E-PIC account if you do not have one. Email support, or sign in through your institution.</li>'+
+    '<li>Start with the Executive Summary each month, then use Account Summary when you need the trend behind a number.</li>'+
+    '<li>Understand COUNTER if you report to a library. Total Item Requests counts views plus downloads; Unique Item Requests, new with COUNTER 5, counts distinct chapters or articles touched.</li>'+
+    '<li>R16 reports are being retired. The last one goes out by email in April 2026, so the E-PIC reports above are where that reporting moves to.</li>'+
+    '<li>Watch the interaction with safelisting from the earlier step. Blocked domains suppress usage, and suppressed usage looks like low adoption.</li>'+
     '</ul>';
 
   var bodyAdminLink =
@@ -824,7 +1076,21 @@
     '</ul>';
 
   var bodyAdminTraining =
-    '<p>You do not have to deliver the training yourself. Elsevier runs sessions monthly, keeps a recorded webinar available, and will build a session for your institution on request.</p>';
+    '<p>You do not have to deliver the training yourself. The recorded session below walks nurses through the product end to end, and Elsevier will build a session for your institution on request.</p>'+
+    '<h4>How to use this</h4><ul>'+
+    '<li>Share the recording with a new cohort rather than running your own walkthrough. It covers content, access, search and the supporting resources.</li>'+
+    '<li>Request a session for your institution if you want something tailored to your setup and your access method.</li>'+
+    '<li>Send nurses to the support centre before they come to you. Most of what they ask is answered there.</li>'+
+    '</ul>';
+
+  var bodyAdminAwareness =
+    '<p>The most common reason a ClinicalKey for Nursing subscription underperforms is that nurses do not know they have it. These are the assets for fixing that, and they are built to be used as they are.</p>'+
+    '<h4>How to complete the key actions</h4><ul>'+
+    '<li>Run the three email templates as a sequence: welcome a week before go live, announce on the day, remind two weeks after. Each one has a subject line and a body with the places to personalise marked.</li>'+
+    '<li>Place the banners wherever your nurses already are. Intranet, learning management system, a portal landing page.</li>'+
+    '<li>Use the official logos and product labels rather than a screenshot. Both come in graphite, white and orange, with and without the trademark mark, as SVG and PNG.</li>'+
+    '<li>Check the remind email before you send it. It still lists evidence based nursing monographs, which were retired at the end of May, so that line needs removing.</li>'+
+    '</ul>';
 
   var bodyAiAdminSharing =
     '<p>Conversation Sharing lets a nurse send a secure, read-only link to a Nursing AI conversation to another medical professional. It is enabled at the institutional level by default, so the decision in front of you is whether to leave it on. This is a data handling decision, and your privacy or compliance colleagues will want to know it was made deliberately.</p>'+
@@ -848,12 +1114,23 @@
     '</ul>';
 
   var bodyAiAdminFaq =
-    '<p>The questions your nurses will bring you, and the answers you want ready before they do. Worth reading even if you never touch the product yourself.</p>'+
-    '<h4>What this covers</h4><ul>'+
-    '<li>Privacy and PHI, including when the restriction on entering protected health information does and does not apply at your institution.</li>'+
-    '<li>Grounding: responses are built through retrieval augmented generation from a curated library rather than from model memory, which is the short answer when someone asks about hallucinations.</li>'+
-    '<li>Limits: no clinical calculations, no scoring or staging, no dose conversions, no IV compatibility, no medication cost or insurance coverage. Expect to repeat this one.</li>'+
-    '<li>Quality: a clinician-in-the-loop evaluation process reviews response quality on a recurring basis, using credentialed, currently or recently practising clinicians.</li>'+
+    '<p>The full FAQ. These are the ones an administrator gets asked, or should ask first.</p>'+
+    '<h4>Data privacy and security</h4><ul>'+
+    '<li>HIPAA applies for US customers only, with end to end platform control. A Business Associate Agreement is available; with one in effect, the PHI restriction on the query field may not apply. Outside the US, HIPAA and BAA provisions do not apply and PHI is never permitted in the field, agreement or not.</li>'+
+    '</ul>'+
+    '<h4>Content</h4><ul>'+
+    '<li>The library is currently curated primarily for emergency, medical-surgical and critical care questions. If a specialty prompt guide exists for something outside those three, the depth behind it may be thinner than the guide implies.</li>'+
+    '<li>Update cadence varies by type: Clinical Skills monthly, books on new edition or correction, drug and point of care content as topics or recommendations change, all against a daily supply pipeline.</li>'+
+    '<li>A link resolver connects a cited abstract to your institution\u2019s own full text holdings for non-Elsevier content, on top of what ClinicalKey Nursing already provides. Set up separately from the ClinicalKey for Nursing link resolver, on the step before this one.</li>'+
+    '</ul>'+
+    '<h4>Technology</h4><ul>'+
+    '<li>IP authentication is not supported for the AI layer. Every nurse needs an individual login, regardless of whether they authenticate to base ClinicalKey for Nursing by IP on site. Worth saying plainly, since it cuts against how most of your CKN traffic works.</li>'+
+    '<li>No single fixed model. A combination of commercial and proprietary LLMs runs inside a retrieval augmented generation workflow, re-evaluated on an ongoing basis as models change.</li>'+
+    '<li>Hallucination management: retrieval grounds the answer in the curated library first, then a citation validation pass checks every claim in the draft against those sources.</li>'+
+    '</ul>'+
+    '<h4>Safety and fairness</h4><ul>'+
+    '<li>Health equity: Clinical Overviews and drug monographs carry special population guidance, a nurse can add characteristics like race or ethnicity to a query, and a clinician team reviews responses for bias on an ongoing basis.</li>'+
+    '<li>Most responses carry 6 to 10 linked citations. Formal evaluation is continuous, with additional ad hoc review around significant releases.</li>'+
     '</ul>';
 
   var bodyAiAdminAdoption =
@@ -862,7 +1139,7 @@
   /* ---------- Step definitions ---------- */
 
   var wrapStep =
-    {title:"Wrap up", type:"wrapup", cat:"Keep going", concern:"What has changed recently?", mins:4};
+    {title:"News and updates", type:"wrapup", cat:"Keep going", concern:"What has changed recently?", mins:4};
 
   /* Nurse path, ClinicalKey for Nursing */
   var nurseCkn = [
@@ -896,7 +1173,7 @@
     {title:"Get started with Nursing AI", type:"doc", product:P_AI,
      cat:"Get oriented", concern:"How do I ask my first question?", mins:5,
      embed:{kind:"pdf", src:DOC.aiGs}, guide:SHARE.aiGs, body:bodyAiGs},
-    {title:"Writing better questions", type:"doc", product:P_AI, exq:true,
+    {title:"Writing better questions", type:"doc", product:P_AI, exq:true, specialty:true,
      cat:"Ask better questions", concern:"How do I phrase a query?", mins:6,
      embed:{kind:"pdf", src:DOC.aiPrompt}, guide:SHARE.aiPrompt, body:bodyAiPrompt,
      also:[{u:DOC.aiTips, t:"Tips guide", d:"The same habits on a single page, worth keeping."}]},
@@ -910,28 +1187,36 @@
 
   /* Administrator path, ClinicalKey for Nursing */
   var adminCkn = [
-    {title:"Implementation overview and what has changed", type:"assets", product:P_CKN,
-     cat:"Get oriented", concern:"What do I need to set up?", mins:4,
-     body:bodyImplOverview,
-     dl:[{u:DL.crosswalk, t:"Evidence based nursing monograph crosswalk", d:"87 retired monographs mapped to the Clinical Update or Clinical Overview that replaces each one."}],
-     lk:[{u:RC_CKN, t:"Implementation resources", d:"The full set on the resource centre, including anything added since this path was built."}]},
-    {title:"Access and authentication", type:"doc", product:P_CKN,
-     cat:"Deploy and configure", concern:"How do my nurses get in?", mins:6,
-     embed:{kind:"pdf", src:DOC.cknRegId}, guide:SHARE.cknRegId, body:bodyAdminAccess,
-     also:[{u:DOC.cknRemote, t:"Remote access, the nurse view", d:"What your nurses are following when they call you."},
-           {u:RC_CKN, t:"Safelisting domains instructions", d:"On the implementation resources page of the resource centre."}]},
-    {title:"Usage reporting through E-PIC", type:"assets", product:P_CKN,
-     cat:"Prove value", concern:"How is the subscription being used?", mins:5,
-     body:bodyAdminUsage,
-     lk:[{u:RC_CKN, t:"E-PIC portal and instructional guide", d:"Linked from the implementation resources page, along with the COUNTER reference."},
-         {u:"mailto:customercare@elsevier.com", t:"customercare@elsevier.com", d:"Email customer support to have an E-PIC account set up if you have never used it."},
+    /* Step one is the introduction video plus a written at a glance summary. Replaced
+       the implementation overview on 23 September: an administrator may be meeting the
+       product for the first time here, and the crosswalk was a point in time artefact.
+       Access and authentication was removed in the same conversation. Registration IDs
+       and remote access are both off campus methods, roughly 80 percent of usage is on
+       campus under IP authentication, and the hub cannot tailor itself to the method a
+       given institution bought. Laying every method out side by side confuses more
+       administrators than it helps. Remote access to be reopened with the wider group. */
+    /* Video kept, per the call: John's read was that an administrator meeting the
+       product for the first time benefits from the full tour, and Andrew wanted John
+       and Laura's eyes on it live rather than settling it in the working session. */
+    {title:"Introducing ClinicalKey for Nursing", type:"video", product:P_CKN,
+     cat:"Get oriented", concern:"What is this product?", mins:6,
+     embed:{kind:"vimeo", src:VID.cknWelcome}, transcript:"cknWelcome", body:bodyAdminIntro,
+     dl:[{u:DOC.qrc, t:"Quick reference card", d:"A one-page version of the same tour. From 2022, so treat the CE accreditation numbers and phone hours as a starting point to verify rather than as current."}]},
+    /* Embedded rather than linked, per John on 23 September: anything Elsevier has
+       actually produced should live in the hub rather than send the administrator back
+       to the resource centre. This is Laura's guide. */
+    {title:"Usage reporting through E-PIC", type:"doc", product:P_CKN,
+     cat:"Prove value", concern:"How is the subscription being used?", mins:7,
+     embed:{kind:"pdf", src:DOC.epicGuide}, guide:SHARE.epicGuide, body:bodyAdminUsage,
+     lk:[{u:EPIC_URL, t:"Open E-PIC", d:"Sign in with your Elsevier account, or find your institution to sign in through it."},
+         {u:"mailto:customercare@elsevier.com", t:"customercare@elsevier.com", d:"If you have never accessed E-PIC, support will set up your account. You need a registered ClinicalKey or ClinicalKey for Nursing account first."},
          {u:SUPPORT_CKN, t:"ClinicalKey for Nursing Support Center", d:"For access problems and account questions."}]},
     {title:"Link resolver and Open URL linking", type:"assets", product:P_CKN,
      cat:"Deploy and configure", concern:"Connect our library holdings", mins:3,
      body:bodyAdminLink,
      lk:[{u:SUPPORT_CKN, t:"Raise the request with technical support", d:"Open URL linking is configured by Elsevier, not self-serve."},
          {u:RC_CKN, t:"Public access interface instructions", d:"Downloadable from the implementation resources page."}]},
-    {title:"Discovery and library systems", type:"assets", product:P_CKN,
+    {title:"Discovery and cataloging content", type:"assets", product:P_CKN,
      cat:"Deploy and configure", concern:"Surface it where people already look", mins:8,
      body:bodyAdminDiscovery,
      lk:[{u:RC_CKN, t:"Durable URL reports, MARC records and QR codes", d:"Fourteen downloads on the implementation resources page, split between the global and Australia editions."},
@@ -941,16 +1226,30 @@
      cat:"Deploy and configure", concern:"Make it look like ours", mins:2,
      body:bodyAdminBranding,
      lk:[{u:SUPPORT_CKN, t:"Raise the branding request", d:"Send the two image URLs, the dimensions and any link destination."}]},
-    {title:"Content and the master content lists", type:"assets", product:P_CKN,
+    {title:"Master content lists", type:"assets", product:P_CKN,
      cat:"Know the product", concern:"What is actually included?", mins:4,
      body:bodyAdminContent,
      dl:[{u:DL.mclAcute, t:"Master content list, Acute Care", d:"Ten tabs: content updates, books, journals, clinical overviews, drug monographs, clinical updates, procedure videos, labs and scales."},
          {u:DL.mclPost, t:"Master content list, Post-Acute Care", d:"The equivalent list for the post-acute package."}]},
-    {title:"Training and support", type:"assets", product:P_CKN,
-     cat:"Keep going", concern:"Who trains my nurses?", mins:3,
-     body:bodyAdminTraining,
-     lk:[{u:RC_CKN, t:"Recorded webinar and training calendar", d:"ClinicalKey for Nursing: A Nursing Tool, plus the monthly live sessions. Search the calendar for ClinicalKey for Nursing."},
-         {u:CALL_URL, t:"Request a training session", d:"Institutional or individual. Select Training in the subject field."},
+    /* Raising awareness sits before training rather than at the end, on John's note
+       that it should not be the last thing an administrator sees. */
+    {title:"Raising awareness", type:"assets", product:P_CKN,
+     cat:"Drive adoption", concern:"How do my nurses find out they have this?", mins:5,
+     body:bodyAdminAwareness,
+     dl:[{u:KIT.emailWelcome,  t:"Welcome email template", d:"Send a week before go live. Introduces the product and what it holds."},
+         {u:KIT.emailAnnounce, t:"Announce email template", d:"Send on go live day. Covers registration and first access."},
+         {u:KIT.emailRemind,   t:"Remind email template", d:"Send two weeks after. Points at the guides and the app."},
+         {u:KIT.bannerWide,    t:"Web banner, 728 by 90", d:"For the top or foot of an intranet page."},
+         {u:KIT.bannerTall,    t:"Web banner, 160 by 600", d:"Skyscraper, for a portal sidebar."},
+         {u:KIT.webButton,     t:"Web button, 125 by 125", d:"Small square, for a link tile or resource grid."},
+         {u:KIT.logos,         t:"Product logos", d:"Graphite, white and orange, with and without the trademark mark. SVG and PNG."},
+         {u:KIT.labels,        t:"Product labels", d:"The lockup for tight spaces. Graphite and white, SVG and PNG."}]},
+    /* Training calendar removed: John confirmed on 23 September that it is being
+       retired. The recorded session is hosted here rather than linked out. */
+    {title:"Training and support", type:"video", product:P_CKN,
+     cat:"Keep going", concern:"Who trains my nurses?", mins:6,
+     embed:{kind:"vimeo", src:VID.webinar}, transcript:"webinar", body:bodyAdminTraining,
+     lk:[{u:CALL_URL, t:"Request a training session", d:"Institutional or individual. Select Training in the subject field."},
          {u:SUPPORT_CKN, t:"ClinicalKey for Nursing Support Center", d:"Where your nurses should go before they come to you."}]}
   ];
 
@@ -967,6 +1266,11 @@
      cat:"Deploy and configure", concern:"Connect our holdings to the AI layer", mins:4,
      embed:{kind:"pdf", src:DOC.aiLink}, guide:SHARE.aiLink, body:bodyAiAdminLink,
      also:[{u:SUPPORT_AI, t:"Raise the link resolver request", d:"Send the OpenURL base URL and, if you have one, the logo URL."}]},
+    /* Carbon copy of the nurse path step. John: content sourcing on the administrator
+       pathway is key. */
+    {title:"What Nursing AI draws on", type:"sources", product:P_AI,
+     cat:"Know the product", concern:"Where do the answers come from?", mins:4,
+     body:bodyAiSources},
     {title:"What your nurses will ask", type:"doc", product:P_AI,
      cat:"Know the product", concern:"What will they come to me with?", mins:5,
      embed:{kind:"pdf", src:DOC.aiFaq}, guide:SHARE.aiFaq, body:bodyAiAdminFaq,
@@ -999,7 +1303,7 @@
   var state = { screen:"gate", role:null, idx:0, done:{}, indexOpen:false, uid:null, org:null,
                 sent:0, lrsStatus:"idle", expanded:false,
                 resumeOffer:null, pdfPageWanted:null, orgWarned:null, accOpen:{},
-                exqOpen:false, trOpen:false, deep:null };
+                exqOpen:false, trOpen:false, specOpen:false, secOpen:{}, railScroll:0, deep:null };
   var app = document.getElementById("app");
   var roleChip = document.getElementById("roleChip");
 
@@ -1019,9 +1323,9 @@
      not secrecy. Treat any credential placed here as public.
      ===================================================================== */
   var LRS = {
-    endpoint: "PASTE_ENDPOINT_HERE",
-    key:      "PASTE_KEY_HERE",
-    secret:   "PASTE_SECRET_HERE"
+    endpoint: "https://cloud.scorm.com/lrs/O3BIJIXPN6/sandbox/",
+    key:      "ocI8hyNwa1LRckVI3_8",
+    secret:   "jwGrcu_8GJQRH8iV8Uw"
   };
   var AUTH = "Basic " + btoa(LRS.key + ":" + LRS.secret);
   var ACT_BASE = "https://mcguireaels.github.io/CSOn-Demand-CKN-and-CKNAI/";
@@ -1034,7 +1338,11 @@
     shared:{id:"http://activitystrea.ms/schema/1.0/share",display:{"en-US":"shared"}},
     answered:{id:"http://adlnet.gov/expapi/verbs/answered",display:{"en-US":"answered"}},
     passed:{id:"http://adlnet.gov/expapi/verbs/passed",display:{"en-US":"passed"}},
-    failed:{id:"http://adlnet.gov/expapi/verbs/failed",display:{"en-US":"failed"}}
+    failed:{id:"http://adlnet.gov/expapi/verbs/failed",display:{"en-US":"failed"}},
+    /* Added 24 September so that every clickable thing has a verb that fits it. */
+    interacted:{id:"http://adlnet.gov/expapi/verbs/interacted",display:{"en-US":"interacted"}},
+    launched:{id:"http://adlnet.gov/expapi/verbs/launched",display:{"en-US":"launched"}},
+    exited:{id:"http://adlnet.gov/expapi/verbs/exited",display:{"en-US":"exited"}}
   };
   /* =====================================================================
      LEARNER IDENTITY
@@ -1093,6 +1401,32 @@
     badgeEl.querySelector(".lrs-email").textContent = state.uid ? state.uid.slice(0,10) : "";
     badgeEl.querySelector(".lrs-count").textContent = state.sent+" sent";
   }
+  /* One call site for everything a learner clicks. Kept separate from xapi() only so
+     the activity id and name do not have to be assembled at each of the thirty-odd
+     call sites. Nothing here is fired on render, only on a real interaction. */
+  function track(verb, path, name, result){
+    if(!state.uid) return;
+    xapi(verb, activity(path, name), result);
+  }
+  function stepTitle(){
+    var j=journeys[state.role]; if(!j) return "";
+    var st=j.steps[state.idx]; return st?st.title:"";
+  }
+  /* Copy to clipboard with a visible confirmation on the button itself, because a
+     silent copy reads as a dead button. */
+  function copyLink(url, el){
+    var done=function(){
+      if(!el) return;
+      var old=el.getAttribute("data-label")||el.textContent;
+      el.setAttribute("data-label", old);
+      el.textContent="Link copied";
+      setTimeout(function(){ if(el) el.textContent=old; }, 1800);
+    };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url).then(done).catch(done);
+    } else { done(); }
+  }
+
   function xapi(v,o,result){
     var stmt={actor:actor(),verb:v,object:o};
     if(state.org) stmt.context={extensions:{"http://id.tincanapi.com/extension/organization":state.org}};
@@ -1216,7 +1550,8 @@
     {src:"assets/layer-4-geometry.jpg"},
     {orange:true},
     {src:"assets/layer-2-anatomy.jpg"},
-    {src:"assets/layer-1-human.jpg"}
+    /* Front layer, nursing. Supplied 22 September, cropped to the card ratio. */
+    {src:"assets/layer-1-nurses.jpg"}
   ];
   function layerStack(){
     return '<div class="layers" aria-hidden="true">'+
@@ -1248,13 +1583,29 @@
 
     var dc=steps.filter(function(x){return state.done[key(x)];}).length, pct=Math.round((dc/total)*100);
     var cSteps=contentSteps(steps), cTotal=cSteps.length, vc=viewedCount(steps);
-    var rail='<aside class="rail"><p class="rtitle">'+j.label+'</p><p class="rmeta">'+vc+' of '+cTotal+' viewed \u00b7 about '+pathMins(cSteps)+' minutes in total</p>'+
+    var rail='<aside class="rail" id="rail"><p class="rtitle">'+j.label+'</p><p class="rmeta">'+vc+' of '+cTotal+' viewed \u00b7 about '+pathMins(cSteps)+' minutes in total</p>'+
       '<div class="bar"><span style="width:'+Math.round(vc/cTotal*100)+'%"></span></div><ul class="steps">'+
       steps.map(function(x,i){ var cls=(i===state.idx?"active ":"")+(state.done[key(x)]?"done":"");
         /* A product break in the rail. Not a step, not counted, not navigable. It exists
            so the learner always knows which product the step in front of them belongs to. */
-        var head = (x.product && (i===0 || steps[i-1].product!==x.product))
-          ? '<li class="secthead" aria-hidden="true"><span>'+x.product+'</span></li>' : "";
+        /* Product break. Collapsible per John and Laura on 23 September: bold, a size up,
+           with an orange marker rather than orange text, which Laura flagged as hard to
+           read. Collapsed sections stay in the rail as a head, so the learner can always
+           see that the other product is there. */
+        var sKey = x.product ? slug(x.product) : "";
+        var isNewSec = (x.product && (i===0 || steps[i-1].product!==x.product));
+        var collapsed = sKey && state.secOpen[sKey]===false;
+        var head = "";
+        if(isNewSec){
+          var n=0; for(var q=i;q<steps.length && steps[q].product===x.product;q++){ if(steps[q].type!=="wrapup") n++; }
+          var dn=0; for(var q2=i;q2<steps.length && steps[q2].product===x.product;q2++){ if(state.done[key(steps[q2])]) dn++; }
+          head = '<li class="secthead"><button class="sectbtn" data-action="toggle-sect" data-sect="'+sKey+'" '+
+            'aria-expanded="'+(collapsed?"false":"true")+'"><span class="secmark" aria-hidden="true"></span>'+
+            '<span class="sectxt">'+x.product+'</span>'+
+            '<span class="sectn">'+dn+'/'+n+'</span>'+
+            '<span class="sectchev" aria-hidden="true">'+(collapsed?"\u203a":"\u2304")+'</span></button></li>';
+        }
+        if(collapsed) return head;
         if(x.type==="wrapup"){
           var ready=allViewed(steps);
           var left=unviewed(steps), shown=left.slice(0,4), hidden=left.length-shown.length;
@@ -1280,53 +1631,68 @@
     var isFirst=state.idx===0, isWrap=(s.type==="wrapup");
     var lastContent=(state.idx===cTotal-1);
 
-    var tools = (s.embed && s.embed.kind==="pdf") ?
-      '<div class="doc-tools">'+
-      '<button class="dt primary" data-action="toggle-expand">'+(state.expanded?"Exit full size":"View full size")+'</button>'+
-      (s.guide?'<a class="dt" data-action="open-guide" data-guide="'+s.guide+'" href="'+s.guide+'" target="_blank" rel="noopener">Download this guide</a>':'')+
-      (s.guide?'<button class="dt share" data-action="share-guide" data-guide="'+s.guide+'">Share this guide with a colleague</button>':'')+
-      '</div>' : '';
-
-    /* Advance wording follows what the record can actually attest to. Viewing is
-       observable; understanding is not. */
-    var footBtn = "";
+    /* One action row, above the fold. Moved out of the page foot on 23 September:
+       mark as viewed was tucked under the asset where it was easy to miss, and every
+       way of interacting with a step should be visible without scrolling. Previous and
+       the advance button sit here too, so paging does not live in two places. */
+    var isDoc = !!(s.embed && s.embed.kind==="pdf");
+    var isVid = !!(s.embed && s.embed.kind==="vimeo");
+    var done  = !isWrap && !!state.done[key(s)];
+    var tools = "";
     if(!isWrap){
-      var nextIsWrap = lastContent;
-      var verb = state.done[key(s)] ? "" : "Viewed, ";
-      var dest = nextIsWrap ? "wrap up" : "next step";
-      var lbl = verb ? verb+dest : dest.charAt(0).toUpperCase()+dest.slice(1);
-      footBtn = '<button class="btn-primary" data-action="next">'+lbl+'</button>';
+      var noun = isVid ? "video" : "guide";
+      var adv;
+      if(done){ adv = lastContent ? "News and updates" : "Next step"; }
+      else     { adv = "Mark as complete"; }
+      tools = '<div class="doc-tools">'+
+        (isDoc ? '<button class="dt" data-action="toggle-expand">'+(state.expanded?"Exit full size":"View full size")+'</button>' : '')+
+        (s.guide ? '<a class="dt" data-action="open-guide" data-guide="'+s.guide+'" href="'+s.guide+'" target="_blank" rel="noopener">Download this '+noun+'</a>' : '')+
+        '<button class="dt share" data-action="share-guide"'+(s.guide?' data-guide="'+s.guide+'"':'')+'>Share this '+noun+' with a colleague</button>'+
+        '<span class="dtspacer"></span>'+
+        '<button class="dt nav" data-action="prev"'+(isFirst?" disabled":"")+' aria-label="Previous step">\u2039 Previous</button>'+
+        '<button class="dt advance'+(done?" isdone":"")+'" data-action="next">'+adv+(done?" \u203a":"")+'</button>'+
+        '</div>';
     }
+    var footBtn = "";
 
     var eyebrow = isWrap
-      ? '<p class="eyebrow">End of the '+j.label.toLowerCase()+'</p>'
+      ? '<p class="eyebrow">News and updates</p>'
       : '<p class="eyebrow">Step '+(state.idx+1)+' of '+cTotal+'</p>';
 
     var stage='<section class="stage">'+resumeBanner()+bridgeBlock(s)+eyebrow+'<h2>'+s.title+'</h2>'+
       (isWrap ? wrapUpScreen(j) :
-        metaRow(s)+ obligBlock()+
-        '<div class="section-body">'+(s.body||"")+'</div>'+ exqBlock(s) + tools +
+        metaRow(s)+ tools+ obligBlock()+
+        '<div class="section-body">'+(s.body||"")+'</div>'+ exqBlock(s)+ specialtyBlock(s)+
         (s.type==="sources"?contentSourcesBody():s.type==="assets"?"":media(s))+
         transcriptBlock(s)+ assetBlock(s)+ seeAlso(s))+
-      '<div class="stage-foot"><button class="btn-ghost" data-action="prev"'+(isFirst?" disabled":"")+'>Previous</button>'+
-      footBtn+
-      (isWrap?'<button class="btn-ghost" data-action="restart">Back to start</button>':'')+
-      '</div></section>';
+      (isWrap
+        ? '<div class="stage-foot"><button class="btn-ghost" data-action="prev">Previous</button>'+
+          '<button class="btn-ghost" data-action="restart">Back to start</button></div>'
+        : '')+
+      '</section>';
 
     return '<div class="jwrap"><div class="journey'+(state.expanded?" expanded":"")+'">'+rail+stage+finder(steps)+'</div></div>';
   }
 
+  /* News and updates. Two columns of cards rather than a single list of headings, and
+     three items a section rather than however many there were. Laura on 23 September:
+     the section heads blended into the body, and a flat list gives the eye nothing to
+     catch. Orange appears as a marker on the section head, never as text. */
   function wrapUpScreen(j){
+    var cols = NEWS.map(function(g){
+      return '<section class="newscol"><h4 class="newshead"><span class="nhmark" aria-hidden="true"></span>'+g.t+'</h4>'+
+        g.i.map(function(n){
+          return '<div class="newscard"><p class="nh">'+n.h+'</p><p class="nd">'+n.d+'</p></div>';
+        }).join("")+'</section>';
+    }).join("");
     return '<p class="wrapintro">That is the '+j.label.toLowerCase()+
-      ' covered. Nothing here was graded, and every step stays open if you want to go back to one. '+
-      'Before you go, here is what has changed recently.</p>'+
+      ' covered. Nothing here was graded, and every step stays open if you want to go back to one.</p>'+
+      '<div class="newsgrid">'+cols+'</div>'+
       '<p class="asof">'+NEWS_ASOF+'</p>'+
-      NEWS.map(function(g){
-        return '<section class="newsgrp"><h4>'+g.t+'</h4>'+
-          g.i.map(function(n){
-            return '<div class="newsitem"><p class="nh">'+n.h+'</p><p class="nd">'+n.d+'</p></div>';
-          }).join("")+'</section>';
-      }).join("");
+      '<div class="launch"><p class="launchlab">Ready when you are</p>'+
+      '<p class="launchd">Open ClinicalKey for Nursing and sign in. Nursing AI is on the same login.</p>'+
+      '<a class="launchbtn" href="'+CKN_HOME+'" data-action="launch-product" data-res="'+CKN_HOME+'" '+
+      'target="_blank" rel="noopener">Launch ClinicalKey for Nursing \u2197</a></div>';
   }
 
   /* Content sources. The three Master the Moment clips lead, because a nurse
@@ -1335,8 +1701,8 @@
     var accord = SOURCE_CATS.map(function(c,i){
       var inner = '<p class="srcnote">'+c.d+'</p>';
       if(c.l && c.l.length){
-        inner += '<ul class="srclist">'+c.l.map(function(x){return '<li>'+x+'</li>';}).join("")+'</ul>'+
-                 '<p class="srcmore">A selection only. The master content lists below carry every title.</p>';
+        inner += '<ul class="srclist'+(c.l.length>12?" long":"")+'">'+c.l.map(function(x){return '<li>'+x+'</li>';}).join("")+'</ul>'+
+                 '<p class="srcmore">'+c.l.length+' titles.</p>';
       }
       return '<div class="acc"><button class="acc-head" data-action="toggle-acc" data-idx="'+i+'" '+
         'aria-expanded="'+(state.accOpen[i]?"true":"false")+'"><span>'+c.t+'</span>'+
@@ -1359,7 +1725,34 @@
       '<span class="sad">Every title in the acute package, broken out by content type.</span></li>'+
       '<li><a href="'+DL.mclPost+'" data-action="open-resource" data-res="'+DL.mclPost+'" data-restitle="Master content list, Post-Acute" target="_blank" rel="noopener">Master content list, Post-Acute Care</a>'+
       '<span class="sad">The same list for the post-acute package.</span></li>'+
-      '</ul></div>';
+      '</ul></div>'+
+      (SOURCES_URL
+        ? '<div class="assetgrp"><p class="alabel">The canonical list</p><ul class="alist">'+
+          '<li><a href="'+SOURCES_URL+'" data-action="open-resource" data-res="'+SOURCES_URL+'" '+
+          'data-restitle="Content sources" target="_blank" rel="noopener">Content sources <span class="ext">\u2197</span></a>'+
+          '<span class="sad">Maintained on the resource centre, and updated ahead of this page.</span></li></ul></div>'
+        : '<div class="pending"><span class="pl">Awaiting</span><span class="pv">Content sources page link</span>'+
+          '<span class="pl">Sourcing</span><span class="pv">John Grooms</span></div>');
+  }
+
+  /* Prompt guides by specialty. Twenty-two of them, so a plain list would bury the
+     step. Rendered as one collapsible holding a grid of outbound links, because these
+     are Frontify share pages and will not render inline. */
+  function specialtyBlock(st){
+    if(!st.specialty) return "";
+    var grid = SPECIALTY_GUIDES.map(function(g){
+      return '<a class="spec" href="'+g.u+'" data-action="open-resource" data-res="'+g.u+'" '+
+        'data-restitle="Prompt guide, '+g.t+'" target="_blank" rel="noopener">'+g.t+
+        ' <span class="ext" aria-hidden="true">\u2197</span></a>';
+    }).join("");
+    return '<div class="exq"><button class="exq-head" data-action="toggle-spec" aria-expanded="'+(state.specOpen?"true":"false")+'">'+
+      '<span>Prompt guides by specialty <span class="cnt">'+SPECIALTY_GUIDES.length+'</span></span>'+
+      '<span class="chev">'+(state.specOpen?"\u2212":"+")+'</span></button>'+
+      (state.specOpen ? '<div class="exq-body">'+
+        '<p class="exq-caution">The underlying content is currently curated primarily for emergency, medical-surgical and critical care questions. The guides below all carry good prompt phrasing; for specialties outside those three, lean a little harder on the citations in an answer.</p>'+
+        '<div class="specgrid">'+grid+'</div>'+
+        '<p class="exq-foot">Each guide carries prompts written for that setting, with the phrasing that works and the asks to avoid.</p></div>' : '')+
+      '</div>';
   }
 
   /* The product break, shown once on the first step of the AI block. The learner has
@@ -1438,10 +1831,12 @@
         'referrerpolicy="strict-origin-when-cross-origin"></iframe></div></div>';
     }
     if(s.embed && s.embed.kind==="pdf"){
+      /* Chevrons rather than the words previous and next, so page turning inside the
+         document is visibly a different thing from moving between steps. */
       return '<div class="embed pdf"><div class="pdfbar">'+
-        '<button id="pdfprev" data-action="pdf-prev">Previous</button>'+
+        '<button id="pdfprev" class="pdfnav" data-action="pdf-prev" aria-label="Previous page">\u2039</button>'+
         '<span class="pdfcount" id="pdfcount">Loading</span>'+
-        '<button id="pdfnext" data-action="pdf-next">Next</button></div>'+
+        '<button id="pdfnext" class="pdfnav" data-action="pdf-next" aria-label="Next page">\u203a</button></div>'+
         '<div class="pdfstage" id="pdfstage"><canvas id="pdfcanvas"></canvas></div></div>';
     }
     return '<div class="embed" style="border-style:dashed;background:var(--sand)"><div style="padding:40px 34px;min-height:180px;display:flex;flex-direction:column;gap:8px;justify-content:center">'+
@@ -1575,6 +1970,12 @@
   }
 
   function render(){
+    /* Capture where the rail was scrolled to before the DOM is thrown away. Reported
+       on 23 September: selecting a step further down the rail sent the rail back to
+       the top, which loses your place in a long path. */
+    var prevRail = document.getElementById("rail");
+    if(prevRail) state.railScroll = prevRail.scrollTop;
+
     document.body.setAttribute("data-screen", state.screen);
     if(state.role) roleChip.textContent = journeys[state.role].label;
     if(state.screen==="gate") app.innerHTML=gate();
@@ -1585,6 +1986,8 @@
     if(state.screen==="journey"){
       var cs=journeys[state.role].steps[state.idx];
       if(cs.embed && cs.embed.kind==="pdf") setupPdf(cs.embed.src);
+      var nowRail = document.getElementById("rail");
+      if(nowRail && state.railScroll) nowRail.scrollTop = state.railScroll;
     }
     window.scrollTo({top:0,behavior:"auto"});
   }
@@ -1630,12 +2033,25 @@
       state.idx=want;
       state.resumeOffer=null; render(); return;
     }
-    if(action==="resume-no"){ state.resumeOffer=null; saveProgress(); render(); return; }
+    if(action==="resume-no"){ track(VERBS.interacted, "resume/declined", "Declined to resume"); state.resumeOffer=null; saveProgress(); render(); return; }
     if(action==="goto-step"){ state.idx=parseInt(el.getAttribute("data-idx"),10); state.expanded=false; state.trOpen=false; state.exqOpen=false;
       var gs=journeys[state.role].steps[state.idx]; xapi(VERBS.experienced, activity("path/"+state.role+"/step/"+key(gs), gs.title)); render(); return; }
-    if(action==="toggle-expand"){ state.expanded=!state.expanded; state.pdfPageWanted=pdfPage; render(); return; }
-    if(action==="toggle-acc"){ var ai=parseInt(el.getAttribute("data-idx"),10); state.accOpen[ai]=!state.accOpen[ai]; render(); return; }
-    if(action==="toggle-tr"){ state.trOpen=!state.trOpen; render(); return; }
+    if(action==="toggle-expand"){ state.expanded=!state.expanded; state.pdfPageWanted=pdfPage;
+      track(state.expanded?VERBS.experienced:VERBS.interacted, "view/"+(state.expanded?"fullsize":"inline"),
+            (state.expanded?"Opened full size":"Exited full size")+": "+stepTitle()); render(); return; }
+    if(action==="toggle-acc"){ var ai=parseInt(el.getAttribute("data-idx"),10); state.accOpen[ai]=!state.accOpen[ai];
+      if(state.accOpen[ai]) track(VERBS.experienced, "sources/"+slug(SOURCE_CATS[ai]?SOURCE_CATS[ai].t:String(ai)),
+            "Content sources: "+(SOURCE_CATS[ai]?SOURCE_CATS[ai].t:"")); render(); return; }
+    if(action==="toggle-tr"){ state.trOpen=!state.trOpen;
+      if(state.trOpen) track(VERBS.experienced, "transcript/"+slug(stepTitle()), "Transcript: "+stepTitle()); render(); return; }
+    if(action==="toggle-exq"){ state.exqOpen=!state.exqOpen;
+      if(state.exqOpen) track(VERBS.experienced, "examples/"+state.role, "Example queries, "+state.role+" path"); render(); return; }
+    if(action==="toggle-spec"){ state.specOpen=!state.specOpen;
+      if(state.specOpen) track(VERBS.experienced, "specialty-guides", "Prompt guides by specialty"); render(); return; }
+    if(action==="toggle-sect"){ var sk=el.getAttribute("data-sect");
+      state.secOpen[sk] = (state.secOpen[sk]===false);
+      track(VERBS.interacted, "rail/section/"+sk, (state.secOpen[sk]===false?"Collapsed":"Expanded")+" rail section: "+sk);
+      render(); return; }
     if(action==="next"){
       var steps=journeys[state.role].steps, d=steps[state.idx];
       if(!state.done[key(d)]){
@@ -1658,14 +2074,35 @@
     if(action==="wrap-locked"){
       var rt=document.getElementById("railtip");
       if(rt) rt.classList.toggle("show");
+      track(VERBS.interacted, "rail/locked", "Tried the locked news and updates entry");
       return;
     }
-    if(action==="prev"){ if(state.idx>0){ state.idx--; state.expanded=false; render(); } return; }
-    if(action==="restart"){ state.screen="landing"; state.role=null; state.idx=0; state.done={};
+    if(action==="prev"){ if(state.idx>0){ state.idx--; state.expanded=false; state.trOpen=false; state.exqOpen=false; state.specOpen=false;
+      var ps=journeys[state.role].steps[state.idx];
+      track(VERBS.experienced, "path/"+state.role+"/step/"+key(ps), ps.title);
+      saveProgress(); render(); } return; }
+    if(action==="restart"){
+      track(VERBS.interacted, "hub/restart", "Returned to the path chooser");
+      state.screen="landing"; state.role=null; state.idx=0; state.done={};
       state.expanded=false; state.resumeOffer=null; render(); return; }
-    if(action==="toggle-index"){ state.indexOpen=!state.indexOpen; render(); return; }
-    if(action==="pdf-prev"){ if(pdfDoc && pdfPage>1){ pdfPage--; renderPdfPage(); } return; }
-    if(action==="pdf-next"){ if(pdfDoc && pdfPage<pdfTotal){ pdfPage++; renderPdfPage(); } return; }
+    if(action==="toggle-index"){ state.indexOpen=!state.indexOpen;
+      if(state.indexOpen) track(VERBS.interacted, "finder", "Opened the step finder"); render(); return; }
+    if(action==="pdf-prev"){ if(pdfDoc && pdfPage>1){ pdfPage--; renderPdfPage();
+      track(VERBS.interacted, "guide/"+slug(stepTitle())+"/page/"+pdfPage, "Page "+pdfPage+" of "+stepTitle()); } return; }
+    if(action==="pdf-next"){ if(pdfDoc && pdfPage<pdfTotal){ pdfPage++; renderPdfPage();
+      track(VERBS.interacted, "guide/"+slug(stepTitle())+"/page/"+pdfPage, "Page "+pdfPage+" of "+stepTitle()); } return; }
+    if(action==="launch-product"){
+      track(VERBS.launched, "product/clinicalkey-for-nursing", "Launched ClinicalKey for Nursing");
+      window.open(CKN_HOME,"_blank","noopener"); return;
+    }
+    if(action==="share-hub"){ copyLink(SHARE_BASE, el);
+      track(VERBS.shared, "hub", "Shared the hub"); return; }
+    if(action==="share-guide"){
+      var sst=journeys[state.role]?journeys[state.role].steps[state.idx]:null;
+      var surl=SHARE_BASE+(sst?"#"+state.role+"/"+key(sst):"");
+      copyLink(surl, el);
+      track(VERBS.shared, "path/"+state.role+"/step/"+(sst?key(sst):"item"), "Shared: "+(sst?sst.title:""));
+      return; }
     if(action==="open-resource"){
       var ru=el.getAttribute("data-res"), rt=el.getAttribute("data-restitle")||"";
       xapi(VERBS.experienced, activity("resource/"+slug(rt), "See also: "+rt));
