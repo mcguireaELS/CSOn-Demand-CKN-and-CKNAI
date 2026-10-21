@@ -197,3 +197,32 @@ Medicine, 27th edition, as a reference text ClinicalKey Nursing AI draws on. It 
 not appear in the 65-title book list John supplied as the content sources page
 content. Not reconciled here; the two documents disagree and one of them needs
 correcting upstream.
+
+
+## Draft 0.4, 5 October
+
+Reviewer feedback round from the 24 September working session.
+
+- **Naming.** ClinicalKey Nursing AI throughout, with no "for", including step titles
+  and the rail. The base product stays ClinicalKey for Nursing. The two video
+  transcripts are left verbatim, because they record what the narrator actually says.
+- **American spelling** across all customer-facing copy.
+- **Reviewer copy rewrites** applied as written, including the obligation text, the
+  nurse card, and the follow-up questions line.
+- **Gen AI Academy for Nursing** linked from the news card, the Earn CE credit step and
+  the Driving adoption step.
+- **E-PIC** now states that ClinicalKey Nursing AI usage is not included. R16 moved to
+  past tense.
+- **Master content lists** removed from the AI content sources step, since they describe
+  ClinicalKey for Nursing rather than the AI library.
+- **Example queries** now link to ClinicalKey Nursing AI at ai.clinicalkey.com rather
+  than to ClinicalKey for Nursing.
+- **Updated quick reference card** replaces the 2022 version.
+- **SHARE_BASE** set to the live pilot address, elsevierresources.com/csondemand/cknandcknai/.
+- **RC_AI** now points to the Nursing AI learning resources page on the ClinicalKey AI
+  resource center.
+
+Held for decision, not built: the languages wording, hiding the home health prompt
+guide, moving content sources to second in the AI block, the procedure videos line,
+master content lists on the administrator step still pointing at hosted spreadsheets,
+and the dated Welcome and Training videos and CKN Get started guide.
