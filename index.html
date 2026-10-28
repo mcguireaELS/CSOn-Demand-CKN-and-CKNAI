@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Onboarding and Enablement Hub</title>
+<title>ClinicalKey for Nursing and ClinicalKey Nursing AI On-Demand Learning</title>
 <!-- Not indexed. Confirmed as intended behavior on the 24 September review call;
      this was not actually set anywhere in the build, so added here. -->
 <meta name="robots" content="noindex, nofollow" />
@@ -134,7 +134,7 @@
   .credit .cinner{max-width:1560px; margin:0 auto; padding:16px 30px 0; font-size:12.5px; color:var(--ink); letter-spacing:-0.02em;}
 
   /* Version stamp */
-  .vstamp{background:var(--white);}
+  .vstamp{border-top:1px solid var(--ivory); background:var(--white);}
   .vstamp .vinner{max-width:1560px; margin:0 auto; padding:18px 30px; font-size:12px; color:var(--ink);}
 
   /* Embeds */
@@ -142,11 +142,12 @@
   .embed.video .vwrap{padding:56.25% 0 0 0; position:relative;}
   .embed.video iframe{position:absolute; top:0; left:0; width:100%; height:100%; border:0;}
   .embed.pdf{background:var(--white);}
-  .pdfbar{display:flex; align-items:center; justify-content:center; gap:16px; padding:10px 12px;
+  .pdfbar{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:16px; padding:10px 12px;
     border-bottom:1px solid var(--ivory); background:var(--paper);}
   .pdfbar button{background:var(--white); border:1px solid var(--ink); color:var(--graphite);
     border-radius:7px; padding:7px 14px; font-size:13px; font-weight:700;}
   .pdfbar button:disabled{opacity:.4; cursor:not-allowed;}
+  .pdfbar .pdfnote{font-size:12.5px; color:var(--ink);}
   .pdfcount{font-size:13px; color:var(--ink); min-width:110px; text-align:center;}
   .pdfstage{display:flex; justify-content:center; padding:18px; background:var(--sand); min-height:300px;}
   #pdfcanvas{max-width:100%; height:auto; box-shadow:0 3px 14px rgba(30,30,30,.12); background:var(--white);}
@@ -516,6 +517,7 @@
   .newsitem .nd{font-size:14.5px; color:var(--ink); margin:0; line-height:1.55; max-width:70ch;}
 
   /* ---- gate, two blocks on the left ---- */
+  @media (min-width:700px){ .nowrap{white-space:nowrap;} }
   .gate-about h2.gh{font-size:40px; line-height:1.08; margin:0 0 16px; max-width:22ch;}
   .gate-about .one{font-size:17px; color:var(--ink); margin:0; max-width:48ch; line-height:1.6;}
   .gate-why{margin:34px 0 0;}
@@ -554,7 +556,7 @@
     <div class="inner">
       <div class="brand">
         <img class="mark" src="assets/elsevier-logo-graphite.svg" alt="Elsevier" />
-        <div class="prod"><div class="n">Onboarding and Enablement Hub</div><div class="s">Customer Hub</div></div>
+        <div class="prod"><div class="n">Customer Success On-Demand Hub</div><div class="s">Made by the Clinical Solutions Training and Development team</div></div>
       </div>
       <span class="role-chip" id="roleChip">·</span>
       <a class="top-switch" href="#" data-action="restart">Switch path</a>
@@ -568,8 +570,7 @@
     </div>
   </header>
   <main id="app"></main>
-  <footer class="credit"><div class="cinner">Made by the Clinical Solutions Training and Development team</div></footer>
-  <footer class="vstamp"><div class="vinner">Nursing hub · Draft 0.5 · 20 October 2026 · Internal review copy, not for customer distribution</div></footer>
+  <footer class="vstamp"><div class="vinner">Nursing hub · Draft 0.6 · 28 October 2026 · Internal review copy, not for customer distribution</div></footer>
 
 <script>
 (function(){
@@ -749,9 +750,8 @@
   /* Professional obligation. Nurse path only. An administrator is deploying the
      product rather than carrying a duty of care while using it, so the register
      does not apply, per the pattern set on the ClinicalKey AI hub. */
-  var OBLIGATION = {
-    nurse: "You are accountable for the care you give, and \u2018the tool said so\u2019 is never a defense. Knowing what ClinicalKey for Nursing and ClinicalKey Nursing AI can each do, and knowing where the guidance stops, is what lets you use them and still own the judgment. This path is the short version of that."
-  };
+  /* Why this matters was stripped on 27 October, to match ClinicalKey AI. */
+  var OBLIGATION = {};
 
   /* Example queries, quoted from the ClinicalKey Nursing AI prompt tips guide
      and tips guide. Approved copy, unlike the clinician set on the other hub.
@@ -918,271 +918,260 @@
      completion marker, and the point of this screen is to send the learner into the
      product. Pared to three items a section per Laura and John, laid out in two
      columns as cards rather than as a list. */
-  var NEWS_ASOF = "Current as of September 2026";
   var NEWS = [
-    {t:"ClinicalKey Nursing AI", i:[
+    {t:"Learning and research", i:[
+      {h:"Gen AI Academy for Nursing",
+       d:"A free, self-paced course built for nurses. Five modules and 2.0 NCPD contact hours on completion.",
+       u:ACADEMY_URL, ut:"Enroll in the Academy"}
+    ]},
+    {t:"Latest updates", i:[
       {h:"Now part of ClinicalKey for Nursing",
        d:"ClinicalKey Nursing AI is delivered inside the ClinicalKey for Nursing subscription rather than sold separately."},
       {h:"Conversation Sharing",
        d:"Send a secure, read-only link to a conversation. On by default; your administrator can opt the institution out."},
       {h:"Prompt guides by specialty",
-       d:"Twenty-two specialty guides, from critical care to wound care, on the writing better questions step."}
-    ]},
-    {t:"ClinicalKey for Nursing", i:[
-      {h:"Evidence based nursing monographs retired",
-       d:"Removed at the end of May. Clinical Overviews are now the current, actively maintained source."},
+       d:"Twenty-two specialty guides, from critical care to wound care, on the writing better questions step."},
       {h:"KBART reports now available",
-       d:"Package level, updated daily, alongside the durable URL reports which update monthly."},
-      {h:"Gen AI Academy for Nursing",
-       d:"A free, self-paced course built for nurses. Five modules and 2.0 NCPD contact hours on completion.",
-       u:ACADEMY_URL, ut:"Enroll in the Academy"}
+       d:"Package level, updated daily, alongside the durable URL reports which update monthly."}
+    ]},
+    {t:"Product spotlight", i:[
+      {h:"Deep Research",
+       d:"For questions that need more than a quick answer, Deep Research produces a structured, referenced report on a clinical topic, citing 20 or more peer-reviewed sources. It is built for teaching prep, evidence review and protocol discussion, not patient-specific decisions. Select Deep Research from the toggle above the question box. Reports take about three minutes, so keep the tab open while it runs, and keep questions under 500 characters."}
     ]}
   ];
 
   /* ---------- Body copy ---------- */
 
   var bodyCknWelcome =
-    '<p>A tour of what ClinicalKey for Nursing holds, how to get to it, and how the search behaves. It sets the context for everything that follows, so the steps after this one land against a picture of the whole product rather than in isolation.</p>';
+    '<p>This video provides a tour of ClinicalKey for Nursing, covering what the product holds, how to find content, how to earn CE credit, and how to use a personal account.</p>';
 
   var bodyCknGs =
-    '<p>ClinicalKey for Nursing is a clinical search engine built around nursing questions. This step covers finding your way around the home page and getting a useful answer out of a search.</p>'+
-    '<h4>How to complete the key actions</h4><ul>'+
-    '<li>Search from the main bar, or browse the content cards below it when you would rather look by content type than by keyword.</li>'+
-    '<li>Use the auto-suggest. Start typing and it will offer recognized clinical terms, which usually beats guessing at phrasing.</li>'+
-    '<li>Read the Clinical Overview in the right hand panel. On most searches it answers the question before you open a single result.</li>'+
-    '<li>Filter by source type, specialty or date, and sort by relevance or date depending on what you need.</li>'+
+    '<p>This guide introduces the ClinicalKey for Nursing home page and shows how to find a useful answer with search.</p>'+
+    '<h4>Key details</h4><ul>'+
+    '<li>Search from the main bar, or browse the content cards below it to look by content type rather than by keyword.</li>'+
+    '<li>Start typing to see auto-suggested clinical terms, which help you phrase the search.</li>'+
+    '<li>Read the Clinical Overview in the right-hand panel, which often answers the question before you open a result.</li>'+
+    '<li>Filter results by source type, specialty, or date, and sort by relevance or date.</li>'+
     '</ul>';
 
   var bodyCknAccess =
-    '<p>Two separate things have to be true before you can use ClinicalKey for Nursing away from your institution: you need a personal account, and that account needs remote access switched on. This step covers both, plus registration IDs if your administrator has issued you one.</p>'+
-    '<h4>How to complete the key actions</h4><ul>'+
-    '<li>Register with your organizational email address. Personal addresses such as Gmail, Yahoo or Hotmail are not accepted, because the address is what ties you to your institution.</li>'+
-    '<li>Apply for remote access from the login page, then click the link in the activation email within 60 minutes. After that, the link expires and you\u2019ll need to request a new one.</li>'+
-    '<li>Remote access lapses after 30 days unless you sign in again on your institution\u2019s network or VPN. Signing in on site occasionally is what keeps it alive.</li>'+
-    '<li>If your site administrator gave you a registration ID and password, redeem it to associate your account with the institution. Adding an association does not remove any you already have.</li>'+
+    '<p>This guide explains how to use ClinicalKey for Nursing away from your institution, which requires a personal account with remote access switched on. It also covers redeeming a registration ID.</p>'+
+    '<h4>Key details</h4><ul>'+
+    '<li>Register with your organizational email address. Personal addresses such as Gmail, Yahoo, or Hotmail are not accepted, because the address links you to your institution.</li>'+
+    '<li>Apply for remote access from the login page, then select the link in the activation email within 60 minutes. After that, the link expires and you need to request a new one.</li>'+
+    '<li>Remote access lapses after 30 days unless you sign in again on your institution\u2019s network or VPN.</li>'+
+    '<li>If your administrator gave you a registration ID and password, redeem it to associate your account with the institution. Adding an association does not remove any you already have.</li>'+
     '</ul>';
 
   var bodyCknApp =
-    '<p>The app puts ClinicalKey for Nursing on the device already in your pocket. Same content, same entitlements, built for use at the bedside rather than at a workstation.</p>'+
-    '<h4>How to complete the key actions</h4><ul>'+
-    '<li>Install from the App Store or Google Play, then choose ClinicalKey for Nursing and the edition your institution licenses.</li>'+
-    '<li>Authenticate either through your institution or over your institution\u2019s network. Network access expires after 30 days off site.</li>'+
-    '<li>Sign in with your personal account to unlock favorites, sharing and CE, which do not appear otherwise.</li>'+
-    '<li>Save an item with the heart icon and find it later under Settings, My Favorites.</li>'+
+    '<p>This guide covers the ClinicalKey for Nursing mobile app, which offers the same content and entitlements on iOS and Android devices.</p>'+
+    '<h4>Key details</h4><ul>'+
+    '<li>Install the app from the App Store or Google Play, then choose ClinicalKey for Nursing and the edition your institution licenses.</li>'+
+    '<li>Authenticate through your institution or over your institution\u2019s network. Network access expires after 30 days off site.</li>'+
+    '<li>Sign in with your personal account to unlock favorites, sharing, and CE.</li>'+
+    '<li>Save an item with the heart icon, and find it later under Settings, My Favorites.</li>'+
     '</ul>';
 
   var bodyCknCalc =
-    '<p>There are more than 600 calculators across 15 categories, from drug calculations to critical care scores. It\u2019s worth knowing where they are before you need one in a hurry.</p>'+
-    '<h4>How to complete the key actions</h4><ul>'+
-    '<li>Reach them from the Calculators card on the home page, or search for one directly by name.</li>'+
-    '<li>Browse by category when you are not sure what the tool is called. Categories run from body metrics and cardiology through to unit conversion.</li>'+
-    '<li>Read what sits below the result. Interpretation, coding information and references are there, and the number on its own is rarely the whole answer.</li>'+
+    '<p>This guide shows where to find the more than 600 clinical calculators in ClinicalKey for Nursing, organized in 15 categories from drug calculations to critical care scores.</p>'+
+    '<h4>Key details</h4><ul>'+
+    '<li>Open the calculators from the Calculators card on the home page, or search for one by name.</li>'+
+    '<li>Browse by category when you are not sure of a calculator\u2019s name. Categories run from body metrics and cardiology to unit conversion.</li>'+
+    '<li>Read the interpretation, coding information, and references below each result.</li>'+
     '</ul>';
 
   var bodyCknCe =
-    '<p>Your ClinicalKey for Nursing subscription includes the Continuing Education program. Contact hours are earned through Clinical Updates, and the test and certificate run on Elsevier Performance Manager rather than inside ClinicalKey for Nursing itself.</p>'+
-    '<h4>How to complete the key actions</h4><ul>'+
-    '<li>Find a Clinical Update by searching, or browse the alphabetical list. Each one shows its contact hours and pharmacology credits before you start.</li>'+
-    '<li>Read the update, then select Go to test. This opens Elsevier Performance Manager in a new window, which needs its own registration the first time.</li>'+
-    '<li>Pass at 80 percent or higher to earn the certificate.</li>'+
+    '<p>This guide explains how to earn continuing education contact hours through Clinical Updates, which are included in your ClinicalKey for Nursing subscription. The test and certificate are completed on Elsevier Performance Manager.</p>'+
+    '<h4>Key details</h4><ul>'+
+    '<li>Find a Clinical Update by searching, or browse the alphabetical list. Each update shows its contact hours and pharmacology credits before you start.</li>'+
+    '<li>Read the update, then select Go to test. Elsevier Performance Manager opens in a new window and needs its own registration the first time.</li>'+
+    '<li>Score 80 percent or higher on the test to earn the certificate.</li>'+
     '<li>Add your licensing and demographic details to finalize the award, and find past certificates under Transcript and Credits Earned.</li>'+
     '</ul>';
 
   var bodyAiIntro =
-    '<p>What the AI layer is, what it draws on, and how it differs from a general purpose AI tool. Two and a half minutes, and it sets up everything that follows.</p>';
+    '<p>This video provides a short overview of ClinicalKey Nursing AI, what it draws on, and how it differs from a general purpose AI tool.</p>';
 
   var bodyAiGs =
-    '<p>ClinicalKey Nursing AI answers a clinical question in natural language and cites every claim back to the source. This step orients you to the landing page and to reading a response properly.</p>'+
-    '<h4>How to complete the key actions</h4><ul>'+
+    '<p>This guide introduces the ClinicalKey Nursing AI landing page and shows how to ask a question and read a response.</p>'+
+    '<h4>Key details</h4><ul>'+
     '<li>Ask a question the way you would say it out loud. Medical abbreviations are understood, and conversational phrasing works better than keywords.</li>'+
-    '<li>Check the citations. Show Details on any cited source opens the exact excerpt the answer was built from, which is how you verify rather than just trust.</li>'+
-    '<li>Use the suggested follow-up questions when you\u2019re not sure what to ask next.</li>'+
-    '<li>If your question was in French, German, Spanish, Italian or Portuguese, use the language toggle to read the answer back in that language. The underlying content is US English, and only the main response, additional information and follow-up questions are validated in translation.</li>'+
-    '<li>Rate a response with thumbs up or down. It feeds the review process the FAQ describes below.</li>'+
-    '<li>Save, revisit or share recent questions, and use the privacy panel to see what is and is not retained.</li>'+
-    '<li>Do not enter protected health information unless your organization has an active business associate agreement in place, and even then only where non-US privacy rules do not apply. Ask your administrator if you are not sure.</li>'+
+    '<li>Select Show Details on any cited source to see the exact excerpt the answer was built from.</li>'+
+    '<li>Use the suggested follow-up questions when you are not sure what to ask next.</li>'+
+    '<li>If you asked in French, German, Spanish, Italian, or Portuguese, use the language toggle to read the answer in that language. The underlying content is in US English, and only the main response, additional information, and follow-up questions are validated in translation.</li>'+
+    '<li>Rate a response with thumbs up or down to feed the review process.</li>'+
+    '<li>Save, revisit, or share recent questions, and use the privacy panel to see what is retained.</li>'+
+    '<li>Do not enter protected health information unless your organization has an active business associate agreement in place, and only where non-US privacy rules do not apply. Ask your administrator if you are not sure.</li>'+
     '</ul>';
 
   var bodyAiPrompt =
-    '<p>The difference between a vague answer and a useful one is almost always the question. These are the phrasing habits that work, taken from the prompt tips guide.</p>'+
-    '<h4>How to complete the key actions</h4><ul>'+
-    '<li>Give context. Patient situation, your role and the care setting, rather than a bare topic.</li>'+
-    '<li>Ask for guidance, not a decision. Assessments, interventions, monitoring and escalation cues are in scope; whether to call a rapid response is not.</li>'+
-    '<li>Skip persona prompts. Act as an expert ICU nurse adds nothing, because the tool is already built for clinical questions.</li>'+
-    '<li>Keep one topic per question and follow up for depth. Stacking variables makes it harder to return the right evidence for each one.</li>'+
-    '<li>Do not use it as a calculator, a scoring or staging tool, for dose conversions or to confirm IV compatibility. Use the ClinicalKey for Nursing calculators for those.</li>'+
+    '<p>This guide sets out the phrasing habits that get the most useful answers from ClinicalKey Nursing AI, with prompt guides for 22 specialties below.</p>'+
+    '<h4>Key details</h4><ul>'+
+    '<li>Give context, including the patient situation, your role, and the care setting, rather than a bare topic.</li>'+
+    '<li>Ask for guidance rather than a decision. Assessments, interventions, monitoring, and escalation cues are in scope, but whether to call a rapid response is not.</li>'+
+    '<li>Skip persona prompts such as “Act as an expert ICU nurse”, because ClinicalKey Nursing AI is already built for clinical questions.</li>'+
+    '<li>Keep to one topic per question, and follow up for depth.</li>'+
+    '<li>Do not use ClinicalKey Nursing AI as a calculator, a scoring or staging tool, for dose conversions, or to confirm IV compatibility. Use the ClinicalKey for Nursing calculators instead.</li>'+
     '</ul>'+
-    '<p>Twenty-two specialty guides sit below, each with prompts written for that setting. Open the one that matches your practice.</p>';
+    '<p>Open the specialty guide below that matches your practice.</p>';
 
   var bodyAiSources =
-    '<p>Responses are built from a curated, evidence-based library rather than the open web. Knowing roughly what is in that library tells you how far to trust an answer, and when to go and read the source instead.</p>';
+    '<p>This page shows what ClinicalKey Nursing AI draws on, a curated, evidence-based library rather than the open web. Use the sections below to see the titles included, and the link at the bottom of this page for the full content sources list.</p>';
 
   var bodyAiFaq =
-    '<p>The full FAQ, grouped into data privacy and security, user interface, content, technology, and safety and fairness.</p>'+
-    '<h4>A few worth knowing before you start</h4><ul>'+
-    '<li><strong>PHI.</strong> Do not enter protected health information. US customers with an active business associate agreement may have that restriction lifted; ask your administrator. Outside the US, PHI is never permitted in the query field.</li>'+
-    '<li><strong>Content scope.</strong> The library is currently curated primarily for emergency, medical-surgical and critical care questions. Other specialties are covered, but treat answers outside those three settings with a bit more scrutiny and lean harder on the citations.</li>'+
-    '<li><strong>What it will not do.</strong> No clinical calculations, no scoring or staging, no dose conversions, no IV compatibility, no medication cost or insurance coverage.</li>'+
-    '<li><strong>How it stays grounded.</strong> Retrieval augmented generation pulls from the curated library first, then a citation validation step checks every claim in the draft answer against those sources before it reaches you.</li>'+
-    '<li><strong>Quality.</strong> Most answers carry 6 to 10 linked citations. A clinician-in-the-loop process, using credentialed and currently or recently practicing clinicians, reviews responses on a recurring basis, with extra ad hoc review around major releases.</li>'+
+    '<p>This guide answers common questions about ClinicalKey Nursing AI, grouped into data privacy and security, user interface, content, technology, and safety and fairness.</p>'+
+    '<h4>Key details</h4><ul>'+
+    '<li>Do not enter protected health information. US customers with an active business associate agreement may have that restriction lifted, so ask your administrator. Outside the US, PHI is never permitted in the query field.</li>'+
+    '<li>The library is currently curated primarily for emergency, medical-surgical, and critical care questions. Other specialties are covered, so check the citations closely for answers outside those settings.</li>'+
+    '<li>ClinicalKey Nursing AI does not perform clinical calculations, scoring or staging, dose conversions, or IV compatibility checks, and does not answer questions about medication cost or insurance coverage.</li>'+
+    '<li>Retrieval augmented generation draws on the curated library first, then a citation validation step checks every claim in the draft answer against those sources.</li>'+
+    '<li>Most answers include 6 to 10 linked citations, and credentialed clinicians review responses on a recurring basis, with extra review around major releases.</li>'+
     '</ul>';
 
   /* ---------- Administrator body copy ---------- */
 
   var bodyAdminIntro =
-    '<p>If you are new to ClinicalKey for Nursing, start here. Everything after this step assumes you know roughly what the product holds and how a nurse moves through it.</p>'+
-    '<h4>ClinicalKey for Nursing at a glance</h4><ul>'+
-    '<li><strong>What it is.</strong> A clinical search engine for nursing questions. A nurse types a question, and the answer comes back as a concise summary with the full evidence one click behind it.</li>'+
-    '<li><strong>What is in it.</strong> Clinical Overviews and drug monographs for the bedside, Clinical Skills for procedures, care plan guides, patient education, more than 600 calculators, and the full-text book and journal library.</li>'+
-    '<li><strong>How nurses get in.</strong> Most usage is on site, where the institution\u2019s IP address authenticates automatically and nothing is typed. Personal accounts add saving, sharing, CE and off site access.</li>'+
-    '<li><strong>Continuing education.</strong> Contact hours through Clinical Updates, tested and certified on Elsevier Performance Manager.</li>'+
-    '<li><strong>The AI layer.</strong> ClinicalKey Nursing AI now sits on top of the same library, adding conversational search with citations. It is covered in the second half of this path.</li>'+
-    '</ul>'+
-    '<p class="asof">The video below is the full six minute tour if you want it. The summary above is the short version.</p>';
+    '<p>This video provides a tour of ClinicalKey for Nursing, covering what the product holds, how nurses find content, how CE credit works, and what a personal account adds.</p>'+
+    '<h4>Key details</h4><ul>'+
+    '<li>ClinicalKey for Nursing brings together more than 60 journals, 85 full-text books, and hundreds of practice guidelines, patient education handouts, and procedural videos across more than 20 specialties.</li>'+
+    '<li>Nurses find content by browsing by type, such as books, journals, or Clinical Overviews, or through a standard search that can be filtered by content type.</li>'+
+    '<li>Clinical Overviews and disease overviews give peer-reviewed recommendations on a patient\u2019s condition, and disease overviews include a nursing management section.</li>'+
+    '<li>Nurses earn CE credit by completing the test for a Clinical Update in Elsevier\u2019s learning management system.</li>'+
+    '<li>A personal account, registered with an organizational email address, adds saved content, presentation export, and remote access.</li>'+
+    '</ul>';
 
   var bodyAdminUsage =
-    '<p>Elsevier Product Insights for Customers, E-PIC, is the self-serve portal for usage. This is where the numbers come from when someone asks whether the subscription is being used, and the full guide is embedded below.</p>'+
-    '<h4>What is in the guide</h4><ul>'+
-    '<li><strong>Executive Summary</strong> gives a high level read of the most recent month: sessions, content usage, specialties touched, and the share of usage from registered versus anonymous users.</li>'+
-    '<li><strong>Account Summary</strong> breaks that down month by month, filterable by content usage, sessions, or specialties, and by user type.</li>'+
-    '<li><strong>Content Usage</strong> splits activity between Deep Knowledge, meaning books, journals, MEDLINE and multimedia, and Point of Care, meaning Clinical Overviews, drug monographs, calculators and guidelines. For ClinicalKey for Nursing specifically this also includes Nursing Content Sets and CPM Guidelines.</li>'+
-    '<li><strong>Top titles</strong> reports name the specific journal articles, journals, books, clinical overviews and drug monographs your institution used most.</li>'+
-    '<li><strong>Specialties and Active Registered Users</strong> compare your account against global usage and show how much of your activity comes from people who have created a personal account.</li>'+
-    '<li>If your institution is a consortium, usage rolls up across every child account by default, or you can view two or more together, or drill into one.</li>'+
-    '</ul>'+
-    '<h4>How to complete the key actions</h4><ul>'+
-    '<li>Get an E-PIC account if you do not have one. Email support, or sign in through your institution.</li>'+
-    '<li>Note what is not in it. E-PIC covers ClinicalKey for Nursing. ClinicalKey Nursing AI usage is not included in these reports.</li>'+
-    '<li>Start with the Executive Summary each month, then use Account Summary when you need the trend behind a number.</li>'+
-    '<li>Understand COUNTER if you report to a library. Total Item Requests counts views plus downloads; Unique Item Requests, new with COUNTER 5, counts distinct chapters or articles touched.</li>'+
-    '<li>R16 reports have been retired. The last one went out by email in April 2026, so the E-PIC reports above are where that reporting moves to.</li>'+
-    '<li>Watch the interaction with safelisting from the earlier step. Blocked domains suppress usage, and suppressed usage looks like low adoption.</li>'+
+    '<p>This guide explains how to use Elsevier Product Insights for Customers (E-PIC), the self-serve portal for ClinicalKey for Nursing usage reports.</p>'+
+    '<h4>Key details</h4><ul>'+
+    '<li>The Executive Summary gives a high-level view of the most recent month, including sessions, content usage, specialties, and the share of usage from registered and anonymous users.</li>'+
+    '<li>The Account Summary shows the same measures month by month, filtered by content usage, sessions, specialties, or user type.</li>'+
+    '<li>Content Usage splits activity between Deep Knowledge, such as books, journals, MEDLINE, and multimedia, and Point of Care, such as Clinical Overviews, drug monographs, calculators, and guidelines. For ClinicalKey for Nursing, it also includes Nursing Content Sets and CPM Guidelines.</li>'+
+    '<li>Top titles reports name the journal articles, journals, books, clinical overviews, and drug monographs your institution used most.</li>'+
+    '<li>Specialties and Active Registered Users reports compare your account with global usage and show how much activity comes from people with a personal account.</li>'+
+    '<li>For a consortium, usage rolls up across every child account by default, and you can also view selected accounts together or one at a time.</li>'+
+    '<li>To get an E-PIC account, email support or sign in through your institution.</li>'+
+    '<li>E-PIC covers ClinicalKey for Nursing only. ClinicalKey Nursing AI usage is not included in these reports.</li>'+
+    '<li>For library reporting, COUNTER Total Item Requests counts views plus downloads, and Unique Item Requests counts distinct chapters or articles.</li>'+
+    '<li>R16 reports have been retired. The last one was sent by email in April 2026, and E-PIC reports replace them.</li>'+
+    '<li>Blocked domains suppress usage, so confirm that ClinicalKey for Nursing domains are safelisted on your network.</li>'+
     '</ul>';
 
   var bodyAdminLink =
-    '<p>If your institution runs a link resolver, ClinicalKey for Nursing can hand off to it from journal articles and article search results, so your nurses land on your holdings rather than a paywall.</p>'+
-    '<h4>How to complete the key actions</h4><ul>'+
-    '<li>Raise a request with technical support through the support center. This is not self-serve.</li>'+
+    '<p>This page explains how to connect ClinicalKey for Nursing to your institution\u2019s link resolver, so that journal articles and search results link to your holdings.</p>'+
+    '<h4>Key details</h4><ul>'+
+    '<li>Open URL linking is configured by Elsevier, so raise a request with technical support through the Support Center.</li>'+
     '<li>Have four things ready: the URL for the link, the text or URL for the graphic, the graphic in GIF format, and confirmation that it fits within 250 by 250 pixels for the article abstract page.</li>'+
-    '<li>Add ClinicalKey for Nursing journals to PubMed LinkOut while you are at it, through the LinkOut Submission Utility. It is tedious, one letter of the alphabet at a time, but it is a one-off.</li>'+
+    '<li>You can also add ClinicalKey for Nursing journals to PubMed LinkOut through the LinkOut Submission Utility. This is a one-time task.</li>'+
     '</ul>';
 
   var bodyAdminDiscovery =
-    '<p>Getting the content to surface in the places your nurses already look: the library catalog, the knowledge base, your intranet, and a poster on a ward wall.</p>'+
-    '<h4>How to complete the key actions</h4><ul>'+
-    '<li>Load the MARC 21 records into your catalog. They are free for every book and journal in your subscription, and they save entering titles by hand.</li>'+
-    '<li>Choose between the two report types deliberately. Durable URL reports list everything in an edition regardless of what you licensed, updated monthly. KBART reports cover only what is in your package, updated daily.</li>'+
-    '<li>Use durable URLs to deep link specific titles from your own pages, for example linking a nursing care planning text from a department page.</li>'+
-    '<li>Print and place the QR codes where the books and journals are actually needed.</li>'+
+    '<p>This page covers the records and reports that surface ClinicalKey for Nursing content in your library catalog, knowledge base, intranet, and clinical areas.</p>'+
+    '<h4>Key details</h4><ul>'+
+    '<li>MARC 21 records are free for every book and journal in your subscription and can be loaded into your catalog.</li>'+
+    '<li>Durable URL reports list everything in an edition regardless of what you license and are updated monthly. KBART reports cover only what is in your package and are updated daily.</li>'+
+    '<li>Durable URLs let you link to specific titles from your own pages, such as a department page.</li>'+
+    '<li>QR codes can be printed and placed where the books and journals are needed.</li>'+
     '</ul>';
 
   var bodyAdminBranding =
-    '<p>Your institution\u2019s banner can sit on the ClinicalKey for Nursing home page and navigation area, which makes it read as a resource your organization provides rather than an outside website.</p>'+
-    '<h4>How to complete the key actions</h4><ul>'+
+    '<p>This page explains how to add your institution\u2019s banner to the ClinicalKey for Nursing home page and navigation area.</p>'+
+    '<h4>Key details</h4><ul>'+
     '<li>Produce two images: a home page banner at 830 by 120 pixels and a navigation banner at 238 by 46 pixels.</li>'+
-    '<li>Host them yourself on a publicly available domain. Elsevier cannot host the image and will need the URL.</li>'+
-    '<li>Decide where the banner should link, usually your intranet or library home page, and supply that link with the request.</li>'+
-    '<li>Raise the request through technical support at the support center.</li>'+
+    '<li>Host the images on a publicly available domain, since Elsevier cannot host them and needs the URLs.</li>'+
+    '<li>Decide where the banner should link, usually your intranet or library home page, and include that link with the request.</li>'+
+    '<li>Raise the request through technical support at the Support Center.</li>'+
     '</ul>';
 
   var bodyAdminContent =
-    '<p>What your subscription actually contains, at title level. This is what you need when a nurse asks whether a specific text is included, or when a librarian asks you to justify the spend.</p>'+
-    '<h4>How to complete the key actions</h4><ul>'+
-    '<li>Download the master content list that matches your package, Acute or Post-Acute. Each one breaks down into books, journals, Clinical Overviews, drug monographs, Clinical Updates, procedure videos, labs and scales.</li>'+
-    '<li>Use the Content Updates tab to see what has changed since the last release, rather than comparing the whole list line by line.</li>'+
-    '<li>Note that procedure videos are included but are aimed primarily at physician and specialist reference, so set expectations accordingly with nursing staff.</li>'+
-    '<li>Keep the KBART report for the package-level view of what you are licensed for, which is the narrower and more current picture.</li>'+
+    '<p>This page links to the master content lists, which show what your ClinicalKey for Nursing subscription contains at title level.</p>'+
+    '<h4>Key details</h4><ul>'+
+    '<li>Download the master content list for your package, Acute Care or Post-Acute Care. Each list covers books, journals, Clinical Overviews, drug monographs, Clinical Updates, procedure videos, labs, and scales.</li>'+
+    '<li>The Content Updates tab shows what has changed since the last release.</li>'+
+    '<li>Procedure videos are included but are aimed primarily at physician and specialist reference.</li>'+
+    '<li>The KBART report gives the package-level view of what you are licensed for.</li>'+
     '</ul>';
 
   var bodyAdminTraining =
-    '<p>You do not have to deliver the training yourself. The recorded session below walks nurses through the product end to end, and Elsevier will build a session for your institution on request.</p>'+
-    '<h4>How to use this</h4><ul>'+
-    '<li>Share the recording with a new cohort rather than running your own walkthrough. It covers content, access, search and the supporting resources.</li>'+
-    '<li>Request a session for your institution if you want something tailored to your setup and your access method.</li>'+
-    '<li>Send nurses to the support center before they come to you. Most of what they ask is answered there.</li>'+
+    '<p>This video is a recorded training session that walks nurses through ClinicalKey for Nursing, covering content, access, search, and supporting resources.</p>'+
+    '<h4>Key details</h4><ul>'+
+    '<li>Share the recording with new staff as an introduction to the product.</li>'+
+    '<li>Direct nurses to the Support Center for product questions, access issues, and troubleshooting.</li>'+
     '</ul>';
 
   var bodyAdminAwareness =
-    '<p>The most common reason a ClinicalKey for Nursing subscription underperforms is that nurses do not know they have it. These are the assets for fixing that, and they are built to be used as they are.</p>'+
-    '<h4>How to complete the key actions</h4><ul>'+
-    '<li>Run the three email templates as a sequence: welcome a week before go live, announce on the day, remind two weeks after. Each one has a subject line and a body with the places to personalize marked.</li>'+
-    '<li>Place the banners wherever your nurses already are. Intranet, learning management system, a portal landing page.</li>'+
-    '<li>Use the official logos and product labels rather than a screenshot. Both come in graphite, white and orange, with and without the trademark mark, as SVG and PNG.</li>'+
-    '<li>Check the remind email before you send it. It still lists evidence based nursing monographs, which were retired at the end of May, so that line needs removing.</li>'+
+    '<p>This page provides email templates, web banners, logos, and product labels for promoting ClinicalKey for Nursing to your nurses.</p>'+
+    '<h4>Key details</h4><ul>'+
+    '<li>The three email templates are designed as a sequence: welcome a week before go live, announce on the day, and remind two weeks after. Each has a subject line and a body with places to personalize marked.</li>'+
+    '<li>Place the banners where your nurses already go, such as the intranet, learning management system, or a portal landing page.</li>'+
+    '<li>Use the official logos and product labels rather than screenshots. Both come in graphite, white, and orange, with and without the trademark symbol, as SVG and PNG.</li>'+
+    '<li>The remind email still lists evidence-based nursing monographs, which were retired at the end of May, so remove that line before sending.</li>'+
     '</ul>';
 
   var bodyAiAdminSharing =
-    '<p>Conversation Sharing lets a nurse send a secure, read-only link to a ClinicalKey Nursing AI conversation to another medical professional. It is enabled at the institutional level by default, so the decision in front of you is whether to leave it on. This is a data handling decision, and your privacy or compliance colleagues will want to know it was made deliberately.</p>'+
-    '<h4>How to complete the key actions</h4><ul>'+
-    '<li>Verify the current state. Confirm that the Share option appears within conversations for eligible users. If it is there, the feature is live at your institution.</li>'+
-    '<li>Understand what a recipient sees. A preview of the shared question, then a modal requiring acceptance of the applicable terms and conditions before they can go further.</li>'+
-    '<li>Note the two recipient cases. Someone with an active license must sign in to see the full answer. Someone without access sees a limited preview and is guided into a registration workflow for a free trial or an institutional demo.</li>'+
-    '<li>Know the PHI position. Users are reminded not to share protected health information when generating a link. Where your organization has an active business associate agreement in place, the restriction on entering PHI may not apply, and your nurses will be told to ask you.</li>'+
-    '<li>To opt out, submit a ticket through the support center. Support deactivates it for the institution and the Share option disappears for your users.</li>'+
+    '<p>This guide explains Conversation Sharing, which lets a nurse send a secure, read-only link to a ClinicalKey Nursing AI conversation to another medical professional. It is enabled for every institution by default.</p>'+
+    '<h4>Key details</h4><ul>'+
+    '<li>Confirm that the Share option appears within conversations for eligible users. If it does, the feature is live at your institution.</li>'+
+    '<li>A recipient sees a preview of the shared question, then must accept the applicable terms and conditions before going further.</li>'+
+    '<li>A recipient with an active license must sign in to see the full answer. A recipient without access sees a limited preview and is guided to register for a free trial or an institutional demo.</li>'+
+    '<li>Users are reminded not to share protected health information when creating a link. Where your organization has an active business associate agreement, the restriction on entering PHI may not apply.</li>'+
+    '<li>To opt out, submit a ticket through the Support Center. Support deactivates the feature for your institution, and the Share option disappears for your users.</li>'+
     '</ul>';
 
   var bodyAiAdminLink =
-    '<p>If your institution subscribes to a link resolver, ClinicalKey Nursing AI can put a resolver link on every cited article, alongside the PubMed and ClinicalKey for Nursing links, so your nurses land on the full text you already pay for rather than on a paywall. This is a separate request from the ClinicalKey for Nursing one.</p>'+
-    '<h4>How to complete the key actions</h4><ul>'+
-    '<li>Confirm you have a resolver service. Ex Libris, EBSCO, OCLC or equivalent.</li>'+
-    '<li>Get the base URL. It has to support the OpenURL standard, and your systems librarian, collection management librarian or e-resources librarian will usually have it to hand.</li>'+
-    '<li>Supply a logo as a publicly accessible image URL ending in .svg, .png or .jpg. File uploads are not supported, so it has to be hosted somewhere reachable.</li>'+
-    '<li>Use the best version you have, cropped tight with no surrounding white space. It renders at 24 pixels high, and a screenshot will look poor at that size.</li>'+
-    '<li>Skip the logo if you would rather. The button falls back to a default that carries your organization name instead.</li>'+
-    '<li>Submit through the support center. Support confirms when it is configured, and you can then check that resolver links appear beside citations.</li>'+
+    '<p>This guide explains how to add your link resolver to ClinicalKey Nursing AI, so every cited article links to the full text your library already subscribes to. This is a separate request from the ClinicalKey for Nursing setup.</p>'+
+    '<h4>Key details</h4><ul>'+
+    '<li>Confirm that your institution subscribes to a resolver service, such as Ex Libris, EBSCO, or OCLC.</li>'+
+    '<li>Get the base URL, which must support the OpenURL standard. Your systems, collection management, or e-resources librarian will usually have it.</li>'+
+    '<li>Supply a logo as a publicly accessible image URL ending in .svg, .png, or .jpg. File uploads are not supported.</li>'+
+    '<li>Use the best version of the logo you have, cropped close with no surrounding white space. It displays at 24 pixels high.</li>'+
+    '<li>The logo is optional. Without one, the button shows a default that carries your organization name.</li>'+
+    '<li>Submit the request through the Support Center. Once Support confirms setup, check that resolver links appear beside citations.</li>'+
     '</ul>';
 
   var bodyAiAdminFaq =
-    '<p>The full FAQ. These are the ones an administrator gets asked, or should ask first.</p>'+
-    '<h4>Data privacy and security</h4><ul>'+
-    '<li>HIPAA applies for US customers only, with end to end platform control. A Business Associate Agreement is available; with one in effect, the PHI restriction on the query field may not apply. Outside the US, HIPAA and BAA provisions do not apply and PHI is never permitted in the field, agreement or not.</li>'+
-    '</ul>'+
-    '<h4>Content</h4><ul>'+
-    '<li>The library is currently curated primarily for emergency, medical-surgical and critical care questions. If a specialty prompt guide exists for something outside those three, the depth behind it may be thinner than the guide implies.</li>'+
-    '<li>Update cadence varies by type: Clinical Skills monthly, books on new edition or correction, drug and point of care content as topics or recommendations change, all against a daily supply pipeline.</li>'+
-    '<li>A link resolver connects a cited abstract to your institution\u2019s own full text holdings for non-Elsevier content, on top of what ClinicalKey for Nursing already provides. Set up separately from the ClinicalKey for Nursing link resolver, on the earlier step.</li>'+
-    '</ul>'+
-    '<h4>Technology</h4><ul>'+
-    '<li>IP authentication is not supported for the AI layer. Every nurse needs an individual login, regardless of whether they authenticate to base ClinicalKey for Nursing by IP on site. Worth saying plainly, since it cuts against how most of your CKN traffic works.</li>'+
-    '<li>No single fixed model. A combination of commercial and proprietary LLMs runs inside a retrieval augmented generation workflow, re-evaluated on an ongoing basis as models change.</li>'+
-    '<li>Hallucination management: retrieval grounds the answer in the curated library first, then a citation validation pass checks every claim in the draft against those sources.</li>'+
-    '</ul>'+
-    '<h4>Safety and fairness</h4><ul>'+
-    '<li>Health equity: Clinical Overviews and drug monographs carry special population guidance, a nurse can add characteristics like race or ethnicity to a query, and a clinician team reviews responses for bias on an ongoing basis.</li>'+
-    '<li>Most responses carry 6 to 10 linked citations. Formal evaluation is continuous, with additional ad hoc review around significant releases.</li>'+
+    '<p>This guide answers the questions administrators are most often asked about ClinicalKey Nursing AI, covering data privacy and security, content, technology, and safety and fairness.</p>'+
+    '<h4>Key details</h4><ul>'+
+    '<li>HIPAA applies to US customers only. A business associate agreement is available, and with one in effect, the PHI restriction on the query field may not apply. Outside the US, PHI is never permitted in the query field.</li>'+
+    '<li>The library is currently curated primarily for emergency, medical-surgical, and critical care questions, so coverage for other specialties may be thinner.</li>'+
+    '<li>A link resolver connects a cited abstract to your institution\u2019s full-text holdings for non-Elsevier content. It is set up separately from the ClinicalKey for Nursing link resolver.</li>'+
+    '<li>IP authentication is not supported for ClinicalKey Nursing AI. Every nurse needs an individual login, even where they use ClinicalKey for Nursing through IP authentication on site.</li>'+
+    '<li>ClinicalKey Nursing AI uses a combination of commercial and proprietary large language models in a retrieval augmented generation workflow, which is re-evaluated as models change.</li>'+
+    '<li>Retrieval grounds each answer in the curated library first, then a citation validation pass checks every claim against those sources.</li>'+
+    '<li>Clinical Overviews and drug monographs include special population guidance, nurses can add characteristics such as race or ethnicity to a query, and a clinician team reviews responses for bias on an ongoing basis.</li>'+
+    '<li>Most responses include 6 to 10 linked citations, and evaluation is continuous, with additional review around significant releases.</li>'+
     '</ul>';
 
   var bodyAiAdminAdoption =
-    '<p>Time-pressed nurses will not discover the AI layer on their own, particularly when it arrived inside a subscription they already had. The adoption kit exists to solve that.</p>';
+    '<p>This page links to the ClinicalKey Nursing AI adoption kit and related resources for introducing ClinicalKey Nursing AI to your nurses.</p>';
 
   /* ---------- Step definitions ---------- */
 
   var wrapStep =
-    {title:"News and updates", type:"wrapup", cat:"Keep going", concern:"What has changed recently?", mins:4};
+    {title:"News and updates", type:"wrapup", cat:"Next steps", concern:"What has changed recently?", mins:4};
 
   /* Nurse path, ClinicalKey for Nursing */
   var nurseCkn = [
     {title:"Welcome to ClinicalKey for Nursing", type:"video", product:P_CKN,
-     cat:"Get oriented", concern:"What is ClinicalKey for Nursing?", mins:7,
+     cat:"Initial learning", concern:"What is ClinicalKey for Nursing?", mins:7,
      embed:{kind:"vimeo", src:VID.cknWelcome}, transcript:"cknWelcome", body:bodyCknWelcome},
     {title:"Get started", type:"doc", product:P_CKN,
-     cat:"Get oriented", concern:"How do I find an answer?", mins:5,
+     cat:"Initial learning", concern:"How do I find an answer?", mins:5,
      embed:{kind:"pdf", src:DOC.cknGs}, guide:SHARE.cknGs, body:bodyCknGs},
     {title:"Access and your account", type:"doc", product:P_CKN,
-     cat:"Get set up", concern:"How do I get in from home?", mins:6,
+     cat:"Setup", concern:"How do I get in from home?", mins:5,
      embed:{kind:"pdf", src:DOC.cknRemote}, guide:SHARE.cknRemote, body:bodyCknAccess,
      also:[{u:DOC.cknAcct, t:"Create a personal account", d:"The registration steps, in full."},
            {u:DOC.cknRegId, t:"Redeem a registration ID", d:"If your administrator issued you one."}]},
     {title:"On mobile", type:"doc", product:P_CKN,
-     cat:"Use it day to day", concern:"Can I use it at the bedside?", mins:5,
+     cat:"Deeper understanding", concern:"Can I use it at the bedside?", mins:4,
      embed:{kind:"pdf", src:DOC.cknApp}, guide:SHARE.cknApp, body:bodyCknApp},
     {title:"Clinical calculators", type:"doc", product:P_CKN,
-     cat:"Use it day to day", concern:"Where are the calculators?", mins:4,
+     cat:"Deeper understanding", concern:"Where are the calculators?", mins:3,
      embed:{kind:"pdf", src:DOC.cknCalc}, guide:SHARE.cknCalc, body:bodyCknCalc},
     /* Academy link added 5 October. Raised by Tim Morris on 24 September: the hub
        cannot award credit for product training, so point to the place that can. */
     {title:"Earn CE credit", type:"doc", product:P_CKN,
-     cat:"Continuing education", concern:"How do I earn contact hours?", mins:5,
+     cat:"Deeper understanding", concern:"How do I earn contact hours?", mins:5,
      embed:{kind:"pdf", src:DOC.cknCe}, guide:SHARE.cknCe, body:bodyCknCe,
      also:[{u:ACADEMY_URL, t:"Gen AI Academy for Nursing", d:"Free and NCPD accredited. Five modules on AI foundations, prompting, ethics and clinical application, worth 2.0 contact hours on completion."}]}
   ];
@@ -1190,20 +1179,20 @@
   /* Nurse path, ClinicalKey Nursing AI */
   var nurseAi = [
     {title:"Introducing ClinicalKey Nursing AI", type:"video", product:P_AI, bridge:true,
-     cat:"Get oriented", concern:"What is the AI layer?", mins:3,
+     cat:"Initial learning", concern:"What is ClinicalKey Nursing AI?", mins:3,
      embed:{kind:"vimeo", src:VID.aiIntro}, transcript:"aiIntro", body:bodyAiIntro},
     {title:"Get started with ClinicalKey Nursing AI", type:"doc", product:P_AI,
-     cat:"Get oriented", concern:"How do I ask my first question?", mins:5,
+     cat:"Initial learning", concern:"How do I ask my first question?", mins:5,
      embed:{kind:"pdf", src:DOC.aiGs}, guide:SHARE.aiGs, body:bodyAiGs},
     {title:"Writing better questions", type:"doc", product:P_AI, exq:true, specialty:true,
-     cat:"Ask better questions", concern:"How do I phrase a query?", mins:6,
+     cat:"Deeper understanding", concern:"How do I phrase a query?", mins:5,
      embed:{kind:"pdf", src:DOC.aiPrompt}, guide:SHARE.aiPrompt, body:bodyAiPrompt,
      also:[{u:DOC.aiTips, t:"Tips guide", d:"The same habits on a single page, worth keeping."}]},
     {title:"What ClinicalKey Nursing AI draws on", type:"sources", product:P_AI,
-     cat:"Know the product", concern:"Where do the answers come from?", mins:4,
+     cat:"Deeper understanding", concern:"Where do the answers come from?", mins:3,
      body:bodyAiSources},
     {title:"Questions and limits", type:"doc", product:P_AI,
-     cat:"Know the product", concern:"What will it not do?", mins:5,
+     cat:"Deeper understanding", concern:"What will it not do?", mins:5,
      embed:{kind:"pdf", src:DOC.aiFaq}, guide:SHARE.aiFaq, body:bodyAiFaq}
   ];
 
@@ -1221,42 +1210,41 @@
        product for the first time benefits from the full tour, and Andrew wanted John
        and Laura's eyes on it live rather than settling it in the working session. */
     {title:"Introducing ClinicalKey for Nursing", type:"video", product:P_CKN,
-     cat:"Get oriented", concern:"What is this product?", mins:6,
-     embed:{kind:"vimeo", src:VID.cknWelcome}, transcript:"cknWelcome", body:bodyAdminIntro,
-     dl:[{u:DOC.qrc, t:"Quick reference card", d:"The same tour on two pages: personal accounts, remote access, search and browse, Presentation Maker, CE and support."}]},
+     cat:"Initial learning", concern:"What is this product?", mins:7,
+     embed:{kind:"vimeo", src:VID.cknWelcome}, transcript:"cknWelcome", body:bodyAdminIntro},
     /* Embedded rather than linked, per John on 23 September: anything Elsevier has
        actually produced should live in the hub rather than send the administrator back
        to the resource center. This is Laura's guide. */
     {title:"Usage reporting through E-PIC", type:"doc", product:P_CKN,
-     cat:"Prove value", concern:"How is the subscription being used?", mins:7,
+     cat:"Deeper understanding", concern:"How is the subscription being used?", mins:6,
      embed:{kind:"pdf", src:DOC.epicGuide}, guide:SHARE.epicGuide, body:bodyAdminUsage,
      lk:[{u:EPIC_URL, t:"Open E-PIC", d:"Sign in with your Elsevier account, or find your institution to sign in through it."},
          {u:"mailto:customercare@elsevier.com", t:"customercare@elsevier.com", d:"If you have never accessed E-PIC, support will set up your account. You need a registered ClinicalKey or ClinicalKey for Nursing account first."},
          {u:SUPPORT_CKN, t:"ClinicalKey for Nursing Support Center", d:"For access problems and account questions."}]},
     {title:"Link resolver and Open URL linking", type:"assets", product:P_CKN,
-     cat:"Deploy and configure", concern:"Connect our library holdings", mins:3,
+     cat:"Setup", concern:"Connect our library holdings", mins:3,
      body:bodyAdminLink,
      lk:[{u:SUPPORT_CKN, t:"Raise the request with technical support", d:"Open URL linking is configured by Elsevier, not self-serve."},
          {u:RC_CKN, t:"Public access interface instructions", d:"Downloadable from the implementation resources page."}]},
     {title:"Discovery and cataloging content", type:"assets", product:P_CKN,
-     cat:"Deploy and configure", concern:"Surface it where people already look", mins:8,
+     cat:"Setup", concern:"Surface it where people already look", mins:5,
      body:bodyAdminDiscovery,
      lk:[{u:RC_CKN, t:"Durable URL reports, MARC records and QR codes", d:"Fourteen downloads on the implementation resources page, split between the global and Australia editions."},
          {u:RC_CKN, t:"KBART reports", d:"Package level, updated daily. Refer to your subscription agreement if you are unsure which apply."},
          {u:"https://www.niso.org/standards-committees/kbart", t:"NISO KBART", d:"The recommended practice itself. Phase III, RP-9-2026, was published in August 2026."}]},
     {title:"Institutional branding", type:"assets", product:P_CKN,
-     cat:"Deploy and configure", concern:"Make it look like ours", mins:2,
+     cat:"Setup", concern:"Make it look like ours", mins:2,
      body:bodyAdminBranding,
      lk:[{u:SUPPORT_CKN, t:"Raise the branding request", d:"Send the two image URLs, the dimensions and any link destination."}]},
     {title:"Master content lists", type:"assets", product:P_CKN,
-     cat:"Know the product", concern:"What is actually included?", mins:4,
+     cat:"Deeper understanding", concern:"What is actually included?", mins:3,
      body:bodyAdminContent,
      dl:[{u:DL.mclAcute, t:"Master content list, Acute Care", d:"Ten tabs: content updates, books, journals, clinical overviews, drug monographs, clinical updates, procedure videos, labs and scales."},
          {u:DL.mclPost, t:"Master content list, Post-Acute Care", d:"The equivalent list for the post-acute package."}]},
     /* Raising awareness sits before training rather than at the end, on John's note
        that it should not be the last thing an administrator sees. */
     {title:"Raising awareness", type:"assets", product:P_CKN,
-     cat:"Drive adoption", concern:"How do my nurses find out they have this?", mins:5,
+     cat:"Next steps", concern:"How do my nurses find out they have this?", mins:4,
      body:bodyAdminAwareness,
      dl:[{u:KIT.emailWelcome,  t:"Welcome email template", d:"Send a week before go live. Introduces the product and what it holds."},
          {u:KIT.emailAnnounce, t:"Announce email template", d:"Send on go live day. Covers registration and first access."},
@@ -1269,36 +1257,35 @@
     /* Training calendar removed: John confirmed on 23 September that it is being
        retired. The recorded session is hosted here rather than linked out. */
     {title:"Training and support", type:"video", product:P_CKN,
-     cat:"Keep going", concern:"Who trains my nurses?", mins:6,
+     cat:"Next steps", concern:"Who trains my nurses?", mins:10,
      embed:{kind:"vimeo", src:VID.webinar}, transcript:"webinar", body:bodyAdminTraining,
-     lk:[{u:CALL_URL, t:"Request a training session", d:"Institutional or individual. Select Training in the subject field."},
-         {u:SUPPORT_CKN, t:"ClinicalKey for Nursing Support Center", d:"Where your nurses should go before they come to you."}]}
+     lk:[{u:SUPPORT_CKN, t:"ClinicalKey for Nursing Support Center", d:"Where your nurses should go before they come to you."}]}
   ];
 
   /* Administrator path, ClinicalKey Nursing AI */
   var adminAi = [
     {title:"Introducing ClinicalKey Nursing AI", type:"video", product:P_AI, bridge:true,
-     cat:"Get oriented", concern:"What is the AI layer?", mins:3,
+     cat:"Initial learning", concern:"What is ClinicalKey Nursing AI?", mins:3,
      embed:{kind:"vimeo", src:VID.aiIntro}, transcript:"aiIntro", body:bodyAiIntro},
     {title:"Conversation Sharing", type:"doc", product:P_AI,
-     cat:"Deploy and configure", concern:"Should sharing stay switched on?", mins:4,
+     cat:"Setup", concern:"Should sharing stay switched on?", mins:4,
      embed:{kind:"pdf", src:DOC.aiShare}, guide:SHARE.aiShare, body:bodyAiAdminSharing,
      also:[{u:SUPPORT_AI, t:"Submit an opt out", d:"ClinicalKey Nursing AI support routes to the ClinicalKey AI support center."}]},
     {title:"Link resolver setup", type:"doc", product:P_AI,
-     cat:"Deploy and configure", concern:"Connect our holdings to the AI layer", mins:4,
+     cat:"Setup", concern:"Connect our holdings to ClinicalKey Nursing AI", mins:4,
      embed:{kind:"pdf", src:DOC.aiLink}, guide:SHARE.aiLink, body:bodyAiAdminLink,
      also:[{u:SUPPORT_AI, t:"Raise the link resolver request", d:"Send the OpenURL base URL and, if you have one, the logo URL."}]},
     /* Carbon copy of the nurse path step. John: content sourcing on the administrator
        pathway is key. */
     {title:"What ClinicalKey Nursing AI draws on", type:"sources", product:P_AI,
-     cat:"Know the product", concern:"Where do the answers come from?", mins:4,
+     cat:"Deeper understanding", concern:"Where do the answers come from?", mins:3,
      body:bodyAiSources},
     {title:"What your nurses will ask", type:"doc", product:P_AI,
-     cat:"Know the product", concern:"What will they come to me with?", mins:5,
+     cat:"Deeper understanding", concern:"What will they come to me with?", mins:5,
      embed:{kind:"pdf", src:DOC.aiFaq}, guide:SHARE.aiFaq, body:bodyAiAdminFaq,
      also:[{u:RC_AI, t:"ClinicalKey Nursing AI learning resources", d:"Guides and setup material for ClinicalKey Nursing AI on the resource center."}]},
     {title:"Driving adoption", type:"assets", product:P_AI,
-     cat:"Keep going", concern:"How do I get people using it?", mins:4,
+     cat:"Next steps", concern:"How do I get people using it?", mins:3,
      body:bodyAiAdminAdoption,
      /* Owner: John Grooms. Kept out of the rendered pending block per the 24 September
         review, where a reviewer caught staff names surfacing on a live pilot page. */
@@ -1540,7 +1527,7 @@
   /* ---- Screens ---- */
   function gateAside(){
     return '<aside class="gate-about">'+
-      '<h2 class="gh">The Customer Success On-Demand Hub</h2>'+
+      '<h2 class="gh">ClinicalKey for Nursing and ClinicalKey Nursing AI <span class="nowrap">On-Demand Learning</span></h2>'+
       '<p class="one">A guided way to get up and running, with the right materials for your role gathered in one place.</p>'+
       '<p class="wl">What to expect</p><ul>'+
       '<li>On-demand resources, there whenever you need them</li>'+
@@ -1548,7 +1535,7 @@
       '<li>Supported information, with a route to a person if you need one</li>'+
       '</ul>'+
       '<section class="gate-why"><h2><em>Why</em> ClinicalKey for Nursing</h2>'+
-      '<p>A clinical search engine built around nursing questions, with fast answers at the bedside and deep access to the evidence behind them. ClinicalKey Nursing AI is now part of it, adding conversational search over the same curated library, with citations you can open and check.</p>'+
+      '<p>ClinicalKey for Nursing helps inform decision-making at the point of care and supports positive patient outcomes. It is now paired with ClinicalKey Nursing AI, Elsevier\u2019s bedside-ready assistant, which gives your teams quick, evidence-based answers to natural language questions. Every response is grounded in trusted nursing books, journals, clinical skills and guidelines, with clear citations so you always know the source.</p>'+
       '</section></aside>';
   }
 
@@ -1591,12 +1578,11 @@
 
   function landing(){
     return '<div class="wrap landing"><div class="ltop"><div class="lleft"><div class="hero">'+
-      '<p class="eyebrow">Customer Success · Your Digital Experience</p>'+
       '<h1>Where do I <em>start</em></h1><div class="rule"></div>'+
-      '<p class="lede">Pick the path that fits your role, or the role you are training for. Each path covers ClinicalKey for Nursing first, then the AI layer that sits on top of it.</p></div>'+
+      '<p class="lede">Pick the path that fits your role, or the role you are training for, to get a tailored learning experience. Each path covers ClinicalKey for Nursing first, then ClinicalKey Nursing AI.</p></div>'+
       '<div class="cards">'+
-        card("admin","I am an administrator","Setting up and supporting ClinicalKey for Nursing at my institution.",["Configure access, integration and discovery","Track usage and prove value","Roll out the AI layer"])+
-        card("nurse","I am a nurse","Using ClinicalKey for Nursing in your daily practice.",["Find trusted answers fast","Earn CE contact hours","Ask better questions in ClinicalKey Nursing AI"])+
+        card("admin","I am an administrator","Understanding ClinicalKey for Nursing and ClinicalKey Nursing AI and driving adoption at your organization.",["Configure access, integration and discovery","Track usage and prove value","Roll out ClinicalKey Nursing AI"])+
+        card("nurse","I am a nurse","Using ClinicalKey for Nursing and ClinicalKey Nursing AI in my practice.",["Find trusted answers fast","Earn CE contact hours","Ask better questions in ClinicalKey Nursing AI"])+
       '</div></div>'+layerStack()+'</div></div>';
   }
   function card(role,title,who,b){
@@ -1608,7 +1594,7 @@
 
     var dc=steps.filter(function(x){return state.done[key(x)];}).length, pct=Math.round((dc/total)*100);
     var cSteps=contentSteps(steps), cTotal=cSteps.length, vc=viewedCount(steps);
-    var rail='<aside class="rail" id="rail"><p class="rtitle">'+j.label+'</p><p class="rmeta">'+vc+' of '+cTotal+' viewed \u00b7 about '+pathMins(cSteps)+' minutes in total</p>'+
+    var rail='<aside class="rail" id="rail"><p class="rtitle">'+j.label+'</p><p class="rmeta">'+vc+' of '+cTotal+' done \u00b7 about '+pathMins(cSteps)+' minutes in total</p>'+
       '<div class="bar"><span style="width:'+Math.round(vc/cTotal*100)+'%"></span></div><ul class="steps">'+
       steps.map(function(x,i){ var cls=(i===state.idx?"active ":"")+(state.done[key(x)]?"done":"");
         /* A product break in the rail. Not a step, not counted, not navigable. It exists
@@ -1633,22 +1619,16 @@
         if(collapsed) return head;
         if(x.type==="wrapup"){
           var ready=allViewed(steps);
-          var left=unviewed(steps), shown=left.slice(0,4), hidden=left.length-shown.length;
           return head+'<li class="term '+(ready?"ready ":"islocked ")+cls+'" '+
             (ready?'data-action="goto-step" data-idx="'+i+'"':'data-action="wrap-locked"')+
             ' tabindex="0" role="button"'+(ready?'':' aria-disabled="true"')+'>'+
             '<span class="mk">'+SQUARE+'</span><span class="stxt">'+x.title+
-            '<span class="smin">'+(ready?"Ready":"Not open yet")+'</span></span></li>'+
-            (ready?'':'<div class="railtip" id="railtip"><span class="rt">'+
-              (left.length===1?"One step left to view":left.length+" steps left to view")+'</span><ul>'+
-              shown.map(function(u){ return '<li>'+u.t+'</li>'; }).join("")+'</ul>'+
-              (hidden>0?'<p class="anyorder">and '+hidden+' more</p>':'')+
-              '<p class="anyorder">Any order is fine. Nothing here is graded.</p></div>');
+            '<span class="smin">'+(ready?"Ready":"Not open yet")+'</span></span></li>';
         }
         return head+'<li class="'+cls+'" data-action="goto-step" data-idx="'+i+'" tabindex="0" role="button">'+
           '<span class="mk">'+RING+'</span><span class="stxt">'+x.title+
           (state.done[key(x)]
-            ? '<span class="smin"><span class="vchk">'+CHK+'Viewed</span></span>'
+            ? '<span class="smin"><span class="vchk">'+CHK+'Done</span></span>'
             : (x.mins?'<span class="smin">'+timeLabel(x, true)+'</span>':''))+
           '</span></li>'; }).join("")+
       '</ul><button class="switch" data-action="restart">Switch path</button></aside>';
@@ -1656,29 +1636,21 @@
     var isFirst=state.idx===0, isWrap=(s.type==="wrapup");
     var lastContent=(state.idx===cTotal-1);
 
-    /* One action row, above the fold. Moved out of the page foot on 23 September:
-       mark as viewed was tucked under the asset where it was easy to miss, and every
-       way of interacting with a step should be visible without scrolling. Previous and
-       the advance button sit here too, so paging does not live in two places. */
+    /* The ClinicalKey AI layout, per the 27 October review: view, download and share sit
+       directly above the asset, and Previous and Done sit below it. No download on video
+       steps. */
     var isDoc = !!(s.embed && s.embed.kind==="pdf");
     var isVid = !!(s.embed && s.embed.kind==="vimeo");
-    var done  = !isWrap && !!state.done[key(s)];
     var tools = "";
     if(!isWrap){
-      var noun = isVid ? "video" : "guide";
-      var adv;
-      if(done){ adv = lastContent ? "News and updates" : "Next step"; }
-      else     { adv = "Mark as complete"; }
+      var noun = isVid ? "video" : (isDoc ? "guide" : "page");
       tools = '<div class="doc-tools">'+
-        (isDoc ? '<button class="dt" data-action="toggle-expand">'+(state.expanded?"Exit full size":"View full size")+'</button>' : '')+
-        (s.guide ? '<a class="dt" data-action="open-guide" data-guide="'+s.guide+'" href="'+s.guide+'" target="_blank" rel="noopener">Download this '+noun+'</a>' : '')+
-        '<button class="dt share" data-action="share-guide"'+(s.guide?' data-guide="'+s.guide+'"':'')+'>Share this '+noun+' with a colleague</button>'+
-        '<span class="dtspacer"></span>'+
-        '<button class="dt nav" data-action="prev"'+(isFirst?" disabled":"")+' aria-label="Previous step">\u2039 Previous</button>'+
-        '<button class="dt advance'+(done?" isdone":"")+'" data-action="next">'+adv+(done?" \u203a":"")+'</button>'+
+        (isDoc ? '<button class="dt primary" data-action="toggle-expand">'+(state.expanded?"Exit full size":"View full size")+'</button>' : '')+
+        (isDoc && s.guide ? '<a class="dt" data-action="open-guide" data-guide="'+s.guide+'" href="'+s.guide+'" target="_blank" rel="noopener">Download this guide</a>' : '')+
+        '<button class="dt share" data-action="share-guide"'+(s.guide?' data-guide="'+s.guide+'"':'')+'>Share this '+noun+'</button>'+
         '</div>';
     }
-    var footBtn = "";
+    var footBtn = isWrap ? "" : '<button class="btn-primary" data-action="next">Done</button>';
 
     var eyebrow = isWrap
       ? '<p class="eyebrow">News and updates</p>'
@@ -1686,14 +1658,14 @@
 
     var stage='<section class="stage">'+resumeBanner()+bridgeBlock(s)+eyebrow+'<h2>'+s.title+'</h2>'+
       (isWrap ? wrapUpScreen(j) :
-        metaRow(s)+ tools+ obligBlock()+
-        '<div class="section-body">'+(s.body||"")+'</div>'+ exqBlock(s)+ specialtyBlock(s)+
+        metaRow(s)+ obligBlock()+
+        '<div class="section-body">'+(s.body||"")+'</div>'+ exqBlock(s)+ specialtyBlock(s)+ tools+
         (s.type==="sources"?contentSourcesBody():s.type==="assets"?"":media(s))+
         transcriptBlock(s)+ assetBlock(s)+ seeAlso(s))+
-      (isWrap
-        ? '<div class="stage-foot"><button class="btn-ghost" data-action="prev">Previous</button>'+
-          '<button class="btn-ghost" data-action="restart">Back to start</button></div>'
-        : '')+
+      '<div class="stage-foot"><button class="btn-ghost" data-action="prev"'+(isFirst?" disabled":"")+'>Previous</button>'+
+        footBtn+
+        (isWrap?'<button class="btn-ghost" data-action="restart">Back to start</button>':'')+
+      '</div>'+
       '</section>';
 
     return '<div class="jwrap"><div class="journey'+(state.expanded?" expanded":"")+'">'+rail+stage+finder(steps)+'</div></div>';
@@ -1713,10 +1685,8 @@
             '</div>';
         }).join("")+'</section>';
     }).join("");
-    return '<p class="wrapintro">That is the '+j.label.toLowerCase()+
-      ' covered. Nothing here was graded, and every step stays open if you want to go back to one.</p>'+
+    return '<p class="wrapintro">See below for what has changed with ClinicalKey for Nursing and ClinicalKey Nursing AI, including enhancements, new content, and other relevant information.</p>'+
       '<div class="newsgrid">'+cols+'</div>'+
-      '<p class="asof">'+NEWS_ASOF+'</p>'+
       '<div class="launch"><p class="launchlab">Ready when you are</p>'+
       '<p class="launchd">Open ClinicalKey for Nursing and sign in. ClinicalKey Nursing AI is on the same login.</p>'+
       '<a class="launchbtn" href="'+CKN_HOME+'" data-action="launch-product" data-res="'+CKN_HOME+'" '+
@@ -1746,7 +1716,6 @@
       }).join("")+'</div><p class="mtmnote">Three short clips with no sound. Every word is on screen, so they work at a nursing station.</p></div>';
 
     return mtm+
-      '<p>ClinicalKey Nursing AI draws on a curated, evidence-based library rather than the open web. Content is updated as new evidence is published and existing material is revised. Here is what it is made of.</p>'+
       '<div class="accgroup">'+accord+'</div>'+
       /* The Acute and Post-Acute master content lists were removed here on 5 October.
          They describe ClinicalKey for Nursing, not the narrower library the AI layer
@@ -1786,7 +1755,7 @@
   function bridgeBlock(st){
     if(!st.bridge) return "";
     return '<div class="bridge"><span class="bl">'+P_CKN+' \u2192 '+P_AI+'</span>'+
-      '<p>ClinicalKey Nursing AI is now part of ClinicalKey for Nursing. The steps from here cover the AI layer that sits on top of what you have just been through.</p></div>';
+      '<p>ClinicalKey Nursing AI is now part of ClinicalKey for Nursing. The steps from here cover ClinicalKey Nursing AI.</p></div>';
   }
 
   /* Transcripts. Collapsed by default so they do not push the video off the screen,
@@ -1858,6 +1827,7 @@
       /* Chevrons rather than the words previous and next, so page turning inside the
          document is visibly a different thing from moving between steps. */
       return '<div class="embed pdf"><div class="pdfbar">'+
+        '<span class="pdfnote">Note: Hyperlink use requires downloading this guide.</span>'+
         '<button id="pdfprev" class="pdfnav" data-action="pdf-prev" aria-label="Previous page">\u2039</button>'+
         '<span class="pdfcount" id="pdfcount">Loading</span>'+
         '<button id="pdfnext" class="pdfnav" data-action="pdf-next" aria-label="Next page">\u203a</button></div>'+
@@ -1869,21 +1839,21 @@
       '<span style="font-size:13.5px;color:var(--ink)">Live asset renders here once its link is added.</span></div></div>';
   }
   function finder(steps){
-    var order=["Get oriented","Get set up","Use it day to day","Continuing education","Deploy and configure","Prove value","Know the product","Ask better questions","Keep going"], groups={};
+    var order=["Initial learning","Setup","Deeper understanding","Next steps"], groups={};
     steps.forEach(function(s,i){ (groups[s.cat]=groups[s.cat]||[]).push({s:s,i:i}); });
     var body=order.filter(function(c){return groups[c];}).map(function(c){
       var chips=groups[c].map(function(o){ return '<button class="chip'+(o.i===state.idx?" active":"")+'" data-action="goto-step" data-idx="'+o.i+'">'+o.s.concern+'</button>'; }).join("");
       return '<div class="cgroup"><span class="clabel">'+c+'</span><div class="chips">'+chips+'</div></div>';
     }).join("");
     return '<div class="finder'+(state.indexOpen?" open":"")+'"><button class="finder-head" data-action="toggle-index" aria-expanded="'+(state.indexOpen?"true":"false")+'">'+
-      '<span class="fh-txt"><span class="fh-title">Looking for something specific?</span><span class="fh-sub">Jump straight to a topic and land on the right step</span></span>'+
+      '<span class="fh-txt"><span class="fh-title">Jump to a topic</span></span>'+
       '<span class="chev">'+(state.indexOpen?"\u25be":"\u25b8")+'</span></button><div class="finder-body">'+body+'</div></div>';
   }
   function done(){
     var j=journeys[state.role];
     return '<div class="wrap"><div class="done-wrap"><div class="check">\u2713</div>'+
       '<h2>You have completed the '+j.label.toLowerCase()+'</h2>'+
-      '<p>That is the core of getting going with ClinicalKey for Nursing and the AI layer on top of it. Here is where to go from here.</p>'+
+      '<p>That is the core of getting going with ClinicalKey for Nursing and ClinicalKey Nursing AI. Here is where to go from here.</p>'+
       '<div class="next-cards"><div class="nc"><p class="h">Keep exploring</p><p class="d">Revisit any step from the path whenever you need a refresher.</p></div>'+
       '<div class="nc"><p class="h">Hit a snag?</p><p class="d">The Support Center handles account, access, and troubleshooting questions.</p></div></div>'+
       '<button class="switch" data-action="restart">Back to start</button></div></div>';
@@ -1937,9 +1907,8 @@
   /* A video is watched, a guide is read. The estimate should say which. */
   function timeLabel(st, brief){
     if(!st.mins) return "";
-    if(st.type==="video") return st.mins+" min to watch";
-    return brief ? "about "+st.mins+" min"
-                 : "About "+st.mins+" minutes, including the guide";
+    /* One label for every kind of step, per the 21 and 27 October reviews. */
+    return brief ? st.mins+" min" : "Estimated review time: "+st.mins+" min";
   }
   function metaRow(st){
     if(!st.mins) return "";
@@ -2096,8 +2065,6 @@
       state.expanded=false; saveProgress(); render(); return;
     }
     if(action==="wrap-locked"){
-      var rt=document.getElementById("railtip");
-      if(rt) rt.classList.toggle("show");
       track(VERBS.interacted, "rail/locked", "Tried the locked news and updates entry");
       return;
     }
